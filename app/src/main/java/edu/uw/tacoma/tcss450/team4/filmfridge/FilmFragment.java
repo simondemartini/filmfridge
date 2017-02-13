@@ -24,8 +24,8 @@ import java.util.List;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
+ * A fragment representing a list of Films.
+ *
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
