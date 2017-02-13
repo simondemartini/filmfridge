@@ -1,12 +1,9 @@
 <resources>
     <string name="app_name">Film Fridge</string>
-
-
-
+    <string name="title_activity_movies">MoviesActivity</string>
     <!--activity_login-->
     <string name="username_hint">Enter Username</string>
     <string name="password_hint">Enter Password</string>
     <string name="login_text">LogIn</string>
     <string name="register_text">Register</string>
-
 </resources>

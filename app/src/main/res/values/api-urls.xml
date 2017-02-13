@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TMDB - must include secrets.xml for key -->
+    <string name="tmdb_config_url">https://api.themoviedb.org/3/configuration?api_key=</string>
+    <string name="tmdb_upcoming_url">https://api.themoviedb.org/3/movie/now_playing?language=en-US&amp;page=1&amp;api_key=</string>
+    <string name="tmdb_image_base_url">https://image.tmdb.org/t/p/</string>
+    <string name="tmdb_poster_size">w342</string>
+</resources>
