@@ -75,7 +75,7 @@ public class FilmFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            DownloadCoursesTask task = new DownloadCoursesTask();
+            DownloadFilmsTask task = new DownloadFilmsTask();
             task.execute(getString(R.string.tmdb_now_playing_url) + getString(R.string.tmdb_api_key));
         }
         return view;
@@ -114,7 +114,7 @@ public class FilmFragment extends Fragment {
         void onListFragmentInteraction(Film item);
     }
 
-    private class DownloadCoursesTask extends AsyncTask<String, Void, String> {
+    private class DownloadFilmsTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... urls) {
