@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_height="119dp"
+        android:layout_width="80dp"
+        app:srcCompat="@android:drawable/ic_menu_report_image"
+        android:id="@+id/imageView" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_toRightOf="@id/imageView"
         android:layout_margin="@dimen/text_margin">
 
         <TextView
@@ -18,7 +26,10 @@
             android:layout_margin="@dimen/no_margin"
             android:textAppearance="@style/TextAppearance.AppCompat"
             tools:text="Movie about Films"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/id"
@@ -31,4 +42,4 @@
             android:textColor="@color/colorTextSecondary" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
