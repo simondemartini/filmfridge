@@ -37,10 +37,9 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        //TODO Why is this different froml ine above?
-        holder.mTitleView.setText(mValues.get(position).getTitle());
-        holder.mIdView.setText(mValues.get(position).getId());
-        holder.mPoster.setImageBitmap(mValues.get(position).getPoster());
+        holder.mTitleView.setText(holder.mItem.getTitle());
+        holder.mIdView.setText(holder.mItem.getId());
+        holder.mPoster.setImageBitmap(holder.mItem.getPoster());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
