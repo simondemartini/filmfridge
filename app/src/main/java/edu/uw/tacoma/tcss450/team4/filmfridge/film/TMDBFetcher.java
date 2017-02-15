@@ -45,7 +45,7 @@ public final class TMDBFetcher {
      */
     public TMDBFetcher(Context context) {
         mContext = context;
-        //TODO: get API config?
+        //TODO: Get API config?
     }
 
     /**
@@ -81,7 +81,7 @@ public final class TMDBFetcher {
      * @throws TMDBException when there is a network error
      */
     private void fetchPosters(FilmList list) throws TMDBException{
-        //TODO Caches posters to limit API Requests
+        //TODO: Cache posters to limit API Requests
         try {
             for (Film f : list) {
                 String url = URL_IMAGE_BASE + URL_IMAGE_SIZE + f.getPosterPath();
