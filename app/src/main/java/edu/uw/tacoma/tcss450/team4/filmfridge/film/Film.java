@@ -35,7 +35,7 @@ public class Film implements Serializable {
 
     /**
      * Parses the json string, returns an error message if unsuccessful.
-     * Returns course list if success.
+     * Returns film list if success.
      * @param filmJSON, courseList
      * @return reason or null if successful.
      */
