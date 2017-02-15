@@ -3,9 +3,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge.film;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,21 +13,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
-import edu.uw.tacoma.tcss450.team4.filmfridge.MyFilmRecyclerViewAdapter;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 /**
- * Download data from TMDb to some kind of FilmList
+ * Download data from TMDb using their API to a kind of FilmList
  * Created by Simon DeMartini on 2/14/17.
  */
 
 public final class TMDBFetcher {
 
+    /** For tagging in the logger */
     private static final String TAG = "TMDBFetcher";
 
+    //TODO: Static vars for URLS or Resources?
     private static final String URL_CONFIG
             = "https://api.themoviedb.org/3/configuration?api_key=";
     private static final String URL_NOWPLAYING
@@ -42,12 +39,21 @@ public final class TMDBFetcher {
 
     private static Context mContext;
 
+    /**
+     * Create a new TMDB Fetcher
+     * @param context The context that is responsible for this instance.
+     */
     public TMDBFetcher(Context context) {
         mContext = context;
-        //get API config
-
+        //TODO: get API config?
     }
 
+    /**
+     * Download an image via a given URL
+     * @param url a complete URL
+     * @return the downloaded Image, null if its all broken
+     * @throws TMDBException when  there is some network error
+     */
     private Bitmap fetchImage(String url) throws TMDBException {
         String response = "";
         HttpURLConnection urlConnection = null;
@@ -69,7 +75,11 @@ public final class TMDBFetcher {
         return bitmap;
     }
 
-    /** Download posters for each of the films in the list */
+    /**
+     * Download posters for each of the films in the list
+     * @param list of films with poster URLS
+     * @throws TMDBException when there is a network error
+     */
     private void fetchPosters(FilmList list) throws TMDBException{
         //TODO Caches posters to limit API Requests
         try {
@@ -82,7 +92,10 @@ public final class TMDBFetcher {
         }
     }
 
-    /** Get more details for a specific movie **/
+    /**
+     * Fill in more details about a specific movie for use in detail views. A film ID is required.
+     * @param film with a film ID
+     */
     public void fetchDetails(Film film) {
         //check if already has them
 
@@ -119,7 +132,11 @@ public final class TMDBFetcher {
         return reason;
     }
 
-    /** Fetch the JSON of a URL */
+    /**
+     * Request the Raw JSON String from a URL
+     * @param url a complete URL
+     * @return the web server response, or error message
+     */
     private String requestJSON(String url) {
         String response = "";
         HttpURLConnection urlConnection = null;
@@ -148,7 +165,12 @@ public final class TMDBFetcher {
         return response;
     }
 
-    /** Download the list specified by an API URL. API Key is added in here*/
+    /**
+     * Download the list specified by an API URL. API Key is added in here
+     * @param url a URL without an API key but ending with "...&apikey="
+     * @return A complete list of films with posters
+     * @throws TMDBException when things break. The caller should handle it to let the user know.
+     */
     public FilmList getList(String url) throws TMDBException {
         url = url + mContext.getString(R.string.tmdb_api_key);
         FilmList list = new FilmList();
@@ -177,7 +199,9 @@ public final class TMDBFetcher {
         return list;
     }
 
-    /** A custom exception for handling errors in downloading or parsing data*/
+    /**
+     * A simple custom exception for handling errors in downloading or parsing data
+     */
     public class TMDBException extends Exception {
         public TMDBException(String message) {
             super(message);

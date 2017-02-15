@@ -2,15 +2,10 @@ package edu.uw.tacoma.tcss450.team4.filmfridge.film;
 
 import android.graphics.Bitmap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * This represents a film with all of its associated metadata. It also includes a static JSON parser.
+ * This represents a film with all of its associated metadata.
  * Created by Simon DeMartini on 2/12/17.
  */
 
