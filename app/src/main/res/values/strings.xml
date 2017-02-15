@@ -3,7 +3,7 @@
     <string name="app_name">Film Fridge</string>
     <string name="title_activity_films">Now Playing</string>
     <!--activity_login-->
-    <string name="username_hint">Enter Username</string>
+    <string name="email_hint">Enter Email</string>
     <string name="password_hint">Enter Password</string>
     <string name="login_text">LogIn</string>
     <string name="register_text">Register</string>
