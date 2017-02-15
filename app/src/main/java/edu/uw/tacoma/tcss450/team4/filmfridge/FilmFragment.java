@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
+import edu.uw.tacoma.tcss450.team4.filmfridge.film.FilmList;
+import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
 
 /**
  * A fragment representing a list of Films.
@@ -33,6 +35,8 @@ public class FilmFragment extends Fragment {
 
     private static final String TAG = "FilmFragment";
     private static final String ARG_COLUMN_COUNT = "column-count";
+
+    private TMDBFetcher tmdb;
 
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -55,6 +59,7 @@ public class FilmFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        tmdb = new TMDBFetcher(getActivity());
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -114,59 +119,27 @@ public class FilmFragment extends Fragment {
         void onListFragmentInteraction(Film item);
     }
 
-    private class DownloadFilmsTask extends AsyncTask<String, Void, String> {
+    /**
+     * Download a list of films and update the recycler view
+     */
+    private class DownloadFilmsTask extends AsyncTask<String, Void, FilmList> {
 
         @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to download the list of films, Reason: "
-                            + e.getMessage();
-                }
-                finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
+        protected FilmList doInBackground(String... v) {
+            try {
+                return tmdb.getList(getString(R.string.tmdb_now_playing_url));
+            } catch (TMDBFetcher.TMDBException e) {
+                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG)
+                        .show();
+                return null;
             }
-            return response;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            if (result.startsWith("Unable to")) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
-                        .show();
-                return;
-            }
-
-            List<Film> filmList = new ArrayList<Film>();
-            result = Film.parseFilmJSON(result, filmList);
-            // Something wrong with the JSON returned.
-            if (result != null) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
-                        .show();
-                Log.d(TAG, result);
-                return;
-            }
-
-            // Everything is good, show the list of courses.
-            if (!filmList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyFilmRecyclerViewAdapter(filmList, mListener));
+        protected void onPostExecute(FilmList result) {
+            // Everything is good, show the list.
+            if (result != null && !result.isEmpty()) {
+                mRecyclerView.setAdapter(new MyFilmRecyclerViewAdapter(result, mListener));
             }
         }
     }

@@ -1,5 +1,7 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge.film;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,11 +15,12 @@ import java.util.List;
  */
 
 public class Film implements Serializable {
-    private static final String ID = "id", TITLE ="title", OVERVIEW = "overview",
+    public static final String ID = "id", TITLE ="title", OVERVIEW = "overview",
             RELEASE_DATE = "release_date", POSTER_PATH = "poster_path",
             BACKDROP_PATH = "backdrop_path";
 
     private String mFilmId, mTitle, mOverview, mReleaseDate, mPosterPath, mBackdropPath;
+    private Bitmap mPoster;
 
     public Film(String id,
                 String title,
@@ -31,37 +34,6 @@ public class Film implements Serializable {
         this.mReleaseDate = releaseDate;
         this.mPosterPath = posterPath;
         this.mBackdropPath = backdropPath;
-    }
-
-    /**
-     * Parses the json string, returns an error message if unsuccessful.
-     * Returns course list if success.
-     * @param filmJSON, courseList
-     * @return reason or null if successful.
-     */
-    public static String parseFilmJSON(String filmJSON, List<Film> filmList) {
-        String reason = null;
-        if (filmJSON != null) {
-            try {
-                JSONObject all = new JSONObject(filmJSON);
-                JSONArray arr = all.getJSONArray("results");
-
-                for (int i = 0; i < arr.length(); i++) {
-                    JSONObject obj = arr.getJSONObject(i);
-                    Film film = new Film(obj.getString(Film.ID),
-                            obj.getString(Film.TITLE),
-                            obj.getString(Film.OVERVIEW),
-                            obj.getString(Film.RELEASE_DATE),
-                            obj.getString(Film.POSTER_PATH),
-                            obj.getString(Film.BACKDROP_PATH));
-                    filmList.add(film);
-                }
-            } catch (JSONException e) {
-                reason =  "Unable to parse data, Reason: " + e.getMessage();
-            }
-
-        }
-        return reason;
     }
 
     public String getId() {
@@ -110,6 +82,14 @@ public class Film implements Serializable {
 
     public void setOverview(String overview) {
         this.mOverview = overview;
+    }
+
+    public Bitmap getPoster() {
+        return mPoster;
+    }
+
+    public void setPoster(Bitmap poster) {
+        mPoster = poster;
     }
 
 }

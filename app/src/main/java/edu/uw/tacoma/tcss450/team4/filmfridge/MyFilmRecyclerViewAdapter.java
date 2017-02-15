@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.FilmFragment.OnListFragmentInteractionListener;
@@ -36,8 +37,10 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
+        //TODO Why is this different froml ine above?
         holder.mTitleView.setText(mValues.get(position).getTitle());
         holder.mIdView.setText(mValues.get(position).getId());
+        holder.mPoster.setImageBitmap(mValues.get(position).getPoster());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +63,7 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
         public final View mView;
         public final TextView mIdView;
         public final TextView mTitleView;
+        public final ImageView mPoster;
         public Film mItem;
 
         public ViewHolder(View view) {
@@ -67,6 +71,7 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
             mView = view;
             mTitleView = (TextView) view.findViewById(R.id.title);
             mIdView = (TextView) view.findViewById(R.id.id);
+            mPoster = (ImageView) view.findViewById(R.id.poster);
         }
 
         @Override
