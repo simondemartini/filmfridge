@@ -24,8 +24,8 @@ import java.util.List;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
+ * A fragment representing a list of Films.
+ *
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
@@ -76,7 +76,7 @@ public class FilmFragment extends Fragment {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             DownloadCoursesTask task = new DownloadCoursesTask();
-            task.execute(getString(R.string.tmdb_upcoming_url) + getString(R.string.tmdb_api_key));
+            task.execute(getString(R.string.tmdb_now_playing_url) + getString(R.string.tmdb_api_key));
         }
         return view;
     }

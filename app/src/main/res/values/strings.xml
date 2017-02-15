@@ -1,6 +1,7 @@
 <resources>
+    <!-- Film Activity -->
     <string name="app_name">Film Fridge</string>
-    <string name="title_activity_movies">MoviesActivity</string>
+    <string name="title_activity_films">Now Playing</string>
     <!--activity_login-->
     <string name="email_hint">Enter Email</string>
     <string name="password_hint">Enter Password</string>

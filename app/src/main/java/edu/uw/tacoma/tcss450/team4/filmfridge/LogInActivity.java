@@ -60,10 +60,6 @@ public class LogInActivity extends AppCompatActivity {
         UserTask usertask = new UserTask();
         usertask.execute(buildUserUrl(ADD_USER));
         Log.i("adduserurl: ", buildUserUrl(ADD_USER));
-//        if(mUserAuthStatus) {
-//            Intent intent = new Intent(this, FilmActivity.class);
-//            startActivity(intent);
-//        }
     }
 
     public void login (View view) {
