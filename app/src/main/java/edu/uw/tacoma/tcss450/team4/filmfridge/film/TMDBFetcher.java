@@ -71,6 +71,7 @@ public final class TMDBFetcher {
 
     /** Download posters for each of the films in the list */
     private void fetchPosters(FilmList list) throws TMDBException{
+        //TODO Caches posters to limit API Requests
         try {
             for (Film f : list) {
                 String url = URL_IMAGE_BASE + URL_IMAGE_SIZE + f.getPosterPath();
