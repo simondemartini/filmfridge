@@ -1,6 +1,10 @@
 Team 4
 Simon DeMartini & Samantha Ong
 
+Test Account
+    username: test@uw.edu
+    password: testing
+
 Features Implemented
     -Login
     -Register
