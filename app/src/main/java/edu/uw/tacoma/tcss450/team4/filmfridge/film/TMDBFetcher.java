@@ -37,7 +37,7 @@ public final class TMDBFetcher {
     private static final String URL_IMAGE_SIZE
             = "w342";
 
-    private static Context mContext;
+    private Context mContext;
 
     /**
      * Create a new TMDB Fetcher
@@ -107,7 +107,7 @@ public final class TMDBFetcher {
      * @param filmJSON, courseList
      * @return reason or null if successful.
      */
-    public static String parseFilmListJSON (String filmJSON, List<Film> filmList) {
+    private static String parseFilmListJSON (String filmJSON, List<Film> filmList) {
         String reason = null;
         if (filmJSON != null) {
             try {
