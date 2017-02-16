@@ -2,9 +2,12 @@ Team 4
 Simon DeMartini & Samantha Ong
 
 Features Implemented
-    -   Hello
-    -   
+    -Login
+    -Register
+    -View list of current playing movies.
+    -Show movie posters
 
 User Stories Implemented
-    1.  Something
-    2.  
+    1. 5 - As a user I can log
+    2. 14 - As a user I want to see movie posters
+    3. 15 - As a user I can create an account
