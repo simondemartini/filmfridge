@@ -1,5 +1,6 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class FilmFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
+    private ProgressDialog mProgressUpdate;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,6 +54,8 @@ public class FilmFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         tmdb = new TMDBFetcher(getActivity());
+        mProgressUpdate = new ProgressDialog(getActivity());
+        mProgressUpdate.hide();
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -116,6 +120,14 @@ public class FilmFragment extends Fragment {
     private class DownloadFilmsTask extends AsyncTask<String, Void, List<Film>> {
 
         @Override
+        protected void onPreExecute() {
+            mProgressUpdate.setTitle("Updating Films");
+            mProgressUpdate.setMessage("Please wait...");
+            mProgressUpdate.setCancelable(false); // disable dismiss by tapping outside of the dialog
+            mProgressUpdate.show();
+        }
+
+        @Override
         protected List<Film> doInBackground(String... v) {
             try {
                 return tmdb.getList(getString(R.string.tmdb_now_playing_url));
@@ -132,6 +144,7 @@ public class FilmFragment extends Fragment {
             if (result != null && !result.isEmpty()) {
                 mRecyclerView.setAdapter(new MyFilmRecyclerViewAdapter(result, mListener));
             }
+            mProgressUpdate.dismiss();
         }
     }
 }
