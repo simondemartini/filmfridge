@@ -28,7 +28,6 @@ public final class TMDBFetcher {
     /** For tagging in the logger */
     private static final String TAG = "TMDBFetcher";
 
-    //TODO: Static vars for URLS or Resources?
     private static final String URL_CONFIG
             = "https://api.themoviedb.org/3/configuration?api_key=";
     private static final String URL_NOWPLAYING
@@ -46,7 +45,6 @@ public final class TMDBFetcher {
      */
     public TMDBFetcher(Context context) {
         mContext = context;
-        //TODO: Get API config?
     }
 
     /**
@@ -82,7 +80,6 @@ public final class TMDBFetcher {
      * @throws TMDBException when there is a network error
      */
     private void fetchPosters(List<Film> list) throws TMDBException{
-        //TODO: Cache posters to limit API Requests
         try {
             for (Film f : list) {
                 String url = URL_IMAGE_BASE + URL_IMAGE_SIZE + f.getPosterPath();
