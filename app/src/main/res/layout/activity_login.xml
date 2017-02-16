@@ -11,10 +11,32 @@
     android:orientation="vertical"
     tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.LogInActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/filmfridge_logo"
+        android:src="@drawable/ic_launcher"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/filmfridge_text"
+        android:text="@string/filmfridge_string"
+        android:textSize="35sp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/team4_text"
+        android:text="@string/salmon_string"
+        android:textSize="13sp"
+        android:gravity="center"/>
+
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/login_email"
+        android:inputType="textEmailAddress"
         android:hint="@string/email_hint"/>
 
     <EditText
