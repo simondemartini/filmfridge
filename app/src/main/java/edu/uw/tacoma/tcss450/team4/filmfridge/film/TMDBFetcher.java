@@ -91,15 +91,6 @@ public final class TMDBFetcher {
     }
 
     /**
-     * Fill in more details about a specific movie for use in detail views. A film ID is required.
-     * @param film with a film ID
-     */
-    public void fetchDetails(Film film) {
-        //check if already has them
-
-    }
-
-    /**
      * Parses the json string, returns an error message if unsuccessful.
      * Returns course list if success.
      * @param filmJSON, courseList
