@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.List;
+
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
-import edu.uw.tacoma.tcss450.team4.filmfridge.film.FilmList;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
 
 /**
@@ -112,10 +113,10 @@ public class FilmFragment extends Fragment {
     /**
      * Download a list of films and update the recycler view
      */
-    private class DownloadFilmsTask extends AsyncTask<String, Void, FilmList> {
+    private class DownloadFilmsTask extends AsyncTask<String, Void, List<Film>> {
 
         @Override
-        protected FilmList doInBackground(String... v) {
+        protected List<Film> doInBackground(String... v) {
             try {
                 return tmdb.getList(getString(R.string.tmdb_now_playing_url));
             } catch (TMDBFetcher.TMDBException e) {
@@ -128,7 +129,7 @@ public class FilmFragment extends Fragment {
         //TODO: Add progress spinner or something
 
         @Override
-        protected void onPostExecute(FilmList result) {
+        protected void onPostExecute(List<Film> result) {
             // Everything is good, show the list.
             if (result != null && !result.isEmpty()) {
                 mRecyclerView.setAdapter(new MyFilmRecyclerViewAdapter(result, mListener));

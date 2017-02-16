@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
@@ -80,7 +81,7 @@ public final class TMDBFetcher {
      * @param list of films with poster URLS
      * @throws TMDBException when there is a network error
      */
-    private void fetchPosters(FilmList list) throws TMDBException{
+    private void fetchPosters(List<Film> list) throws TMDBException{
         //TODO: Cache posters to limit API Requests
         try {
             for (Film f : list) {
@@ -171,9 +172,9 @@ public final class TMDBFetcher {
      * @return A complete list of films with posters
      * @throws TMDBException when things break. The caller should handle it to let the user know.
      */
-    public FilmList getList(String url) throws TMDBException {
+    public List<Film> getList(String url) throws TMDBException {
         url = url + mContext.getString(R.string.tmdb_api_key);
-        FilmList list = new FilmList();
+        List<Film> list = new ArrayList<>();
 
         //download data
         String result = requestJSON(url);
