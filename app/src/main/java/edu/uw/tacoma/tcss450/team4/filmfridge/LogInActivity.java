@@ -1,19 +1,11 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,34 +17,45 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class LogInActivity extends AppCompatActivity {
 
+    /**
+     * Login Php url.
+     */
     public static final String LOGIN_URL =
             "http://cssgate.insttech.washington.edu/~_450bteam4/login.php?";
+
+    /**
+     * Register php url.
+     */
     public static final String ADD_USER =
             "http://cssgate.insttech.washington.edu/~_450bteam4/adduser.php?";
 
-    private String[] user_urls = {
-            LOGIN_URL, ADD_USER
-    };
-
+    /**
+     * text typed in email edittxt field.
+     */
     private EditText mEmail;
+    /**
+     * text typed in password edittxt field.
+     */
     private EditText mPassword;
+    /**
+     * user authentication checker.
+     */
     private boolean mUserAuthStatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
     }
 
 
+    /**
+     * Logs in the user and starts the Film Activity.
+     * @param v the view.
+     */
     public void addUser (View v) {
         mEmail = (EditText)findViewById(R.id.login_email);
         mPassword = (EditText)findViewById(R.id.login_password);
@@ -62,6 +65,10 @@ public class LogInActivity extends AppCompatActivity {
         Log.i("adduserurl: ", buildUserUrl(ADD_USER));
     }
 
+    /**
+     * Logs in the user and starts the Film Activity.
+     * @param view the view
+     */
     public void login (View view) {
 
         mEmail = (EditText)findViewById(R.id.login_email);
@@ -72,7 +79,9 @@ public class LogInActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * AsyncTask for Users registration and login.
+     */
     private class UserTask extends AsyncTask<String, Void, String> {
 
 
