@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class FilmFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
-    private ProgressDialog mProgressUpdate;
+    private ProgressBar mProgressSpinner;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,8 +55,8 @@ public class FilmFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         tmdb = new TMDBFetcher(getActivity());
-        mProgressUpdate = new ProgressDialog(getActivity());
-        mProgressUpdate.hide();
+        mProgressSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_spinner);
+        mProgressSpinner.setVisibility(View.GONE);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -121,10 +122,7 @@ public class FilmFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            mProgressUpdate.setTitle("Updating Films");
-            mProgressUpdate.setMessage("Please wait...");
-            mProgressUpdate.setCancelable(false); // disable dismiss by tapping outside of the dialog
-            mProgressUpdate.show();
+            mProgressSpinner.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -144,7 +142,7 @@ public class FilmFragment extends Fragment {
             if (result != null && !result.isEmpty()) {
                 mRecyclerView.setAdapter(new MyFilmRecyclerViewAdapter(result, mListener));
             }
-            mProgressUpdate.dismiss();
+            mProgressSpinner.setVisibility(View.GONE);
         }
     }
 }
