@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 /**
- * Created by apple on 2/12/2017.
+ * Created by Samantha Ong on 2/12/2017.
  */
 
 public class User implements Serializable {
@@ -14,38 +14,35 @@ public class User implements Serializable {
     private static final String USERNAME = "username", PASSWORD = "password"
             , F_NAME = "fname", L_NAME = "lname";
 
+    /**
+     * the users email.
+     */
     private String mEmail;
+    /**
+     * the users password.
+     */
     private String mPassword;
+    /**
+     * the users first name.
+     */
     private String mFname;
+    /**
+     * the users last name.
+     */
     private String mLname;
 
+    /**
+     * User constructors.
+     * @param email the email.
+     * @param password the password.
+     * @param fname the first name.
+     * @param lname the last name.
+     */
     public User(String email, String password, String fname, String lname) {
         this.mEmail = email;
         this.mPassword = password;
         this.mFname = fname;
         this.mLname = lname;
-    }
-
-    /**
-     * Parses the json string, returns an error message if unsuccessful.
-     * Returns user if success
-     * @param courseJSON
-     * @return reason or null if successful.
-     */
-    public static String parseCourseJSON(String courseJSON, User user) {
-        String reason = null;
-        if (courseJSON != null) {
-            try {
-                JSONObject obj = new JSONObject(courseJSON);
-                user = new User(obj.getString(User.USERNAME), obj.getString(User.PASSWORD)
-                        , obj.getString(User.F_NAME), obj.getString(User.L_NAME));
-
-            } catch (JSONException e) {
-                reason =  "Unable to parse data, Reason: " + e.getMessage();
-            }
-
-        }
-        return reason;
     }
 
     public String getmLname() {
