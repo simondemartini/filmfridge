@@ -37,7 +37,7 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mTitleView.setText(holder.mItem.getTitle());
-        holder.mIdView.setText(holder.mItem.getId());
+        holder.mReleaseDate.setText(holder.mItem.getReleaseDate());
         holder.mPoster.setImageBitmap(holder.mItem.getPoster());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,7 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final TextView mReleaseDate;
         public final TextView mTitleView;
         public final ImageView mPoster;
         public Film mItem;
@@ -68,7 +68,7 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
             super(view);
             mView = view;
             mTitleView = (TextView) view.findViewById(R.id.title);
-            mIdView = (TextView) view.findViewById(R.id.id);
+            mReleaseDate = (TextView) view.findViewById(R.id.release_date);
             mPoster = (ImageView) view.findViewById(R.id.poster);
         }
 

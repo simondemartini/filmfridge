@@ -32,12 +32,12 @@
             android:maxLines="1" />
 
         <TextView
-            android:id="@+id/id"
+            android:id="@+id/release_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/no_margin"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            tools:text="Some ID #"
+            tools:text="2017-02-15"
             android:textSize="14sp"
             android:textColor="@color/colorTextSecondary" />
     </LinearLayout>
