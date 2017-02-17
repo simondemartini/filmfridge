@@ -9,13 +9,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.LogInActivity">
+    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.LogInActivity"
+    android:weightSum="1">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="167dp"
+        android:layout_height="150dp"
         android:id="@+id/filmfridge_logo"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/filmfridge"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.06" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +27,7 @@
         android:text="@string/filmfridge_string"
         android:textSize="35sp"
         android:gravity="center"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
