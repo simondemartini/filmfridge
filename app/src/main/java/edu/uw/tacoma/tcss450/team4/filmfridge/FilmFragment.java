@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,8 +131,7 @@ public class FilmFragment extends Fragment {
             try {
                 return tmdb.getList(getString(R.string.tmdb_now_playing_url));
             } catch (TMDBFetcher.TMDBException e) {
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG)
-                        .show();
+                Log.d(TAG, e.getMessage());
                 return null;
             }
         }
@@ -141,6 +141,9 @@ public class FilmFragment extends Fragment {
             // Everything is good, show the list.
             if (result != null && !result.isEmpty()) {
                 mRecyclerView.setAdapter(new MyFilmRecyclerViewAdapter(result, mListener));
+            } else {
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.api_error), Toast.LENGTH_LONG)
+                        .show();
             }
             mProgressSpinner.setVisibility(View.GONE);
         }
