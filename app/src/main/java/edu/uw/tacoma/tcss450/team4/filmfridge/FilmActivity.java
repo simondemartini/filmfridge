@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 public class FilmActivity extends AppCompatActivity implements
-    FilmFragment.OnListFragmentInteractionListener {
+    UpcomingListFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,7 @@ public class FilmActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
-            FilmFragment courseFragment = new FilmFragment();
+            UpcomingListFragment courseFragment = new UpcomingListFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.film_fragment_container, courseFragment)
                     .commit();

@@ -1,6 +1,5 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,9 +25,9 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FilmFragment extends Fragment {
+public class UpcomingListFragment extends Fragment {
 
-    private static final String TAG = "FilmFragment";
+    private static final String TAG = "UpcomingListFragment";
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private TMDBFetcher tmdb;
@@ -42,11 +41,11 @@ public class FilmFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public FilmFragment() {
+    public UpcomingListFragment() {
     }
 
-    public static FilmFragment newInstance(int columnCount) {
-        FilmFragment fragment = new FilmFragment();
+    public static UpcomingListFragment newInstance(int columnCount) {
+        UpcomingListFragment fragment = new UpcomingListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);

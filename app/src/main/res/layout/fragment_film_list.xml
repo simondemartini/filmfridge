@@ -9,5 +9,5 @@
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.FilmFragment"
-    tools:listitem="@layout/fragment_film" />
+    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.UpcomingListFragment"
+    tools:listitem="@layout/fragment_film_list_item" />
