@@ -136,6 +136,8 @@ public class FilmFragment extends Fragment {
             }
         }
 
+        //TODO: Add progress spinner or something
+
         @Override
         protected void onPostExecute(List<Film> result) {
             // Everything is good, show the list.
