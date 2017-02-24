@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.LoginFragment">
+
+    <ImageView
+        android:id="@+id/filmfridge_logo"
+        android:src="@drawable/filmfridge"
+        android:layout_weight="0"
+        android:layout_height="150dp"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:layout_width="167dp"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/filmfridge_text"
+        android:text="@string/filmfridge_string"
+        android:textSize="35sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/team4_text"
+        android:text="@string/salmon_string"
+        android:textSize="13sp"
+        android:gravity="center"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_email"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email_hint"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_password"
+        android:inputType="textPassword"
+        android:hint="@string/password_hint"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_button"
+        android:text="@string/login_text"
+        android:onClick="login"/>
+
+</LinearLayout>

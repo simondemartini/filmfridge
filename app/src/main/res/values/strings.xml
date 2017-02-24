@@ -10,4 +10,7 @@
     <string name="filmfridge_string">Film Fridge</string>
     <string name="salmon_string">Team 4: Samon Applications</string>
     <string name="api_error">Cannot connect to TMDb</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
