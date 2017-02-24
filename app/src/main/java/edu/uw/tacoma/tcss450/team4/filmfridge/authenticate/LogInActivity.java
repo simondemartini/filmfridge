@@ -1,4 +1,4 @@
-package edu.uw.tacoma.tcss450.team4.filmfridge;
+package edu.uw.tacoma.tcss450.team4.filmfridge.authenticate;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +17,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
+import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 public class LogInActivity extends AppCompatActivity {
 
