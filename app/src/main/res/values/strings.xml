@@ -2,6 +2,8 @@
     <!-- Film Activity -->
     <string name="app_name">Film Fridge</string>
     <string name="title_activity_films">Now Playing</string>
+    <string name="api_error">Cannot connect to TMDb</string>
+
     <!--activity_login-->
     <string name="email_hint">Enter Email</string>
     <string name="password_hint">Enter Password</string>
@@ -9,5 +11,7 @@
     <string name="register_text">Register</string>
     <string name="filmfridge_string">Film Fridge</string>
     <string name="salmon_string">Team 4: Samon Applications</string>
-    <string name="api_error">Cannot connect to TMDb</string>
+
+    <!-- Film Details Fragment -->
+    <string name="hello_blank_fragment">Details about a film!</string>
 </resources>
