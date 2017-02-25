@@ -9,6 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -51,17 +54,28 @@ public final class TMDBFetcher {
 
     /**
      * Download an image via a given URL
-     * @param url a complete URL
+     * @param baseUrl a base URL
+     * @param imagePath the location of the image (appended to the base URL)
      * @return the downloaded Image, null if its all broken
      * @throws TMDBException when  there is some network error
      */
-    private Bitmap fetchImage(String url) throws TMDBException {
+    private Bitmap fetchImage(String baseUrl, String imagePath) throws TMDBException {
         String response = "";
         HttpURLConnection urlConnection = null;
         Bitmap bitmap;
+        File file = new File(mContext.getCacheDir().toString(),imagePath);
 
+        //check if already cached
+        if(file.exists()) {
+            bitmap = readCachedImage(file);
+            if (bitmap != null) {
+                return bitmap;
+            }
+        }
+
+        //fetch from interwebs
         try {
-            URL urlObject = new URL(url);
+            URL urlObject = new URL(baseUrl + imagePath);
             urlConnection = (HttpURLConnection) urlObject.openConnection();
             InputStream content = urlConnection.getInputStream();
             bitmap = BitmapFactory.decodeStream(content);
@@ -73,7 +87,45 @@ public final class TMDBFetcher {
                 urlConnection.disconnect();
         }
 
+        //cache the image for future use
+        cacheImage(bitmap, file);
+
         return bitmap;
+    }
+
+    /**
+     * Save an image to a cache to save API requests
+     */
+    private void cacheImage(Bitmap image, File file) {
+        FileOutputStream outputStream = null;
+        try {
+            outputStream =new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Retrieve and image from the cache
+     */
+    private Bitmap readCachedImage(File file) {
+        FileOutputStream inputStream = null;
+        Bitmap image = null;
+        try {
+            image = BitmapFactory.decodeFile(file.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     /**
@@ -83,10 +135,10 @@ public final class TMDBFetcher {
      */
     private void fetchPosters(List<Film> list) throws TMDBException{
         //TODO: Cache posters to limit API Requests
+        String baseUrl = URL_IMAGE_BASE + URL_IMAGE_SIZE;
         try {
             for (Film f : list) {
-                String url = URL_IMAGE_BASE + URL_IMAGE_SIZE + f.getPosterPath();
-                f.setPoster(fetchImage(url));
+                f.setPoster(fetchImage(baseUrl, f.getPosterPath()));
             }
         } catch (TMDBException e) {
             throw new TMDBException(e);
