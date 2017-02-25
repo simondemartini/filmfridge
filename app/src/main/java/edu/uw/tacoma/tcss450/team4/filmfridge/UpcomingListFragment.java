@@ -55,8 +55,7 @@ public class UpcomingListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         tmdb = new TMDBFetcher(getActivity());
-        mProgressSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_spinner);
-        mProgressSpinner.setVisibility(View.GONE);
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -67,6 +66,9 @@ public class UpcomingListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_film_list, container, false);
+
+        mProgressSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_spinner);
+        mProgressSpinner.setVisibility(View.GONE);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
