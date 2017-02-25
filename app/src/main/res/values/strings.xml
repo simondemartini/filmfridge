@@ -13,5 +13,12 @@
     <string name="salmon_string">Team 4: Samon Applications</string>
 
     <!-- Film Details Fragment -->
-    <string name="hello_blank_fragment">Details about a film!</string>
+    <string name="label_description">Description:</string>
+    <string name="label_cast">Cast:</string>
+    <string name="label_release_date">Cast:</string>
+    <string name="label_content_rating">Content Rating:</string>
+    <string name="share">Share</string>
+    <string name="poster_description">Movie Poster</string>
+
+
 </resources>

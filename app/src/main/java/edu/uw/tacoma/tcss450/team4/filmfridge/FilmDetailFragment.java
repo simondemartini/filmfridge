@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 
 /**
@@ -18,19 +22,20 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class FilmDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    /** Argument parameters*/
     public final static String FILM_ITEM_SELECTED = "film_selected";
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String TAG = "UpcomingListFragment";
+    private Film mFilm;
+    private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV;
+    private ImageView mPoster;
 
     private OnDetailFragmentInteractionListener mListener;
 
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
     public FilmDetailFragment() {
         // Required empty public constructor
     }
@@ -39,16 +44,14 @@ public class FilmDetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param item The film.
      * @return A new instance of fragment FilmDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FilmDetailFragment newInstance(String param1, String param2) {
+    public static FilmDetailFragment newInstance(Film item) {
         FilmDetailFragment fragment = new FilmDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(FilmDetailFragment.FILM_ITEM_SELECTED, item);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,8 +60,7 @@ public class FilmDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mFilm = (Film) getArguments().getSerializable(FILM_ITEM_SELECTED);
         }
     }
 
@@ -66,13 +68,47 @@ public class FilmDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_film_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_film_detail, container, false);
+        mTitleTV = (TextView) view.findViewById(R.id.title);
+        mReleaseDateTV = (TextView) view.findViewById(R.id.release_date);
+        mDescriptionTV = (TextView) view.findViewById(R.id.description);
+        mCastTV = (TextView) view.findViewById(R.id.cast);
+        mContentRatingTV = (TextView) view.findViewById(R.id.content_rating);
+        mPoster = (ImageView) view.findViewById(R.id.poster);
+
+        return view;
+    }
+
+    public void updateView(Film film) {
+        if (film != null) {
+            mTitleTV.setText(film.getTitle());
+            mReleaseDateTV.setText(film.getReleaseDate());
+            mDescriptionTV.setText(film.getOverview());
+            mCastTV.setText(film.getTitle());
+            mContentRatingTV.setText(film.getTitle());
+            mPoster.setImageBitmap(film.getPoster());
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onDetailFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // During startup, check if there are arguments passed to the fragment.
+        // onStart is a good place to do this because the layout has already been
+        // applied to the fragment at this point so we can safely call the method
+        // below that sets the article text.
+        Bundle args = getArguments();
+        if (args != null) {
+            // Set article based on argument passed in
+            updateView((Film) args.getSerializable(FILM_ITEM_SELECTED));
         }
     }
 
