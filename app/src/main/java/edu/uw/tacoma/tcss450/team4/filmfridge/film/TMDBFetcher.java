@@ -45,7 +45,7 @@ public final class TMDBFetcher {
     private static final String URL_DETAIL_PARAMS
             = "?language=en-US&append_to_response=credits,releases&api_key=";
 
-    private static final int MAX_CAST = 100;
+    private static final int MAX_CAST = 10;
 
     private Context mContext;
 
