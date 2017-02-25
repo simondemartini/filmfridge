@@ -135,7 +135,6 @@ public final class TMDBFetcher {
      * @throws TMDBException when there is a network error
      */
     private void fetchPosters(List<Film> list) throws TMDBException{
-        //TODO: Cache posters to limit API Requests
         try {
             for (Film f : list) {
                 f.setPoster(fetchImage(f.getPosterPath()));
