@@ -40,6 +40,12 @@ public final class TMDBFetcher {
             = "https://image.tmdb.org/t/p/";
     private static final String URL_IMAGE_SIZE
             = "w342";
+    private static final String URL_DETAIL_BASE
+            = "https://api.themoviedb.org/3/movie/";
+    private static final String URL_DETAIL_PARAMS
+            = "?language=en-US&append_to_response=credits,releases&api_key=";
+
+    private static final int MAX_CAST = 100;
 
     private Context mContext;
 
@@ -138,6 +144,7 @@ public final class TMDBFetcher {
         try {
             for (Film f : list) {
                 f.setPoster(fetchImage(f.getPosterPath()));
+                fetchDetails(f);
             }
         } catch (TMDBException e) {
             throw new TMDBException(e);
@@ -167,6 +174,44 @@ public final class TMDBFetcher {
                             obj.getString(Film.BACKDROP_PATH));
                     filmList.add(film);
                 }
+            } catch (JSONException e) {
+                reason =  "Unable to parse data, Reason: " + e.getMessage();
+            }
+        }
+        return reason;
+    }
+
+    /**
+     * Get more details about a film
+     * Parses the json string, returns an error message if unsuccessful.
+     * @param filmJSON, film
+     * @return reason or null if successful.
+     */
+    private static String parseFilmDetailsJSON (String filmJSON, Film film) {
+        String reason = null;
+        if (filmJSON != null) {
+            try {
+                JSONObject all = new JSONObject(filmJSON);
+
+                //get content rating
+                JSONObject releases = all.getJSONObject("releases");
+                JSONArray countries = releases.getJSONArray("countries");
+                for (int i = 0; i < countries.length(); i++) {
+                    if(countries.getJSONObject(i).getString("iso_3166_1").equals("US")) {
+                        film.setContentRating(countries.getJSONObject(i).getString("certification"));
+                    }
+                }
+
+                //get cast
+                JSONObject credits = all.getJSONObject("credits");
+                JSONArray cast = credits.getJSONArray("cast");
+                StringBuilder cast_str = new StringBuilder();
+                for (int i = 0; i < cast.length() && i < MAX_CAST; i++) {
+                    cast_str.append(cast.getJSONObject(i).getString("name")).append(", ");
+                }
+                cast_str.setLength(cast_str.length() - 2);
+                film.setCast(cast_str.toString());
+
             } catch (JSONException e) {
                 reason =  "Unable to parse data, Reason: " + e.getMessage();
             }
@@ -205,6 +250,16 @@ public final class TMDBFetcher {
         }
 
         return response;
+    }
+
+    /**
+     * Add details to a film
+     */
+    public void fetchDetails(Film film) {
+        String url = URL_DETAIL_BASE + film.getId()
+                + URL_DETAIL_PARAMS + mContext.getString(R.string.tmdb_api_key);
+        String result = requestJSON(url);
+        parseFilmDetailsJSON(result, film);
     }
 
     /**

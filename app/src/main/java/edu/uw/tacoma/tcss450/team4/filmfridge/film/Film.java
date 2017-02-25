@@ -14,7 +14,7 @@ public class Film implements Serializable {
             RELEASE_DATE = "release_date", POSTER_PATH = "poster_path",
             BACKDROP_PATH = "backdrop_path";
 
-    private String mFilmId, mTitle, mOverview, mReleaseDate, mPosterPath, mBackdropPath;
+    private String mFilmId, mTitle, mOverview, mReleaseDate, mPosterPath, mBackdropPath, mCast, mContentRating;
     private Bitmap mPoster;
 
     public Film(String id,
@@ -77,6 +77,22 @@ public class Film implements Serializable {
 
     public void setOverview(String overview) {
         this.mOverview = overview;
+    }
+
+    public String getCast() {
+        return mCast;
+    }
+
+    public void setCast(String cast) {
+        this.mCast = cast;
+    }
+
+    public String getContentRating() {
+        return mContentRating;
+    }
+
+    public void setContentRating(String contentRating) {
+        this.mContentRating = contentRating;
     }
 
     public Bitmap getPoster() {

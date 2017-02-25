@@ -84,8 +84,8 @@ public class FilmDetailFragment extends Fragment {
             mTitleTV.setText(film.getTitle());
             mReleaseDateTV.setText(film.getReleaseDate());
             mDescriptionTV.setText(film.getOverview());
-            mCastTV.setText(film.getTitle());
-            mContentRatingTV.setText(film.getTitle());
+            mCastTV.setText(film.getCast());
+            mContentRatingTV.setText(film.getContentRating());
             mPoster.setImageBitmap(film.getPoster());
         }
     }
