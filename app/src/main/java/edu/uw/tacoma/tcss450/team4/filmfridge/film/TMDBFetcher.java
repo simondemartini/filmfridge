@@ -54,47 +54,44 @@ public final class TMDBFetcher {
 
     /**
      * Download an image via a given URL
-     * @param baseUrl a base URL
-     * @param imagePath the location of the image (appended to the base URL)
+     * @param imagePath the location of the image (to be appended to the base URL)
      * @return the downloaded Image, null if its all broken
      * @throws TMDBException when  there is some network error
      */
-    private Bitmap fetchImage(String baseUrl, String imagePath) throws TMDBException {
-        String response = "";
-        HttpURLConnection urlConnection = null;
+    private Bitmap fetchImage(String imagePath) throws TMDBException {
         Bitmap bitmap;
         File file = new File(mContext.getCacheDir().toString(),imagePath);
 
         //check if already cached
-        if(file.exists()) {
-            bitmap = readCachedImage(file);
-            if (bitmap != null) {
-                return bitmap;
+        bitmap = readCachedImage(file);
+
+        //not cached -- fetch from internet
+        if (bitmap == null) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL urlObject = new URL(URL_IMAGE_BASE + URL_IMAGE_SIZE + imagePath);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                InputStream content = urlConnection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(content);
+            } catch (Exception e) {
+                throw new TMDBException(e);
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
             }
-        }
 
-        //fetch from interwebs
-        try {
-            URL urlObject = new URL(baseUrl + imagePath);
-            urlConnection = (HttpURLConnection) urlObject.openConnection();
-            InputStream content = urlConnection.getInputStream();
-            bitmap = BitmapFactory.decodeStream(content);
-        } catch (Exception e) {
-            throw new TMDBException(e);
+            //cache the image for future use
+            cacheImage(bitmap, file);
         }
-        finally {
-            if (urlConnection != null)
-                urlConnection.disconnect();
-        }
-
-        //cache the image for future use
-        cacheImage(bitmap, file);
 
         return bitmap;
     }
 
     /**
      * Save an image to a cache to save API requests
+     * @param image the image to save
+     * @param file the location to save
      */
     private void cacheImage(Bitmap image, File file) {
         FileOutputStream outputStream = null;
@@ -116,14 +113,18 @@ public final class TMDBFetcher {
 
     /**
      * Retrieve and image from the cache
+     * @param file the file location
+     * @return the cached image or null if it doesn't exist
      */
     private Bitmap readCachedImage(File file) {
-        FileOutputStream inputStream = null;
         Bitmap image = null;
-        try {
-            image = BitmapFactory.decodeFile(file.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(file.exists()) {
+            FileOutputStream inputStream = null;
+            try {
+                image = BitmapFactory.decodeFile(file.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return image;
     }
@@ -135,10 +136,9 @@ public final class TMDBFetcher {
      */
     private void fetchPosters(List<Film> list) throws TMDBException{
         //TODO: Cache posters to limit API Requests
-        String baseUrl = URL_IMAGE_BASE + URL_IMAGE_SIZE;
         try {
             for (Film f : list) {
-                f.setPoster(fetchImage(baseUrl, f.getPosterPath()));
+                f.setPoster(fetchImage(f.getPosterPath()));
             }
         } catch (TMDBException e) {
             throw new TMDBException(e);
@@ -171,7 +171,6 @@ public final class TMDBFetcher {
             } catch (JSONException e) {
                 reason =  "Unable to parse data, Reason: " + e.getMessage();
             }
-
         }
         return reason;
     }
