@@ -175,7 +175,7 @@ public final class TMDBFetcher {
                     filmList.add(film);
                 }
             } catch (JSONException e) {
-                reason =  "Unable to parse data, Reason: " + e.getMessage();
+                reason =  "Unable to parse data, Reason: " + e.toString();
             }
         }
         return reason;
@@ -213,7 +213,7 @@ public final class TMDBFetcher {
                 film.setCast(cast_str.toString());
 
             } catch (JSONException e) {
-                reason =  "Unable to parse data, Reason: " + e.getMessage();
+                reason =  "Unable to parse data, Reason: " + e.toString();
             }
         }
         return reason;
@@ -241,8 +241,7 @@ public final class TMDBFetcher {
             }
 
         } catch (Exception e) {
-            response = "Unable to download the list of films, Reason: "
-                    + e.getMessage();
+            response = "Unable to download the request JSON: " + e.toString();
         }
         finally {
             if (urlConnection != null)
