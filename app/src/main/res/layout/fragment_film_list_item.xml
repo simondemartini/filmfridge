@@ -45,5 +45,6 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
+        android:layout_below="@id/poster"
         android:background="@color/colorLight" />
 </RelativeLayout>
