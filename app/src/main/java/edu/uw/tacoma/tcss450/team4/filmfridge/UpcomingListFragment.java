@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
@@ -36,6 +37,7 @@ public class UpcomingListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressSpinner;
+    private MyFilmRecyclerViewAdapter mFilmRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,7 +57,7 @@ public class UpcomingListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         tmdb = new TMDBFetcher(getActivity());
-
+        mFilmRecyclerViewAdapter = new MyFilmRecyclerViewAdapter(new ArrayList<Film>(), mListener);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -79,6 +81,7 @@ public class UpcomingListFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            mRecyclerView.setAdapter(mFilmRecyclerViewAdapter);
             DownloadFilmsTask task = new DownloadFilmsTask();
             task.execute(getString(R.string.tmdb_now_playing_url) + getString(R.string.tmdb_api_key));
         }
@@ -124,6 +127,7 @@ public class UpcomingListFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
+            mRecyclerView.setVisibility(View.GONE);
             mProgressSpinner.setVisibility(View.VISIBLE);
         }
 
@@ -143,12 +147,13 @@ public class UpcomingListFragment extends Fragment {
         protected void onPostExecute(List<Film> result) {
             // Everything is good, show the list.
             if (result != null && !result.isEmpty()) {
-                mRecyclerView.setAdapter(new MyFilmRecyclerViewAdapter(result, mListener));
+                mFilmRecyclerViewAdapter.swap(result);
             } else {
                 Toast.makeText(getActivity().getApplicationContext(), getString(R.string.api_error), Toast.LENGTH_LONG)
                         .show();
             }
             mProgressSpinner.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 }
