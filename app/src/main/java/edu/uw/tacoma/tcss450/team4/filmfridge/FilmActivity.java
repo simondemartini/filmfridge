@@ -2,6 +2,7 @@ package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
