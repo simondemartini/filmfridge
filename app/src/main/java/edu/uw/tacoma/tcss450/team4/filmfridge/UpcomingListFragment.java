@@ -82,8 +82,12 @@ public class UpcomingListFragment extends Fragment {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             mRecyclerView.setAdapter(mFilmRecyclerViewAdapter);
-            DownloadFilmsTask task = new DownloadFilmsTask();
-            task.execute(getString(R.string.tmdb_now_playing_url) + getString(R.string.tmdb_api_key));
+
+            //TODO: Find a better way to limit re-downloading of info
+            if (mFilmRecyclerViewAdapter.getItemCount() == 0){
+                DownloadFilmsTask task = new DownloadFilmsTask();
+                task.execute(getString(R.string.tmdb_now_playing_url) + getString(R.string.tmdb_api_key));
+            }
         }
         return view;
     }
