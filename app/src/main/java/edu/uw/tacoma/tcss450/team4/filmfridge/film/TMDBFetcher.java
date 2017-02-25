@@ -256,6 +256,7 @@ public final class TMDBFetcher {
      * Add details to a film
      */
     public void fetchDetails(Film film) {
+        //TODO: Only fetch when looking at details to speed it up
         String url = URL_DETAIL_BASE + film.getId()
                 + URL_DETAIL_PARAMS + mContext.getString(R.string.tmdb_api_key);
         String result = requestJSON(url);
