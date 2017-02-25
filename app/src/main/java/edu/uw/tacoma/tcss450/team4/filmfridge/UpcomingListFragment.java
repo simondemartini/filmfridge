@@ -83,7 +83,7 @@ public class UpcomingListFragment extends Fragment {
             }
             mRecyclerView.setAdapter(mFilmRecyclerViewAdapter);
 
-            //TODO: Find a better way to limit re-downloading of info
+            //TODO: Find a better way to limit re-downloading of info -- maybe a refresh button and a local DB?
             if (mFilmRecyclerViewAdapter.getItemCount() == 0){
                 DownloadFilmsTask task = new DownloadFilmsTask();
                 task.execute(getString(R.string.tmdb_now_playing_url) + getString(R.string.tmdb_api_key));
