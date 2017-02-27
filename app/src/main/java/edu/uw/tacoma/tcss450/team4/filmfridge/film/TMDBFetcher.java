@@ -9,6 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -28,6 +31,7 @@ public final class TMDBFetcher {
     /** For tagging in the logger */
     private static final String TAG = "TMDBFetcher";
 
+    //TODO: Static vars for URLS or Resources?
     private static final String URL_CONFIG
             = "https://api.themoviedb.org/3/configuration?api_key=";
     private static final String URL_NOWPLAYING
@@ -36,6 +40,12 @@ public final class TMDBFetcher {
             = "https://image.tmdb.org/t/p/";
     private static final String URL_IMAGE_SIZE
             = "w342";
+    private static final String URL_DETAIL_BASE
+            = "https://api.themoviedb.org/3/movie/";
+    private static final String URL_DETAIL_PARAMS
+            = "?language=en-US&append_to_response=credits,releases&api_key=";
+
+    private static final int MAX_CAST = 10;
 
     private Context mContext;
 
@@ -45,33 +55,84 @@ public final class TMDBFetcher {
      */
     public TMDBFetcher(Context context) {
         mContext = context;
+        //TODO: Get API config?
     }
 
     /**
      * Download an image via a given URL
-     * @param url a complete URL
+     * @param imagePath the location of the image (to be appended to the base URL)
      * @return the downloaded Image, null if its all broken
      * @throws TMDBException when  there is some network error
      */
-    private Bitmap fetchImage(String url) throws TMDBException {
-        String response = "";
-        HttpURLConnection urlConnection = null;
+    private Bitmap fetchImage(String imagePath) throws TMDBException {
         Bitmap bitmap;
+        File file = new File(mContext.getCacheDir().toString(),imagePath);
 
-        try {
-            URL urlObject = new URL(url);
-            urlConnection = (HttpURLConnection) urlObject.openConnection();
-            InputStream content = urlConnection.getInputStream();
-            bitmap = BitmapFactory.decodeStream(content);
-        } catch (Exception e) {
-            throw new TMDBException(e);
-        }
-        finally {
-            if (urlConnection != null)
-                urlConnection.disconnect();
+        //check if already cached
+        bitmap = readCachedImage(file);
+
+        //not cached -- fetch from internet
+        if (bitmap == null) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL urlObject = new URL(URL_IMAGE_BASE + URL_IMAGE_SIZE + imagePath);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                InputStream content = urlConnection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(content);
+            } catch (Exception e) {
+                throw new TMDBException(e);
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+
+            //cache the image for future use
+            cacheImage(bitmap, file);
         }
 
         return bitmap;
+    }
+
+    /**
+     * Save an image to a cache to save API requests
+     * @param image the image to save
+     * @param file the location to save
+     */
+    private void cacheImage(Bitmap image, File file) {
+        FileOutputStream outputStream = null;
+        try {
+            outputStream =new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Retrieve and image from the cache
+     * @param file the file location
+     * @return the cached image or null if it doesn't exist
+     */
+    private Bitmap readCachedImage(File file) {
+        Bitmap image = null;
+        if(file.exists()) {
+            FileOutputStream inputStream = null;
+            try {
+                image = BitmapFactory.decodeFile(file.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return image;
     }
 
     /**
@@ -82,8 +143,8 @@ public final class TMDBFetcher {
     private void fetchPosters(List<Film> list) throws TMDBException{
         try {
             for (Film f : list) {
-                String url = URL_IMAGE_BASE + URL_IMAGE_SIZE + f.getPosterPath();
-                f.setPoster(fetchImage(url));
+                f.setPoster(fetchImage(f.getPosterPath()));
+                fetchDetails(f);
             }
         } catch (TMDBException e) {
             throw new TMDBException(e);
@@ -114,9 +175,46 @@ public final class TMDBFetcher {
                     filmList.add(film);
                 }
             } catch (JSONException e) {
-                reason =  "Unable to parse data, Reason: " + e.getMessage();
+                reason =  "Unable to parse data, Reason: " + e.toString();
             }
+        }
+        return reason;
+    }
 
+    /**
+     * Get more details about a film
+     * Parses the json string, returns an error message if unsuccessful.
+     * @param filmJSON, film
+     * @return reason or null if successful.
+     */
+    private static String parseFilmDetailsJSON (String filmJSON, Film film) {
+        String reason = null;
+        if (filmJSON != null) {
+            try {
+                JSONObject all = new JSONObject(filmJSON);
+
+                //get content rating
+                JSONObject releases = all.getJSONObject("releases");
+                JSONArray countries = releases.getJSONArray("countries");
+                for (int i = 0; i < countries.length(); i++) {
+                    if(countries.getJSONObject(i).getString("iso_3166_1").equals("US")) {
+                        film.setContentRating(countries.getJSONObject(i).getString("certification"));
+                    }
+                }
+
+                //get cast
+                JSONObject credits = all.getJSONObject("credits");
+                JSONArray cast = credits.getJSONArray("cast");
+                StringBuilder cast_str = new StringBuilder();
+                for (int i = 0; i < cast.length() && i < MAX_CAST; i++) {
+                    cast_str.append(cast.getJSONObject(i).getString("name")).append(", ");
+                }
+                cast_str.setLength(cast_str.length() - 2);
+                film.setCast(cast_str.toString());
+
+            } catch (JSONException e) {
+                reason =  "Unable to parse data, Reason: " + e.toString();
+            }
         }
         return reason;
     }
@@ -143,8 +241,7 @@ public final class TMDBFetcher {
             }
 
         } catch (Exception e) {
-            response = "Unable to download the list of films, Reason: "
-                    + e.getMessage();
+            response = "Unable to download the request JSON: " + e.toString();
         }
         finally {
             if (urlConnection != null)
@@ -152,6 +249,17 @@ public final class TMDBFetcher {
         }
 
         return response;
+    }
+
+    /**
+     * Add details to a film
+     */
+    private void fetchDetails(Film film) {
+        //TODO: Only fetch when looking at details to speed it up
+        String url = URL_DETAIL_BASE + film.getId()
+                + URL_DETAIL_PARAMS + mContext.getString(R.string.tmdb_api_key);
+        String result = requestJSON(url);
+        parseFilmDetailsJSON(result, film);
     }
 
     /**

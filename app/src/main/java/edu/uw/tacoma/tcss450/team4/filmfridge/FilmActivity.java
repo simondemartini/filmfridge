@@ -1,13 +1,16 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 public class FilmActivity extends AppCompatActivity implements
-    FilmFragment.OnListFragmentInteractionListener {
+    UpcomingListFragment.OnListFragmentInteractionListener,
+        FilmDetailFragment.OnDetailFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +20,7 @@ public class FilmActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
-            FilmFragment courseFragment = new FilmFragment();
+            UpcomingListFragment courseFragment = new UpcomingListFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.film_fragment_container, courseFragment)
                     .commit();
@@ -26,6 +29,19 @@ public class FilmActivity extends AppCompatActivity implements
 
     @Override
     public void onListFragmentInteraction(Film item) {
+        FilmDetailFragment filmDetailFragment = new FilmDetailFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(FilmDetailFragment.FILM_ITEM_SELECTED, item);
+        filmDetailFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.film_fragment_container, filmDetailFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onDetailFragmentInteraction(Uri uri) {
 
     }
 }

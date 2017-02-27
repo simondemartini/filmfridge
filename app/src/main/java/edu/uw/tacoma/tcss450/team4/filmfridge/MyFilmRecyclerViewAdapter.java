@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import edu.uw.tacoma.tcss450.team4.filmfridge.FilmFragment.OnListFragmentInteractionListener;
+import edu.uw.tacoma.tcss450.team4.filmfridge.UpcomingListFragment.OnListFragmentInteractionListener;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 import java.util.List;
@@ -26,10 +26,16 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
         mListener = listener;
     }
 
+    public void swap(List<Film> data) {
+        mValues.clear();
+        mValues.addAll(data);
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_film, parent, false);
+                .inflate(R.layout.fragment_film_list_item, parent, false);
         return new ViewHolder(view);
     }
 

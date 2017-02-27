@@ -1,0 +1,125 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.FilmDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/header">
+
+            <ImageView
+                android:layout_height="@dimen/poster_height"
+                android:layout_width="@dimen/poster_width"
+                android:scaleType="centerCrop"
+                app:srcCompat="@android:drawable/ic_menu_report_image"
+                android:id="@+id/poster"
+                android:contentDescription="@string/poster_description" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/poster"
+                android:layout_toEndOf="@id/poster"
+                android:layout_margin="@dimen/text_margin">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/no_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    tools:text="Movie about Films"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/no_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    tools:text="2017-02-15"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorTextSecondary" />
+
+                <TextView
+                    android:id="@+id/content_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/no_margin"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    tools:text="PG-13"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorTextSecondary" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_below="@id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:id="@+id/separator"
+            android:background="@color/colorLight" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/separator"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin" >
+
+
+
+            <TextView
+                android:id="@+id/label_description"
+                android:textAppearance="@style/AppTheme.Text.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_description" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/no_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus massa libero, efficitur nec dolor in, viverra tincidunt arcu. Suspendisse sed magna eu nibh congue venenatis. Donec non elit at urna laoreet luctus ut in neque. In elementum mauris diam, quis efficitur turpis pulvinar in. "
+                android:scrollHorizontally="false"
+                android:ellipsize="none" />
+
+            <TextView
+                android:id="@+id/label_cast"
+                android:textAppearance="@style/AppTheme.Text.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/label_cast" />
+
+            <TextView
+                android:id="@+id/cast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/no_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:text="Bob Smith, Betty Joe, Someone Lastname"
+                android:scrollHorizontally="false"
+                android:ellipsize="none" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
