@@ -1,6 +1,8 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge.authenticate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,14 +45,31 @@ public class SignInActivity extends AppCompatActivity implements
      */
     private String mPassword;
 
+    /**
+     * Shared preferences to remember that the user successfully logged in.
+     */
+    private SharedPreferences mSharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS)
+                , Context.MODE_PRIVATE);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_sign_in, new LoginFragment() )
                 .commit();
+
+        Log.i("LOGGEDIN STAT", "SingInActivity onCreate " + mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false));
+        if (mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
+            Intent i = new Intent(SignInActivity.this, FilmActivity.class);
+            startActivity(i);
+        }
+
+
+
+
 
     }
 
@@ -123,6 +142,14 @@ public class SignInActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), "Welcome to FilmFridge!"
                             , Toast.LENGTH_LONG)
                             .show();
+
+                    mSharedPreferences
+                            .edit()
+                            .putBoolean(getString(R.string.LOGGEDIN), true)
+                            .commit();
+
+                    Log.i("LOGGEDIN STAT:", "ONPOSTEXECUTE TRUE");
+
                     Intent i = new Intent(SignInActivity.this, FilmActivity.class);
                     startActivity(i);
 
