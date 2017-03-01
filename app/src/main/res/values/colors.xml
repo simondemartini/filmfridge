@@ -5,4 +5,5 @@
     <color name="colorAccent">#b5d3f2</color>
     <color name="colorTextSecondary">#888888</color>
     <color name="colorLight">#dddddd</color>
+    <color name="colorDrawer">#ffeeeeee</color>
 </resources>
