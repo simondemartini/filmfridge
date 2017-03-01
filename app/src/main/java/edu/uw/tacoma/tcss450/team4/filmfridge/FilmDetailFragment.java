@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,11 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
-
-import static android.R.attr.id;
 
 
 /**
@@ -34,7 +29,7 @@ public class FilmDetailFragment extends Fragment {
     /** Argument parameters*/
     public final static String FILM_ITEM_SELECTED = "film_selected";
 
-    private static final String TAG = "UpcomingListFragment";
+    private static final String TAG = "FilmDetailFragment";
     private Film mFilm;
     private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV;
     private ImageView mPoster;
@@ -173,10 +168,10 @@ public class FilmDetailFragment extends Fragment {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         String shareContent = mFilm.getTitle();
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "FILM SHARE SUBJECT");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
 
-        startActivity(Intent.createChooser(sharingIntent, "MYLKDJSFKLJ"));
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_chooser)));
     }
 
     /**
