@@ -3,6 +3,10 @@ package edu.uw.tacoma.tcss450.team4.filmfridge.film;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * This represents a film with all of its associated metadata.
@@ -14,7 +18,8 @@ public class Film implements Serializable {
             RELEASE_DATE = "release_date", POSTER_PATH = "poster_path",
             BACKDROP_PATH = "backdrop_path";
 
-    private String mFilmId, mTitle, mOverview, mReleaseDate, mPosterPath, mBackdropPath, mCast, mContentRating;
+    private String mFilmId, mTitle, mOverview, mPosterPath, mBackdropPath, mCast, mContentRating;
+    private Date mReleaseDate;
     private Bitmap mPoster;
 
     public Film(String id,
@@ -26,7 +31,7 @@ public class Film implements Serializable {
         this.mFilmId = id;
         this.mTitle = title;
         this.mOverview = overview;
-        this.mReleaseDate = releaseDate;
+        setReleaseDate(releaseDate);
         this.mPosterPath = posterPath;
         this.mBackdropPath = backdropPath;
     }
@@ -47,12 +52,26 @@ public class Film implements Serializable {
         this.mTitle = title;
     }
 
+    /**
+     * Format the Date object and make it pretty to fit the user's locale
+     * @return a formatted date string
+     */
     public String getReleaseDate() {
-        return mReleaseDate;
+        DateFormat outFormat = SimpleDateFormat.getDateInstance();
+        return outFormat.format(mReleaseDate);
     }
 
+    /**
+     * Parse the input date and store as a Date.
+     * @param releaseDate
+     */
     public void setReleaseDate(String releaseDate) {
-        this.mReleaseDate = releaseDate;
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            this.mReleaseDate = format.parse(releaseDate);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Cannot parse the date");
+        }
     }
 
     public String getPosterPath() {
