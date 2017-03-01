@@ -10,6 +10,7 @@ import android.widget.TextView;
 import edu.uw.tacoma.tcss450.team4.filmfridge.UpcomingListFragment.OnListFragmentInteractionListener;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
+import java.io.File;
 import java.util.List;
 
 /**

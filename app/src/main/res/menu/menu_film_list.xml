@@ -4,9 +4,17 @@
     tools:context="edu.tacoma.uw.sjfoh.webserviceslab.FilmActivity">
 
     <item
+        android:id="@+id/action_share"
+        android:visible="false"
+        android:orderInCategory="50"
+        android:title="@string/share"
+        android:icon="@drawable/ic_action_share"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:title="@string/action_logout"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 
 </menu>

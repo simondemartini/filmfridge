@@ -1,16 +1,25 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
+
+import static android.R.attr.id;
 
 
 /**
@@ -62,6 +71,7 @@ public class FilmDetailFragment extends Fragment {
         if (getArguments() != null) {
             mFilm = (Film) getArguments().getSerializable(FILM_ITEM_SELECTED);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -127,6 +137,46 @@ public class FilmDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    /**
+     * Add the share button to the toolbar
+     * @param menu
+     * @param inflater
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //inflater.inflate(R.menu.menu_film_list, menu);
+        MenuItem share = menu.findItem(R.id.action_share);
+        share.setVisible(true);
+
+        //Set up sharing button
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_share) {
+            shareFilm();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * This method takes care of creating a new intent to share the data.
+     */
+    private void shareFilm() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        String shareContent = mFilm.getTitle();
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "FILM SHARE SUBJECT");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
+
+        startActivity(Intent.createChooser(sharingIntent, "MYLKDJSFKLJ"));
     }
 
     /**

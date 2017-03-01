@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
@@ -17,6 +18,8 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 public class FilmActivity extends AppCompatActivity implements
     UpcomingListFragment.OnListFragmentInteractionListener,
         FilmDetailFragment.OnDetailFragmentInteractionListener {
+
+    private FilmDetailFragment mFilmDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +38,13 @@ public class FilmActivity extends AppCompatActivity implements
 
     @Override
     public void onListFragmentInteraction(Film item) {
-        FilmDetailFragment filmDetailFragment = new FilmDetailFragment();
+        mFilmDetailFragment = new FilmDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(FilmDetailFragment.FILM_ITEM_SELECTED, item);
-        filmDetailFragment.setArguments(args);
+        mFilmDetailFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.film_fragment_container, filmDetailFragment)
+                .replace(R.id.film_fragment_container, mFilmDetailFragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -59,11 +62,7 @@ public class FilmActivity extends AppCompatActivity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+
         if (id == R.id.action_logout) {
             SharedPreferences sharedPreferences =
                     getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
@@ -74,8 +73,10 @@ public class FilmActivity extends AppCompatActivity implements
             startActivity(i);
             finish();
             return true;
+        } else if(id == R.id.action_share) {
+            //implemented in the fragment
+            return false;
         }
-
 
         return super.onOptionsItemSelected(item);
     }

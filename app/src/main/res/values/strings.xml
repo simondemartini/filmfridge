@@ -4,7 +4,7 @@
     <string name="title_activity_films">Now Playing</string>
     <string name="api_error">Cannot connect to TMDb</string>
     <string name="action_settings">Settings</string>
-    <string name="action_logout">LOG OUT</string>
+    <string name="action_logout">Log Out</string>
 
     <!--activity_login-->
     <string name="email_hint">Enter Email</string>
@@ -17,7 +17,6 @@
     <!--SignIn Activity-->
     <string name="LOGIN_PREFS">edu.tacoma.uw.webserviceslab.PREFS</string>
     <string name="LOGGEDIN">loggedin</string>
-
 
     <!-- Film Details Fragment -->
     <string name="label_description">Description:</string>
