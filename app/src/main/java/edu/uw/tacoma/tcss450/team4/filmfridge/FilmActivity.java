@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,17 +15,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.List;
+import java.util.Map;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 public class FilmActivity extends AppCompatActivity implements
-    UpcomingListFragment.OnListFragmentInteractionListener,
-        FilmDetailFragment.OnDetailFragmentInteractionListener {
+        UpcomingListFragment.OnListFragmentInteractionListener,
+        FilmDetailFragment.OnDetailFragmentInteractionListener,
+        NavigationView.OnNavigationItemSelectedListener{
 
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -38,106 +51,58 @@ public class FilmActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Set up Hamburger menu
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        getSupportActionBar().setHomeButtonEnabled(true);
-        addDrawerItems();
-        setupDrawer();
-
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
             mUpcomingListFragment = new UpcomingListFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.film_fragment_container, mUpcomingListFragment)
                     .commit();
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    /**
-     * After onCreate. Update some things
-     * @param savedInstanceState saved state
-     */
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        //Update drawer toggle icon
-        mDrawerToggle.syncState();
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    /**
-     * Activityi changes such as oritnetation changes, or showing keyboard
-     * @param newConfig new config
-     */
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        //update drawer toggle
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-    /**
-     * A helper method to populate the nav drawer with options and the listeners
-     */
-    private void addDrawerItems() {
-        final String[] nav = {"Upcoming", "My List", "Settings"};
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, nav);
-        mDrawerList.setAdapter(mAdapter);
-        mDrawerList.setItemChecked(0, true); //select first item as default
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected = nav[position];
-                switch(nav[position]) {
-                    case("Upcoming"):
-                        //replace fragment and close drawer
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.film_fragment_container, mUpcomingListFragment)
-                                .addToBackStack(null)
-                                .commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case("My List"):
-                        //replace fragment and close drawer
-                        if(mMyListFragment == null) {
-                            mMyListFragment = new MyListFragment();
-                        }
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.film_fragment_container, mMyListFragment)
-                                .addToBackStack(null)
-                                .commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    default:
-                        Toast.makeText(FilmActivity.this, "Selected: " + selected, Toast.LENGTH_SHORT).show();
-                }
+        if (id == R.id.nav_upcoming) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.film_fragment_container, mUpcomingListFragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else if (id == R.id.nav_my_list) {
+            if (mMyListFragment == null) {
+                mMyListFragment = new MyListFragment();
             }
-        });
-    }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.film_fragment_container, mMyListFragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else if (id == R.id.nav_settings) {
 
-    /**
-     * Create the nav drawer.
-     */
-    private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.drawer_open, R.string.drawer_close) {
+        }
 
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -177,7 +142,7 @@ public class FilmActivity extends AppCompatActivity implements
             startActivity(i);
             finish();
             return true;
-        } else if(id == R.id.action_share) {
+        } else if (id == R.id.action_share) {
             //implemented in the fragment
             return false;
         } else if (mDrawerToggle.onOptionsItemSelected(item)) {

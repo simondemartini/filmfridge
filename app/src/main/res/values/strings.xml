@@ -7,6 +7,9 @@
     <string name="action_logout">Log Out</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="nav_upcoming">Upcoming</string>
+    <string name="nav_my_list">My List</string>
+    <string name="nav_settings">Settings</string>
 
     <!--activity_login-->
     <string name="email_hint">Enter Email</string>
@@ -29,6 +32,10 @@
     <string name="poster_description">Movie Poster</string>
     <string name="share_chooser">Share the movie with a friend!</string>
     <string name="share_subject">FilmFridge Recommends</string>
+    <string name="title_activity_fake_fake_fake">FakeFakeFakeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
 </resources>
