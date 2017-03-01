@@ -85,6 +85,7 @@ public class FilmActivity extends AppCompatActivity implements
         final String[] nav = {"Upcoming", "My List", "Settings"};
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, nav);
         mDrawerList.setAdapter(mAdapter);
+        mDrawerList.setItemChecked(0, true); //select first item as default
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
