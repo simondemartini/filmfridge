@@ -45,7 +45,9 @@ public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecycl
         holder.mItem = mValues.get(position);
         holder.mTitleView.setText(holder.mItem.getTitle());
         holder.mReleaseDate.setText(holder.mItem.getReleaseDate());
-        holder.mPoster.setImageBitmap(holder.mItem.getPoster());
+
+        File cacheDir = holder.mView.getContext().getCacheDir();
+        holder.mPoster.setImageBitmap(holder.mItem.getPoster(cacheDir));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

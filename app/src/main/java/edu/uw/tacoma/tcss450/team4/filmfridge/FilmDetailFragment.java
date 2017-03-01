@@ -96,7 +96,7 @@ public class FilmDetailFragment extends Fragment {
             mDescriptionTV.setText(film.getOverview());
             mCastTV.setText(film.getCast());
             mContentRatingTV.setText(film.getContentRating());
-            mPoster.setImageBitmap(film.getPoster());
+            mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
         }
     }
 

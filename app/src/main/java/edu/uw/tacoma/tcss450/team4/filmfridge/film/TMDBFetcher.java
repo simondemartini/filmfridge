@@ -64,15 +64,12 @@ public final class TMDBFetcher {
      * @return the downloaded Image, null if its all broken
      * @throws TMDBException when  there is some network error
      */
-    private Bitmap fetchImage(String imagePath) throws TMDBException {
+    private void fetchImage(String imagePath) throws TMDBException {
         Bitmap bitmap;
         File file = new File(mContext.getCacheDir().toString(),imagePath);
 
-        //check if already cached
-        bitmap = readCachedImage(file);
-
         //not cached -- fetch from internet
-        if (bitmap == null) {
+        if (!file.exists()) {
             String response = "";
             HttpURLConnection urlConnection = null;
             try {
@@ -90,8 +87,6 @@ public final class TMDBFetcher {
             //cache the image for future use
             cacheImage(bitmap, file);
         }
-
-        return bitmap;
     }
 
     /**
@@ -114,40 +109,6 @@ public final class TMDBFetcher {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    /**
-     * Retrieve and image from the cache
-     * @param file the file location
-     * @return the cached image or null if it doesn't exist
-     */
-    private Bitmap readCachedImage(File file) {
-        Bitmap image = null;
-        if(file.exists()) {
-            FileOutputStream inputStream = null;
-            try {
-                image = BitmapFactory.decodeFile(file.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return image;
-    }
-
-    /**
-     * Download posters for each of the films in the list
-     * @param list of films with poster URLS
-     * @throws TMDBException when there is a network error
-     */
-    private void fetchPosters(List<Film> list) throws TMDBException{
-        try {
-            for (Film f : list) {
-                f.setPoster(fetchImage(f.getPosterPath()));
-                fetchDetails(f);
-            }
-        } catch (TMDBException e) {
-            throw new TMDBException(e);
         }
     }
 
@@ -288,7 +249,10 @@ public final class TMDBFetcher {
 
         //add images
         try {
-            fetchPosters(list);
+            for (Film f : list) {
+                fetchImage(f.getPosterPath());
+                fetchDetails(f);
+            }
         } catch (TMDBException e) {
             throw new TMDBException(e);
         }

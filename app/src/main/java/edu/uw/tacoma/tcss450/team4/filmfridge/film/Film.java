@@ -1,7 +1,10 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge.film;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,7 +23,6 @@ public class Film implements Serializable {
 
     private String mFilmId, mTitle, mOverview, mPosterPath, mBackdropPath, mCast, mContentRating;
     private Date mReleaseDate;
-    private Bitmap mPoster;
 
     public Film(String id,
                 String title,
@@ -114,12 +116,18 @@ public class Film implements Serializable {
         this.mContentRating = contentRating;
     }
 
-    public Bitmap getPoster() {
-        return mPoster;
-    }
+    public Bitmap getPoster(File cacheDir) {
+        File file = new File(cacheDir, mPosterPath);
 
-    public void setPoster(Bitmap poster) {
-        mPoster = poster;
+        Bitmap image = null;
+            if(file.exists()) {
+                FileOutputStream inputStream = null;
+                try {
+                    image = BitmapFactory.decodeFile(file.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        return image;
     }
-
 }
