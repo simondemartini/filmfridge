@@ -29,6 +29,7 @@ public class FilmActivity extends AppCompatActivity implements
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private UpcomingListFragment mUpcomingListFragment;
+    private MyListFragment mMyListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,17 @@ public class FilmActivity extends AppCompatActivity implements
                         //replace fragment and close drawer
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.film_fragment_container, mUpcomingListFragment)
+                                .addToBackStack(null)
+                                .commit();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case("My List"):
+                        //replace fragment and close drawer
+                        if(mMyListFragment == null) {
+                            mMyListFragment = new MyListFragment();
+                        }
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.film_fragment_container, mMyListFragment)
                                 .addToBackStack(null)
                                 .commit();
                         mDrawerLayout.closeDrawers();
