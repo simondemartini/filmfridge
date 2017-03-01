@@ -28,7 +28,7 @@ public class FilmActivity extends AppCompatActivity implements
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private String mActivityTitle;
+    private UpcomingListFragment mUpcomingListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +37,9 @@ public class FilmActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Set up Hamburger menu
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -48,9 +48,9 @@ public class FilmActivity extends AppCompatActivity implements
         setupDrawer();
 
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
-            UpcomingListFragment courseFragment = new UpcomingListFragment();
+            mUpcomingListFragment = new UpcomingListFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.film_fragment_container, courseFragment)
+                    .add(R.id.film_fragment_container, mUpcomingListFragment)
                     .commit();
         }
     }
@@ -78,16 +78,28 @@ public class FilmActivity extends AppCompatActivity implements
     }
 
     /**
-     * A helper method to populate the nav drawer with options
+     * A helper method to populate the nav drawer with options and the listeners
      */
     private void addDrawerItems() {
-        String[] nav = {"Upcoming", "My List", "Settings"};
+        final String[] nav = {"Upcoming", "My List", "Settings"};
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, nav);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(FilmActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
+                String selected = nav[position];
+                switch(nav[position]) {
+                    case("Upcoming"):
+                        //replace fragment and close drawer
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.film_fragment_container, mUpcomingListFragment)
+                                .addToBackStack(null)
+                                .commit();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    default:
+                        Toast.makeText(FilmActivity.this, "Selected: " + selected, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
