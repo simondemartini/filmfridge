@@ -27,6 +27,7 @@
     <string name="label_cast">Cast:</string>
     <string name="label_release_date">Release Date: </string>
     <string name="label_content_rating">Content Rating: </string>
+    <string name="label_genres">Genre(s):</string>
     <string name="share">Share</string>
     <string name="poster_description">Movie Poster</string>
     <string name="share_chooser">Share the movie with a friend!</string>

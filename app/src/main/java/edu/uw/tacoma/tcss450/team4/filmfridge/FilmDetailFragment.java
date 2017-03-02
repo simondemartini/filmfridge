@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 
@@ -31,7 +33,7 @@ public class FilmDetailFragment extends Fragment {
 
     private static final String TAG = "FilmDetailFragment";
     private Film mFilm;
-    private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV;
+    private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV;
     private ImageView mPoster;
 
     private OnDetailFragmentInteractionListener mListener;
@@ -78,6 +80,7 @@ public class FilmDetailFragment extends Fragment {
         mDescriptionTV = (TextView) view.findViewById(R.id.description);
         mCastTV = (TextView) view.findViewById(R.id.cast);
         mContentRatingTV = (TextView) view.findViewById(R.id.content_rating);
+        mGenresTV = (TextView) view.findViewById(R.id.genres);
         mPoster = (ImageView) view.findViewById(R.id.poster);
 
         return view;
@@ -91,7 +94,23 @@ public class FilmDetailFragment extends Fragment {
             mCastTV.setText(film.getCast());
             mContentRatingTV.setText(film.getContentRating());
             mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
+            mGenresTV.setText(listToString(film.getGenres()));
         }
+    }
+
+    /**
+     * A helper method to get the toString of a list but remove the "[" and "]" around it
+     * @param list a list
+     * @return a clean string
+     */
+    private String listToString(List list) {
+        if(list != null && list.toString().length() > 1) {
+            String str = list.toString();
+            return str.substring(1, str.length() - 1);
+        } else {
+            return null;
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

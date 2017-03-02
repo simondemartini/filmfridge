@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This represents a film with all of its associated metadata.
@@ -22,6 +23,8 @@ public class Film implements Serializable {
             BACKDROP_PATH = "backdrop_path";
 
     private String mFilmId, mTitle, mOverview, mPosterPath, mBackdropPath, mCast, mContentRating;
+
+    private List<String> mGenres;
     private Date mReleaseDate;
 
     public Film(String id,
@@ -104,6 +107,7 @@ public class Film implements Serializable {
         return mCast;
     }
 
+    //TODO: Get as list
     public void setCast(String cast) {
         this.mCast = cast;
     }
@@ -129,5 +133,13 @@ public class Film implements Serializable {
                 }
             }
         return image;
+    }
+
+    public List<String> getGenres() {
+        return mGenres;
+    }
+
+    public void setGenres(List<String> mGenres) {
+        this.mGenres = mGenres;
     }
 }

@@ -3,6 +3,7 @@ package edu.uw.tacoma.tcss450.team4.filmfridge.film;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -171,6 +172,15 @@ public final class TMDBFetcher {
                 }
                 cast_str.setLength(cast_str.length() - 2);
                 film.setCast(cast_str.toString());
+
+                //get genres
+                JSONArray genres = all.getJSONArray("genres");
+                ArrayList<String> genresList= new ArrayList<>();
+                for (int i = 0; i < genres.length(); i++) {
+                    genresList.add(genres.getJSONObject(i).getString("name"));
+                    cast_str.append(cast.getJSONObject(i).getString("name")).append(", ");
+                }
+                film.setGenres(genresList);
 
             } catch (JSONException e) {
                 reason =  "Unable to parse data, Reason: " + e.toString();
