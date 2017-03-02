@@ -3,7 +3,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,21 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-
-import java.util.List;
-import java.util.Map;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
@@ -38,9 +22,6 @@ public class FilmActivity extends AppCompatActivity implements
         FilmDetailFragment.OnDetailFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener{
 
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
     private UpcomingListFragment mUpcomingListFragment;
     private MyListFragment mMyListFragment;
 
@@ -145,8 +126,6 @@ public class FilmActivity extends AppCompatActivity implements
         } else if (id == R.id.action_share) {
             //implemented in the fragment
             return false;
-        } else if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
