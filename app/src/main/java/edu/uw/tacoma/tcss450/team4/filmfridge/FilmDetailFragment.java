@@ -51,7 +51,6 @@ public class FilmDetailFragment extends Fragment {
      * @param item The film.
      * @return A new instance of fragment FilmDetailFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static FilmDetailFragment newInstance(Film item) {
         FilmDetailFragment fragment = new FilmDetailFragment();
         Bundle args = new Bundle();

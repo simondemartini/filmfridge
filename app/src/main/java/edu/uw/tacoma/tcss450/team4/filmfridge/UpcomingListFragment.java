@@ -32,7 +32,6 @@ public class UpcomingListFragment extends AbstractFilmListFragment {
 
     @Override
     protected void startDownloadTask() {
-        //TODO: Find a better way to limit re-downloading of info -- maybe a refresh button and a local DB?
         DownloadUpcomingFilmsTask task = new DownloadUpcomingFilmsTask();
         task.execute();
     }
