@@ -45,8 +45,7 @@ public class MyListFragment extends AbstractFilmListFragment {
         @Override
         protected List<Film> doInBackground(String... v) {
             try {
-                //TODO: Download my own saved films
-                return tmdb.getUpcoming();
+                return tmdb.getByIds();
             } catch (TMDBFetcher.TMDBException e) {
                 Log.d(TAG, e.getMessage());
                 return null;

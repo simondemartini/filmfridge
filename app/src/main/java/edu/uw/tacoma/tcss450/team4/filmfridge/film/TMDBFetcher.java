@@ -264,7 +264,7 @@ public final class TMDBFetcher {
     }
 
     public List<Film> getByIds(String... ids) throws TMDBException {
-        return getList(URL_NOWPLAYING);
+        return null;
     }
 
     /**
