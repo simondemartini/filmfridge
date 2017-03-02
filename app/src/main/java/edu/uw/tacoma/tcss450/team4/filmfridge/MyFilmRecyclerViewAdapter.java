@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import edu.uw.tacoma.tcss450.team4.filmfridge.UpcomingListFragment.OnListFragmentInteractionListener;
+import edu.uw.tacoma.tcss450.team4.filmfridge.AbstractFilmListFragment.OnListFragmentInteractionListener;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 import java.io.File;
