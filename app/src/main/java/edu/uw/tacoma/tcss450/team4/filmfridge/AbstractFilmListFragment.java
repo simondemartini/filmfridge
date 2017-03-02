@@ -35,7 +35,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
     protected OnListFragmentInteractionListener mListener;
     protected RecyclerView mRecyclerView;
     protected ProgressBar mProgressSpinner;
-    protected MyFilmRecyclerViewAdapter mFilmRecyclerViewAdapter;
+    protected FilmListRecyclerViewAdapter mFilmRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,7 +51,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         tmdb = new TMDBFetcher(getActivity());
-        mFilmRecyclerViewAdapter = new MyFilmRecyclerViewAdapter(new ArrayList<Film>(), mListener);
+        mFilmRecyclerViewAdapter = new FilmListRecyclerViewAdapter(new ArrayList<Film>(), mListener);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);

@@ -17,12 +17,12 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link Film} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  */
-public class MyFilmRecyclerViewAdapter extends RecyclerView.Adapter<MyFilmRecyclerViewAdapter.ViewHolder> {
+public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRecyclerViewAdapter.ViewHolder> {
 
     private final List<Film> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyFilmRecyclerViewAdapter(List<Film> items, OnListFragmentInteractionListener listener) {
+    public FilmListRecyclerViewAdapter(List<Film> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
