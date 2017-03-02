@@ -86,7 +86,7 @@ public class UpcomingListFragment extends Fragment {
             //TODO: Find a better way to limit re-downloading of info -- maybe a refresh button and a local DB?
             if (mFilmRecyclerViewAdapter.getItemCount() == 0){
                 DownloadFilmsTask task = new DownloadFilmsTask();
-                task.execute(getString(R.string.tmdb_now_playing_url) + getString(R.string.tmdb_api_key));
+                task.execute();
             }
         }
         return view;
@@ -138,7 +138,7 @@ public class UpcomingListFragment extends Fragment {
         @Override
         protected List<Film> doInBackground(String... v) {
             try {
-                return tmdb.getList(getString(R.string.tmdb_now_playing_url));
+                return tmdb.getUpcoming();
             } catch (TMDBFetcher.TMDBException e) {
                 Log.d(TAG, e.getMessage());
                 return null;

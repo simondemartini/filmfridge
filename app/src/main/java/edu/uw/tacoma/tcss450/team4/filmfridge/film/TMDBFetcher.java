@@ -31,7 +31,6 @@ public final class TMDBFetcher {
     /** For tagging in the logger */
     private static final String TAG = "TMDBFetcher";
 
-    //TODO: Static vars for URLS or Resources?
     private static final String URL_CONFIG
             = "https://api.themoviedb.org/3/configuration?api_key=";
     private static final String URL_NOWPLAYING
@@ -229,7 +228,7 @@ public final class TMDBFetcher {
      * @return A complete list of films with posters
      * @throws TMDBException when things break. The caller should handle it to let the user know.
      */
-    public List<Film> getList(String url) throws TMDBException {
+    private List<Film> getList(String url) throws TMDBException {
         url = url + mContext.getString(R.string.tmdb_api_key);
         List<Film> list = new ArrayList<>();
 
@@ -258,6 +257,14 @@ public final class TMDBFetcher {
         }
 
         return list;
+    }
+
+    public List<Film> getUpcoming() throws TMDBException {
+        return getList(URL_NOWPLAYING);
+    }
+
+    public List<Film> getByIds(String... ids) throws TMDBException {
+        return getList(URL_NOWPLAYING);
     }
 
     /**
