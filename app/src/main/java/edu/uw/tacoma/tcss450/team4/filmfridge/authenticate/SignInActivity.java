@@ -3,6 +3,7 @@ package edu.uw.tacoma.tcss450.team4.filmfridge.authenticate;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,8 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 public class SignInActivity extends AppCompatActivity implements
-        LoginFragment.LoginInteractionListener {
+        LoginFragment.LoginInteractionListener,
+        RegisterFragment.OnRegisterFragmentListener {
     /**
      * Login Php url.
      */
@@ -67,11 +69,6 @@ public class SignInActivity extends AppCompatActivity implements
             startActivity(i);
             finish();
         }
-
-
-
-
-
     }
 
     @Override
@@ -81,6 +78,16 @@ public class SignInActivity extends AppCompatActivity implements
 
         SignInActivity.UserTask usertask = new SignInActivity.UserTask();
         usertask.execute(buildUserUrl(LOGIN_URL));
+
+    }
+
+    @Override
+    public void launchRegister() {
+
+    }
+
+    @Override
+    public void register(String userId, String pwd) {
 
     }
 

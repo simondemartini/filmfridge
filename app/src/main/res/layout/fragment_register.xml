@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.LoginFragment">
-
+    tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.RegisterFragment">
     <ImageView
         android:id="@+id/filmfridge_logo"
         android:src="@drawable/filmfridge"
@@ -15,7 +14,6 @@
         android:cropToPadding="false"
         android:layout_width="167dp"
         android:layout_gravity="center_horizontal" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,42 +21,46 @@
         android:text="@string/filmfridge_string"
         android:textSize="35sp"
         android:gravity="center"/>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/team4_text"
-        android:text="@string/salmon_string"
+        android:id="@+id/letsregister_text"
+        android:text="@string/letsregister_string"
         android:textSize="13sp"
         android:gravity="center"/>
-
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_email"
+        android:id="@+id/register_email"
         android:inputType="textEmailAddress"
         android:hint="@string/email_hint"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_password"
+        android:id="@+id/confirm_register_email"
+        android:inputType="textEmailAddress"
+        android:hint="@string/confirm_email_hint"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_password"
         android:inputType="textPassword"
         android:hint="@string/password_hint"/>
 
-    <Button
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_button"
-        android:text="@string/login_text"
-        android:onClick="login"/>
+        android:id="@+id/confirm_register_password"
+        android:inputType="textPassword"
+        android:hint="@string/confirm_password_hint"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/register_button"
-        android:text="@string/register_text"
-        android:onClick="launchRegister"/>
+        android:id="@+id/addUser_button"
+        android:text="@string/register_text"/>
 
 </LinearLayout>
