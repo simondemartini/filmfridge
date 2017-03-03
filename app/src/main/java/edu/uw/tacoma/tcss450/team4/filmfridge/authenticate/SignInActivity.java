@@ -65,6 +65,7 @@ public class SignInActivity extends AppCompatActivity implements
         if (mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
             Intent i = new Intent(SignInActivity.this, FilmActivity.class);
             startActivity(i);
+            finish();
         }
 
 
@@ -152,6 +153,7 @@ public class SignInActivity extends AppCompatActivity implements
 
                     Intent i = new Intent(SignInActivity.this, FilmActivity.class);
                     startActivity(i);
+                    finish();
 
 
                 } else {
