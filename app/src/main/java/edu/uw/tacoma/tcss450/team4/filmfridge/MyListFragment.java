@@ -33,7 +33,7 @@ public class MyListFragment extends AbstractFilmListFragment {
     @Override
     protected void startDownloadTask() {
         DownloadMyFilmsTask task = new DownloadMyFilmsTask();
-        task.execute();
+        task.execute("283995", "263115");
     }
 
     /**
@@ -42,9 +42,9 @@ public class MyListFragment extends AbstractFilmListFragment {
     private class DownloadMyFilmsTask extends DownloadFilmsTask {
 
         @Override
-        protected List<Film> doInBackground(String... v) {
+        protected List<Film> doInBackground(String... ids) {
             try {
-                return tmdb.getByIds();
+                return tmdb.getByIds(ids);
             } catch (TMDBFetcher.TMDBException e) {
                 Log.d(TAG, e.getMessage());
                 return null;

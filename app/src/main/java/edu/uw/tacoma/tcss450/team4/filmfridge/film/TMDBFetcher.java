@@ -154,6 +154,12 @@ public final class TMDBFetcher {
             try {
                 JSONObject all = new JSONObject(filmJSON);
 
+                film.setTitle(all.getString(Film.TITLE));
+                film.setOverview(all.getString(Film.OVERVIEW));
+                film.setReleaseDate(all.getString(Film.RELEASE_DATE));
+                film.setPosterPath(all.getString(Film.POSTER_PATH));
+                film.setBackdropPath(all.getString(Film.BACKDROP_PATH));
+
                 //get content rating
                 JSONObject releases = all.getJSONObject("releases");
                 JSONArray countries = releases.getJSONArray("countries");
@@ -274,7 +280,14 @@ public final class TMDBFetcher {
     }
 
     public List<Film> getByIds(String... ids) throws TMDBException {
-        return null;
+        List<Film> list = new ArrayList<Film>();
+        for(String id : ids) {
+            Film f = new Film(id);
+            fetchDetails(f);
+            fetchImage(f.getPosterPath());
+            list.add(f);
+        }
+        return list;
     }
 
     /**

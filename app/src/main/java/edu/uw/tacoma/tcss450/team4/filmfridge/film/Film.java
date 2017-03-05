@@ -41,6 +41,10 @@ public class Film implements Serializable {
         this.mBackdropPath = backdropPath;
     }
 
+    public Film(String id) {
+        this.mFilmId = id;
+    }
+
     public String getId() {
         return mFilmId;
     }
