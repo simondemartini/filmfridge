@@ -13,15 +13,15 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class UpcomingListFragment extends AbstractFilmListFragment {
+public class NowPlayingListFragment extends AbstractFilmListFragment {
 
-    private static final String TAG = "UpcomingListFragment";
+    private static final String TAG = "NowPlayingListFragment";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public UpcomingListFragment() {
+    public NowPlayingListFragment() {
 
     }
 
@@ -32,7 +32,7 @@ public class UpcomingListFragment extends AbstractFilmListFragment {
 
     @Override
     protected void updateTitle() {
-        getActivity().setTitle(getString(R.string.upcoming_films));
+        getActivity().setTitle(getString(R.string.now_playing_films));
     }
 
     @Override

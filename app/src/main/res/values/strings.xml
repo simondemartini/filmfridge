@@ -6,7 +6,7 @@
     <string name="action_logout">Log Out</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="upcoming_films">Upcoming Films</string>
+    <string name="now_playing_films">Now Playing</string>
     <string name="my_list">My List</string>
     <string name="settings">Settings</string>
     <string name="MY_LIST_IDS">edu.uw.tacoma.tcss422.filmfridge.MY_LIST_IDS</string>

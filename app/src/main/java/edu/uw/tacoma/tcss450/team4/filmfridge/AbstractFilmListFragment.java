@@ -92,9 +92,6 @@ public abstract class AbstractFilmListFragment extends Fragment {
                 //TODO: Find a better way to limit re-downloading of info -- maybe a refresh button and a local DB?
                 startDownloadTask();
             }
-
-            isContentChanged();
-
         }
         return view;
     }

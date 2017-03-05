@@ -3,7 +3,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,11 +18,11 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 public class FilmActivity extends AppCompatActivity implements
-        UpcomingListFragment.OnListFragmentInteractionListener,
+        NowPlayingListFragment.OnListFragmentInteractionListener,
         FilmDetailFragment.OnDetailFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener{
 
-    private UpcomingListFragment mUpcomingListFragment;
+    private NowPlayingListFragment mNowPlayingListFragment;
     private MyListFragment mMyListFragment;
     private LocalSettings mLocalSettings;
 
@@ -34,10 +33,10 @@ public class FilmActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
-            mUpcomingListFragment = new UpcomingListFragment();
+        if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.film_fragment_container) == null) {
+            mNowPlayingListFragment = new NowPlayingListFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.film_fragment_container, mUpcomingListFragment)
+                    .add(R.id.film_fragment_container, mNowPlayingListFragment)
                     .commit();
         }
 
@@ -69,8 +68,11 @@ public class FilmActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.nav_upcoming) {
+            if (mNowPlayingListFragment == null) {
+                mNowPlayingListFragment = new NowPlayingListFragment();
+            }
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.film_fragment_container, mUpcomingListFragment)
+                    .replace(R.id.film_fragment_container, mNowPlayingListFragment)
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_my_list) {
