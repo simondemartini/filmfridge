@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,8 +69,25 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+// Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_register, container, false);
+        final EditText userIdText = (EditText) v.findViewById(R.id.register_email);
+        final EditText cUserIdText = (EditText) v.findViewById(R.id.confirm_register_email);
+        final EditText pwdText = (EditText) v.findViewById(R.id.register_password);
+        final EditText cPwdText = (EditText) v.findViewById(R.id.confirm_register_password);
 
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        Button addUserButton = (Button) v.findViewById(R.id.addUser_button);
+        addUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction
+                        .replace(R.id.activity_sign_in, new LoginFragment() )
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        return v;
     }
 
     @Override
