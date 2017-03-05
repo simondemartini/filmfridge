@@ -25,7 +25,8 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 public class SignInActivity extends AppCompatActivity implements
         LoginFragment.LoginInteractionListener,
-        RegisterFragment.OnRegisterFragmentListener {
+        RegisterFragment.OnRegisterInteractionListener
+{
     /**
      * Login Php url.
      */
@@ -78,11 +79,6 @@ public class SignInActivity extends AppCompatActivity implements
 
         SignInActivity.UserTask usertask = new SignInActivity.UserTask();
         usertask.execute(buildUserUrl(LOGIN_URL));
-
-    }
-
-    @Override
-    public void launchRegister() {
 
     }
 

@@ -158,8 +158,6 @@ public class LoginFragment extends Fragment {
      */
     public interface LoginInteractionListener {
         public void login(String userId, String pwd);
-
-        public void launchRegister();
     }
 
 }
