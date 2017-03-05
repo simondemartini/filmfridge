@@ -1,7 +1,16 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -27,18 +36,20 @@ public class MyListFragment extends AbstractFilmListFragment {
     }
 
     @Override
+    protected boolean isContentChanged() {
+        return  mFilmRecyclerViewAdapter.getItemCount() != mLocalSettings.getMyList().size();
+    }
+
+    @Override
     protected void updateTitle() {
         getActivity().setTitle(getString(R.string.my_list));
     }
 
     @Override
     protected void startDownloadTask() {
-        LocalSettings ls = new LocalSettings(getContext());
-        ls.addToMyList("263115");
-        ls.addToMyList("283995");
-
-        DownloadMyFilmsTask task = new DownloadMyFilmsTask();
-        task.execute(ls.getMyList().toArray(new String[ls.getMyList().size()]));
+        String [] ids = mLocalSettings.getMyList()
+                .toArray(new String[mLocalSettings.getMyList().size()]);
+        new DownloadMyFilmsTask().execute(ids);
     }
 
     /**

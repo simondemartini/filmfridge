@@ -33,6 +33,8 @@
     <string name="poster_description">Movie Poster</string>
     <string name="share_chooser">Share the movie with a friend!</string>
     <string name="share_subject">FilmFridge Recommends</string>
+    <string name="add_to_my_list">Add to My List</string>
+    <string name="add_to_my_list_successful"> added to My List</string>
 
 
 </resources>

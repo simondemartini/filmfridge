@@ -26,6 +26,11 @@ public class UpcomingListFragment extends AbstractFilmListFragment {
     }
 
     @Override
+    protected boolean isContentChanged() {
+        return false;
+    }
+
+    @Override
     protected void updateTitle() {
         getActivity().setTitle(getString(R.string.upcoming_films));
     }

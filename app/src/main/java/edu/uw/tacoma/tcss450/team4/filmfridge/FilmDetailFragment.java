@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,6 +84,14 @@ public class FilmDetailFragment extends Fragment {
         mGenresTV = (TextView) view.findViewById(R.id.genres);
         mPoster = (ImageView) view.findViewById(R.id.poster);
 
+        Button addToMyList = (Button) view.findViewById(R.id.add_to_my_list);
+        addToMyList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onAddFilmToMyList(mFilm);
+            }
+        });
+
         return view;
     }
 
@@ -116,7 +125,7 @@ public class FilmDetailFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onDetailFragmentInteraction(uri);
+            mListener.onAddFilmToMyList(mFilm);
         }
     }
 
@@ -204,6 +213,6 @@ public class FilmDetailFragment extends Fragment {
      */
     public interface OnDetailFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onDetailFragmentInteraction(Uri uri);
+        void onAddFilmToMyList(Film film);
     }
 }

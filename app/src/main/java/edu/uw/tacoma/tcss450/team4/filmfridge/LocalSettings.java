@@ -26,11 +26,17 @@ public class LocalSettings {
                 new HashSet<String>());
     }
 
+    private void readMyList() {
+        mMyList = mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
+                new HashSet<String>());
+    }
+
     /**
      * Add an film to my list by its id number
      * @param id the film id
      */
     public void addToMyList(String id) {
+        readMyList();
         mMyList.add(id);
         mSharedPreferences.edit()
                 .putStringSet(mContext.getString(R.string.MY_LIST_IDS), mMyList)
@@ -42,6 +48,7 @@ public class LocalSettings {
      * @return
      */
     public Set<String> getMyList() {
+        readMyList();
         return mMyList;
     }
 }

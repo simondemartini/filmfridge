@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
@@ -24,6 +25,7 @@ public class FilmActivity extends AppCompatActivity implements
 
     private UpcomingListFragment mUpcomingListFragment;
     private MyListFragment mMyListFragment;
+    private LocalSettings mLocalSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class FilmActivity extends AppCompatActivity implements
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mLocalSettings = new LocalSettings(this);
     }
 
     @Override
@@ -132,7 +136,9 @@ public class FilmActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onDetailFragmentInteraction(Uri uri) {
-
+    public void onAddFilmToMyList(Film film) {
+        mLocalSettings.addToMyList(film.getId());
+        String success = film.getTitle() + " " + getString(R.string.add_to_my_list_successful);
+        Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
 }

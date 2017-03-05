@@ -36,6 +36,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected ProgressBar mProgressSpinner;
     protected FilmListRecyclerViewAdapter mFilmRecyclerViewAdapter;
+    protected LocalSettings mLocalSettings;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,6 +52,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         tmdb = new TMDBFetcher(getActivity());
+        mLocalSettings = new LocalSettings(getActivity());
         mFilmRecyclerViewAdapter = new FilmListRecyclerViewAdapter(new ArrayList<Film>(), mListener);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -86,14 +88,21 @@ public abstract class AbstractFilmListFragment extends Fragment {
             }
             mRecyclerView.setAdapter(mFilmRecyclerViewAdapter);
 
-            if(mFilmRecyclerViewAdapter.getItemCount()==0) {
+            if(mFilmRecyclerViewAdapter.getItemCount()==0 || isContentChanged()) {
                 //TODO: Find a better way to limit re-downloading of info -- maybe a refresh button and a local DB?
                 startDownloadTask();
             }
 
+            isContentChanged();
+
         }
         return view;
     }
+
+    /**
+     * Update the list if the data set has changed
+     */
+    protected abstract boolean isContentChanged();
 
     /**
      * Create and start a new AsyncTask for getting the films.
