@@ -64,9 +64,9 @@ public class MyListFragment extends AbstractFilmListFragment {
     private class DownloadMyFilmsTask extends DownloadFilmsTask {
 
         @Override
-        protected List<Film> doInBackground(String... v) {
+        protected List<Film> doInBackground(String... ids) {
             try {
-                return tmdb.getByIds();
+                return tmdb.getByIds(ids);
             } catch (TMDBFetcher.TMDBException e) {
                 Log.d(TAG, e.getMessage());
                 return null;
