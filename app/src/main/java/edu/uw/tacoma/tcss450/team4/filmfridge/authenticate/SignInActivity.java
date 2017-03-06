@@ -22,6 +22,12 @@ import java.net.URL;
 import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
+
+/**
+ * The Signin Activity
+ *
+ * Created by Samantha Ong
+ */
 public class SignInActivity extends AppCompatActivity implements
         LoginFragment.LoginInteractionListener,
         RegisterFragment.OnRegisterInteractionListener

@@ -9,6 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 /**
+ * Database for user thresholds on the movies.
+ * Thresholds will be held in notrecom for not recommended,
+ * athome for see at home, and intheaters for see in theaters.
+ * Implementation will be taking care of inclusive and exclusive rules.
+ *
  * Created by Samantha Ong on 3/5/2017.
  */
 
@@ -47,6 +52,15 @@ public class ThresholdDB {
         return rowId != -1;
     }
 
+    /**
+     * Updates the threshold into the local sqlite table.
+     * Returns true if successful, false otherwise.
+     * @param theEmail
+     * @param theNotRecom
+     * @param theAtHome
+     * @param theInTheaters
+     * @return true or false
+     */
     public boolean updateThreshold(String theEmail,
                                    double theNotRecom,
                                    double theAtHome,

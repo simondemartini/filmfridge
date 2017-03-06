@@ -22,6 +22,8 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.R;
  * to handle interaction events.
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * Created by Samantha Ong
  */
 public class RegisterFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
