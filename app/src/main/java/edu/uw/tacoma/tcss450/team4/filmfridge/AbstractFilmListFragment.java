@@ -169,6 +169,10 @@ public abstract class AbstractFilmListFragment extends Fragment {
             // Everything is good, show the list.
             if (result != null && !result.isEmpty()) {
                 mFilmRecyclerViewAdapter.swap(result);
+            } else if (result != null && result.isEmpty()){
+                mFilmRecyclerViewAdapter.swap(result);
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.empty_list), Toast.LENGTH_LONG)
+                        .show();
             } else {
                 Toast.makeText(getActivity().getApplicationContext(), getString(R.string.api_error), Toast.LENGTH_LONG)
                         .show();

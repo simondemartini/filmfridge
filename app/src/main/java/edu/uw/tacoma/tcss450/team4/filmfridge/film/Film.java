@@ -22,9 +22,9 @@ public class Film implements Serializable {
             RELEASE_DATE = "release_date", POSTER_PATH = "poster_path",
             BACKDROP_PATH = "backdrop_path";
 
-    private String mFilmId, mTitle, mOverview, mPosterPath, mBackdropPath, mCast, mContentRating;
+    private String mFilmId, mTitle, mOverview, mPosterPath, mBackdropPath, mContentRating;
 
-    private List<String> mGenres;
+    private List<String> mGenres, mCast;
     private Date mReleaseDate;
 
     public Film(String id,
@@ -107,12 +107,12 @@ public class Film implements Serializable {
         this.mOverview = overview;
     }
 
-    public String getCast() {
+    public List<String> getCast() {
         return mCast;
     }
 
     //TODO: Get as list
-    public void setCast(String cast) {
+    public void setCast(List<String> cast) {
         this.mCast = cast;
     }
 

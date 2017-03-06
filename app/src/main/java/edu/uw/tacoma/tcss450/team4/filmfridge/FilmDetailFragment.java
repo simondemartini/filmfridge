@@ -2,7 +2,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,11 +30,15 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 public class FilmDetailFragment extends Fragment {
     /** Argument parameters*/
     public final static String FILM_ITEM_SELECTED = "film_selected";
+    private static final int MAX_CAST = 15;
+
 
     private static final String TAG = "FilmDetailFragment";
     private Film mFilm;
     private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV;
     private ImageView mPoster;
+    private Button mMyListModifier;
+    private LocalSettings mLocalSettings;
 
     private OnDetailFragmentInteractionListener mListener;
 
@@ -69,6 +72,7 @@ public class FilmDetailFragment extends Fragment {
             mFilm = (Film) getArguments().getSerializable(FILM_ITEM_SELECTED);
         }
         setHasOptionsMenu(true);
+        mLocalSettings = new LocalSettings(getActivity());
     }
 
     @Override
@@ -84,11 +88,11 @@ public class FilmDetailFragment extends Fragment {
         mGenresTV = (TextView) view.findViewById(R.id.genres);
         mPoster = (ImageView) view.findViewById(R.id.poster);
 
-        Button addToMyList = (Button) view.findViewById(R.id.add_to_my_list);
-        addToMyList.setOnClickListener(new View.OnClickListener() {
+        mMyListModifier = (Button) view.findViewById(R.id.add_to_my_list);
+        mMyListModifier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onAddFilmToMyList(mFilm);
+                mListener.onAddToMyList(mFilm);
             }
         });
 
@@ -100,10 +104,45 @@ public class FilmDetailFragment extends Fragment {
             mTitleTV.setText(film.getTitle());
             mReleaseDateTV.setText(film.getReleaseDate());
             mDescriptionTV.setText(film.getOverview());
-            mCastTV.setText(film.getCast());
+
+            int maxCast = MAX_CAST;
+            if(film.getCast().size() < MAX_CAST) {
+                maxCast = film.getCast().size();
+            }
+            mCastTV.setText(listToString(film.getCast().subList(0, maxCast)));
             mContentRatingTV.setText(film.getContentRating());
             mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
             mGenresTV.setText(listToString(film.getGenres()));
+
+            //Change button to remove or add from my list
+            setMyListButton(mLocalSettings.getMyList().contains(film.getId()));
+
+        }
+    }
+
+    /**
+     * A helper method to swap the content and listener of the button that adds to MyList
+     * @param isInMyList whether the film is in the list
+     */
+    private void setMyListButton(boolean isInMyList) {
+        if(isInMyList) {
+            mMyListModifier.setText(getString(R.string.remove_from_my_list));
+            mMyListModifier.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onRemoveFromMyList(mFilm);
+                    setMyListButton(false);
+                }
+            });
+        } else {
+            mMyListModifier.setText(getString(R.string.add_to_my_list));
+            mMyListModifier.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onAddToMyList(mFilm);
+                    setMyListButton(true);
+                }
+            });
         }
     }
 
@@ -120,13 +159,6 @@ public class FilmDetailFragment extends Fragment {
             return null;
         }
 
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onAddFilmToMyList(mFilm);
-        }
     }
 
     @Override
@@ -212,7 +244,7 @@ public class FilmDetailFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnDetailFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onAddFilmToMyList(Film film);
+        void onAddToMyList(Film film);
+        void onRemoveFromMyList(Film film);
     }
 }

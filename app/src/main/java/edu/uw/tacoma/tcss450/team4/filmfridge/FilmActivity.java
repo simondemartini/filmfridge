@@ -138,9 +138,16 @@ public class FilmActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onAddFilmToMyList(Film film) {
+    public void onAddToMyList(Film film) {
         mLocalSettings.addToMyList(film.getId());
         String success = film.getTitle() + " " + getString(R.string.add_to_my_list_successful);
+        Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRemoveFromMyList(Film film) {
+        mLocalSettings.removeFromMyList(film.getId());
+        String success = film.getTitle() + " " + getString(R.string.remove_from_my_list_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
 }
