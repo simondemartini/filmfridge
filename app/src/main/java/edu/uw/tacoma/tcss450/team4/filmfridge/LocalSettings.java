@@ -10,6 +10,7 @@ import java.util.Set;
  * This class manages the writing and getting to a shared prefs file for movie filter settings.
  *
  * Created by Simon DeMartini on 3/5/17.
+ * Edited by Samantha Ong
  */
 
 public class LocalSettings {
