@@ -3,7 +3,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge.film;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +46,7 @@ public final class TMDBFetcher {
 
     private static final int MAX_CAST = 10;
 
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Create a new TMDB Fetcher
@@ -280,7 +279,7 @@ public final class TMDBFetcher {
     }
 
     public List<Film> getByIds(String... ids) throws TMDBException {
-        List<Film> list = new ArrayList<Film>();
+        List<Film> list = new ArrayList<>();
         for(String id : ids) {
             Film f = new Film(id);
             fetchDetails(f);

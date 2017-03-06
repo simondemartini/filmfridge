@@ -129,7 +129,6 @@ public class Film implements Serializable {
 
         Bitmap image = null;
             if(file.exists()) {
-                FileOutputStream inputStream = null;
                 try {
                     image = BitmapFactory.decodeFile(file.toString());
                 } catch (Exception e) {

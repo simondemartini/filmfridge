@@ -14,8 +14,8 @@ import java.util.Set;
 
 public class LocalSettings {
 
-    private Context mContext;
-    private SharedPreferences mSharedPreferences;
+    private final Context mContext;
+    private final SharedPreferences mSharedPreferences;
     private Set<String> mMyList;
 
     public LocalSettings(Context context) {
