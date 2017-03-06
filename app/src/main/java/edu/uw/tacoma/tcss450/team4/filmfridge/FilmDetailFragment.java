@@ -109,23 +109,34 @@ public class FilmDetailFragment extends Fragment {
             mGenresTV.setText(listToString(film.getGenres()));
 
             //Change button to remove or add from my list
-            if(mLocalSettings.getMyList().contains(film.getId())) {
-                mMyListModifier.setText(getString(R.string.remove_from_my_list));
-                mMyListModifier.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mListener.onRemoveFromMyList(mFilm);
-                    }
-                });
-            } else {
-                mMyListModifier.setText(getString(R.string.add_to_my_list));
-                mMyListModifier.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mListener.onAddToMyList(mFilm);
-                    }
-                });
-            }
+            setMyListButton(mLocalSettings.getMyList().contains(film.getId()));
+
+        }
+    }
+
+    /**
+     * A helper method to swap the content and listener of the button that adds to MyList
+     * @param isInMyList whether the film is in the list
+     */
+    private void setMyListButton(boolean isInMyList) {
+        if(isInMyList) {
+            mMyListModifier.setText(getString(R.string.remove_from_my_list));
+            mMyListModifier.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onRemoveFromMyList(mFilm);
+                    setMyListButton(false);
+                }
+            });
+        } else {
+            mMyListModifier.setText(getString(R.string.add_to_my_list));
+            mMyListModifier.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onAddToMyList(mFilm);
+                    setMyListButton(true);
+                }
+            });
         }
     }
 
