@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:id="@+id/fragment_login_id"
     tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.LoginFragment">
 
     <ImageView

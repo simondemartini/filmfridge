@@ -88,6 +88,7 @@ public class SignInActivity extends AppCompatActivity implements
 
         SignInActivity.RegisterTask usertask = new SignInActivity.RegisterTask();
         usertask.execute(buildUserUrl(ADD_USER));
+
     }
 
 
@@ -234,8 +235,10 @@ public class SignInActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), "Registered Successfully."
                             , Toast.LENGTH_LONG)
                             .show();
-                    getSupportFragmentManager().beginTransaction().
-                            remove(getSupportFragmentManager().findFragmentById(R.id.fragment_register)).commit();
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.activity_sign_in, new LoginFragment())
+                            .commit();
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to register: "

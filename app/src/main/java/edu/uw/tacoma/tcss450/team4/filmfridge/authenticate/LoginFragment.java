@@ -122,7 +122,6 @@ public class LoginFragment extends Fragment {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction
                         .replace(R.id.activity_sign_in, new RegisterFragment() )
-                        .addToBackStack(null)
                         .commit();
             }
         });
