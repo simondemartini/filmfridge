@@ -44,8 +44,6 @@ public final class TMDBFetcher {
     private static final String URL_DETAIL_PARAMS
             = "?language=en-US&append_to_response=credits,releases&api_key=";
 
-    private static final int MAX_CAST = 10;
-
     private final Context mContext;
 
     /**
@@ -172,7 +170,7 @@ public final class TMDBFetcher {
                 JSONObject credits = all.getJSONObject("credits");
                 JSONArray cast = credits.getJSONArray("cast");
                 ArrayList<String> castList = new ArrayList<>();
-                for (int i = 0; i < cast.length() && i < MAX_CAST; i++) {
+                for (int i = 0; i < cast.length(); i++) {
                     castList.add(cast.getJSONObject(i).getString("name"));
                 }
                 film.setCast(castList);

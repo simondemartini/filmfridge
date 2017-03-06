@@ -30,6 +30,8 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 public class FilmDetailFragment extends Fragment {
     /** Argument parameters*/
     public final static String FILM_ITEM_SELECTED = "film_selected";
+    private static final int MAX_CAST = 15;
+
 
     private static final String TAG = "FilmDetailFragment";
     private Film mFilm;
@@ -102,7 +104,12 @@ public class FilmDetailFragment extends Fragment {
             mTitleTV.setText(film.getTitle());
             mReleaseDateTV.setText(film.getReleaseDate());
             mDescriptionTV.setText(film.getOverview());
-            mCastTV.setText(listToString(film.getCast()));
+
+            int maxCast = MAX_CAST;
+            if(film.getCast().size() < MAX_CAST) {
+                maxCast = film.getCast().size();
+            }
+            mCastTV.setText(listToString(film.getCast().subList(0, maxCast)));
             mContentRatingTV.setText(film.getContentRating());
             mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
             mGenresTV.setText(listToString(film.getGenres()));
