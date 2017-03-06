@@ -80,13 +80,67 @@ public class RegisterFragment extends Fragment {
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction
-                        .replace(R.id.activity_sign_in, new LoginFragment() )
-                        .addToBackStack(null)
-                        .commit();
+                String userId = userIdText.getText().toString();
+                String cUserId = cUserIdText.getText().toString();
+                String pwd = pwdText.getText().toString();
+                String cPwd = cPwdText.getText().toString();
+
+                if (TextUtils.isEmpty(userId)) {
+                    Toast.makeText(v.getContext(), "Enter email"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    userIdText.requestFocus();
+                    return;
+                }
+                if (!userId.contains("@")) {
+                    Toast.makeText(v.getContext(), "Enter a valid email address"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    userIdText.requestFocus();
+                    return;
+                }
+
+                if (!userId.equals(cUserId)) {
+                    Toast.makeText(v.getContext(), "Emails do not match"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    userIdText.requestFocus();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(pwd)) {
+                    Toast.makeText(v.getContext(), "Enter password"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    pwdText.requestFocus();
+                    return;
+                }
+                if (pwd.length() < 6) {
+                    Toast.makeText(v.getContext()
+                            , "Enter password of at least 6 characters"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    pwdText.requestFocus();
+                    return;
+                }
+                if (!pwd.equals(cPwd)) {
+                    Toast.makeText(v.getContext(), "Passwords do not match"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    userIdText.requestFocus();
+                    return;
+                }
+                ((SignInActivity) getActivity()).register(userId, pwd);
             }
+
+
         });
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction
+                .replace(R.id.activity_sign_in, new LoginFragment() )
+                .addToBackStack(null)
+                .commit();
         return v;
     }
 
