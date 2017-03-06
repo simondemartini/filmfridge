@@ -66,9 +66,9 @@ public class ThresholdDB {
                                    double theAtHome,
                                    double theInTheaters) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("shortDesc", theNotRecom);
-        contentValues.put("longDesc", theAtHome);
-        contentValues.put("prereqs", theInTheaters);
+        contentValues.put("notrecom", theNotRecom);
+        contentValues.put("athome", theAtHome);
+        contentValues.put("intheaters", theInTheaters);
 
         long rowId = mSQLiteDatabase.update("userthreshold", contentValues, "email = ?", new String[] {theEmail});
         return rowId != -1;

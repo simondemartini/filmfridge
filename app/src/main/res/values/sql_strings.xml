@@ -12,4 +12,14 @@
         DROP TABLE IF EXISTS userthreshold
     </string>
 
+    <string name="CREATE_MOVIES_SQL">
+    CREATE TABLE IF NOT EXISTS movies
+    (email TEXT PRIMARY KEY NOT NULL,
+        movieid TEXT DEFAULT NULL)
+    </string>
+
+    <string name="DROP_MOVIES_SQL">
+        DROP TABLE IF EXISTS movies
+    </string>
+
 </resources>
