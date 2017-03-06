@@ -1,11 +1,11 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge.authenticate;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +18,12 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoginFragment.LoginInteractionListener} interface
+ * {@link RegisterFragment.OnRegisterInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment {
+public class RegisterFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,9 +33,9 @@ public class LoginFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private LoginInteractionListener mListener;
+    private OnRegisterInteractionListener mListener;
 
-    public LoginFragment() {
+    public RegisterFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +45,11 @@ public class LoginFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
+     * @return A new instance of fragment RegisterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
+    public static RegisterFragment newInstance(String param1, String param2) {
+        RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,19 +69,24 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+// Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_register, container, false);
+        final EditText userIdText = (EditText) v.findViewById(R.id.register_email);
+        final EditText cUserIdText = (EditText) v.findViewById(R.id.confirm_register_email);
+        final EditText pwdText = (EditText) v.findViewById(R.id.register_password);
+        final EditText cPwdText = (EditText) v.findViewById(R.id.confirm_register_password);
 
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_login, container, false);
-        final EditText userIdText = (EditText) v.findViewById(R.id.login_email);
-        final EditText pwdText = (EditText) v.findViewById(R.id.login_password);
-        Button signInButton = (Button) v.findViewById(R.id.login_button);
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        Button addUserButton = (Button) v.findViewById(R.id.addUser_button);
+        addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userId = userIdText.getText().toString();
+                String cUserId = cUserIdText.getText().toString();
                 String pwd = pwdText.getText().toString();
+                String cPwd = cPwdText.getText().toString();
+
                 if (TextUtils.isEmpty(userId)) {
-                    Toast.makeText(v.getContext(), "Enter userid"
+                    Toast.makeText(v.getContext(), "Enter email"
                             , Toast.LENGTH_SHORT)
                             .show();
                     userIdText.requestFocus();
@@ -89,6 +94,14 @@ public class LoginFragment extends Fragment {
                 }
                 if (!userId.contains("@")) {
                     Toast.makeText(v.getContext(), "Enter a valid email address"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    userIdText.requestFocus();
+                    return;
+                }
+
+                if (!userId.equals(cUserId)) {
+                    Toast.makeText(v.getContext(), "Emails do not match"
                             , Toast.LENGTH_SHORT)
                             .show();
                     userIdText.requestFocus();
@@ -110,30 +123,26 @@ public class LoginFragment extends Fragment {
                     pwdText.requestFocus();
                     return;
                 }
-
-                ((SignInActivity) getActivity()).login(userId, pwd);
+                if (!pwd.equals(cPwd)) {
+                    Toast.makeText(v.getContext(), "Passwords do not match"
+                            , Toast.LENGTH_SHORT)
+                            .show();
+                    userIdText.requestFocus();
+                    return;
+                }
+                ((SignInActivity) getActivity()).register(userId, pwd);
             }
-        });
 
-        Button registerButton = (Button) v.findViewById(R.id.register_button);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction
-                        .replace(R.id.activity_sign_in, new RegisterFragment() )
-                        .commit();
-            }
+
         });
         return v;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof LoginInteractionListener) {
-            mListener = (LoginInteractionListener) context;
+        if (context instanceof OnRegisterInteractionListener) {
+            mListener = (OnRegisterInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -156,8 +165,7 @@ public class LoginFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface LoginInteractionListener {
-        public void login(String userId, String pwd);
+    public interface OnRegisterInteractionListener {
+        void register(String userId, String pwd);
     }
-
 }

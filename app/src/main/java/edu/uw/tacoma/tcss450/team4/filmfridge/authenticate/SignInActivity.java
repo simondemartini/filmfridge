@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,9 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 public class SignInActivity extends AppCompatActivity implements
-        LoginFragment.LoginInteractionListener {
+        LoginFragment.LoginInteractionListener,
+        RegisterFragment.OnRegisterInteractionListener
+{
     /**
      * Login Php url.
      */
@@ -64,12 +67,8 @@ public class SignInActivity extends AppCompatActivity implements
         if (mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
             Intent i = new Intent(SignInActivity.this, FilmActivity.class);
             startActivity(i);
+            finish();
         }
-
-
-
-
-
     }
 
     @Override
@@ -79,6 +78,16 @@ public class SignInActivity extends AppCompatActivity implements
 
         SignInActivity.UserTask usertask = new SignInActivity.UserTask();
         usertask.execute(buildUserUrl(LOGIN_URL));
+
+    }
+
+    @Override
+    public void register(String userId, String pwd) {
+        mEmail = userId;
+        mPassword = pwd;
+
+        SignInActivity.RegisterTask usertask = new SignInActivity.RegisterTask();
+        usertask.execute(buildUserUrl(ADD_USER));
 
     }
 
@@ -151,10 +160,88 @@ public class SignInActivity extends AppCompatActivity implements
 
                     Intent i = new Intent(SignInActivity.this, FilmActivity.class);
                     startActivity(i);
+                    finish();
 
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to login: "
+                                    + jsonObject.get("error")
+                            , Toast.LENGTH_LONG)
+                            .show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
+                        e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    /**
+     * AsyncTask for Users registration and login.
+     */
+    private class RegisterTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to register, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            Log.i("response: ", response);
+            return response;
+        }
+
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String status = (String) jsonObject.get("result");
+                if (status.equals("success")) {
+                    Toast.makeText(getApplicationContext(), "Registered Successfully."
+                            , Toast.LENGTH_LONG)
+                            .show();
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.activity_sign_in, new LoginFragment())
+                            .commit();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed to register: "
                                     + jsonObject.get("error")
                             , Toast.LENGTH_LONG)
                             .show();
