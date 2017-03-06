@@ -2,7 +2,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -103,7 +102,7 @@ public class FilmDetailFragment extends Fragment {
             mTitleTV.setText(film.getTitle());
             mReleaseDateTV.setText(film.getReleaseDate());
             mDescriptionTV.setText(film.getOverview());
-            mCastTV.setText(film.getCast());
+            mCastTV.setText(listToString(film.getCast()));
             mContentRatingTV.setText(film.getContentRating());
             mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
             mGenresTV.setText(listToString(film.getGenres()));
@@ -153,13 +152,6 @@ public class FilmDetailFragment extends Fragment {
             return null;
         }
 
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onAddToMyList(mFilm);
-        }
     }
 
     @Override
@@ -245,7 +237,6 @@ public class FilmDetailFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnDetailFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onAddToMyList(Film film);
         void onRemoveFromMyList(Film film);
     }
