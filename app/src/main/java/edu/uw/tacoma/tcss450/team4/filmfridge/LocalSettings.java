@@ -45,6 +45,19 @@ public class LocalSettings {
     }
 
     /**
+     * Remove an film to my list by its id number
+     * @param id the film id
+     */
+    public void removeFromMyList(String id) {
+        readMyList();
+        mMyList.remove(id);
+
+        mSharedPreferences.edit()
+                .putStringSet(mContext.getString(R.string.MY_LIST_IDS), mMyList)
+                .commit();
+    }
+
+    /**
      * Read and get all of the films in MyList
      * @return
      */

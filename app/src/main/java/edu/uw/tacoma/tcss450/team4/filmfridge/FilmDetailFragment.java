@@ -36,6 +36,8 @@ public class FilmDetailFragment extends Fragment {
     private Film mFilm;
     private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV;
     private ImageView mPoster;
+    private Button mMyListModifier;
+    private LocalSettings mLocalSettings;
 
     private OnDetailFragmentInteractionListener mListener;
 
@@ -69,6 +71,7 @@ public class FilmDetailFragment extends Fragment {
             mFilm = (Film) getArguments().getSerializable(FILM_ITEM_SELECTED);
         }
         setHasOptionsMenu(true);
+        mLocalSettings = new LocalSettings(getActivity());
     }
 
     @Override
@@ -84,11 +87,11 @@ public class FilmDetailFragment extends Fragment {
         mGenresTV = (TextView) view.findViewById(R.id.genres);
         mPoster = (ImageView) view.findViewById(R.id.poster);
 
-        Button addToMyList = (Button) view.findViewById(R.id.add_to_my_list);
-        addToMyList.setOnClickListener(new View.OnClickListener() {
+        mMyListModifier = (Button) view.findViewById(R.id.add_to_my_list);
+        mMyListModifier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onAddFilmToMyList(mFilm);
+                mListener.onAddToMyList(mFilm);
             }
         });
 
@@ -104,6 +107,25 @@ public class FilmDetailFragment extends Fragment {
             mContentRatingTV.setText(film.getContentRating());
             mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
             mGenresTV.setText(listToString(film.getGenres()));
+
+            //Change button to remove or add from my list
+            if(mLocalSettings.getMyList().contains(film.getId())) {
+                mMyListModifier.setText(getString(R.string.remove_from_my_list));
+                mMyListModifier.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onRemoveFromMyList(mFilm);
+                    }
+                });
+            } else {
+                mMyListModifier.setText(getString(R.string.add_to_my_list));
+                mMyListModifier.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onAddToMyList(mFilm);
+                    }
+                });
+            }
         }
     }
 
@@ -125,7 +147,7 @@ public class FilmDetailFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onAddFilmToMyList(mFilm);
+            mListener.onAddToMyList(mFilm);
         }
     }
 
@@ -213,6 +235,7 @@ public class FilmDetailFragment extends Fragment {
      */
     public interface OnDetailFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onAddFilmToMyList(Film film);
+        void onAddToMyList(Film film);
+        void onRemoveFromMyList(Film film);
     }
 }
