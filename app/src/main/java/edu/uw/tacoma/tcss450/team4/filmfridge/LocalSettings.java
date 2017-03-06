@@ -23,13 +23,13 @@ public class LocalSettings {
         mContext = context;
         mSharedPreferences = mContext.getSharedPreferences(mContext.getString(R.string.LOGIN_PREFS),
                 Context.MODE_PRIVATE);
-        mMyList = mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
-                new HashSet<String>());
+        mMyList = new HashSet<>(mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
+                new HashSet<String>()));
     }
 
     private void readMyList() {
-        mMyList = mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
-                new HashSet<String>());
+        mMyList = new HashSet<>(mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
+                new HashSet<String>()));
     }
 
     /**
@@ -39,6 +39,7 @@ public class LocalSettings {
     public void addToMyList(String id) {
         readMyList();
         mMyList.add(id);
+
         mSharedPreferences.edit()
                 .putStringSet(mContext.getString(R.string.MY_LIST_IDS), mMyList)
                 .commit();
