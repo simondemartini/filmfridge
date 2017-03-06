@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="CREATE_THRESHOLD_SQL">
+    CREATE TABLE IF NOT EXISTS userthreshold
+    (email TEXT PRIMARY KEY NOT NULL,
+        notrecom DECIMAL DEFAULT NULL,
+        athome DECIMAL DEFAULT NULL,
+        intheaters DECIMAL DEFAULT NULL)
+    </string>
+
+    <string name="DROP_THRESHOLD_SQL">
+        DROP TABLE IF EXISTS userthreshold
+    </string>
+
+</resources>
