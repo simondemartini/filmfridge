@@ -1,10 +1,10 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge.authenticate;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,7 +83,10 @@ public class SignInActivity extends AppCompatActivity implements
 
     @Override
     public void register(String userId, String pwd) {
-        SignInActivity.UserTask usertask = new SignInActivity.UserTask();
+        mEmail = userId;
+        mPassword = pwd;
+
+        SignInActivity.RegisterTask usertask = new SignInActivity.RegisterTask();
         usertask.execute(buildUserUrl(ADD_USER));
     }
 
@@ -231,10 +234,8 @@ public class SignInActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), "Registered Successfully."
                             , Toast.LENGTH_LONG)
                             .show();
-
-                    Log.i("LOGGEDIN STAT:", "ONPOSTEXECUTE TRUE");
-
-
+                    getSupportFragmentManager().beginTransaction().
+                            remove(getSupportFragmentManager().findFragmentById(R.id.fragment_register)).commit();
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to register: "

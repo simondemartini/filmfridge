@@ -135,12 +135,6 @@ public class RegisterFragment extends Fragment {
 
 
         });
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction
-                .replace(R.id.activity_sign_in, new LoginFragment() )
-                .addToBackStack(null)
-                .commit();
         return v;
     }
 
