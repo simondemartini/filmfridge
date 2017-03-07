@@ -25,17 +25,18 @@ public class Movie implements Serializable {
     /**
      * Parses the json string, returns an error message if unsuccessful.
      * Returns course list if success.
-     * @param courseJSON
+     * @param movieJSON
      * @return reason or null if successful.
      */
-    public static String parseMovieJSON(String courseJSON, List<String> movieIdList) {
+    public static String parseMovieJSON(String movieJSON, List<String> movieIdList) {
         String reason = null;
-        if (courseJSON != null) {
+        if (movieJSON != null) {
             try {
-                JSONArray arr = new JSONArray(courseJSON);
+                JSONArray arr = new JSONArray(movieJSON);
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
+                    //if email = user.... add to the list. it's user's movie.
                     movieIdList.add(obj.getString(Movie.MOVIE_ID));
                 }
             } catch (JSONException e) {
