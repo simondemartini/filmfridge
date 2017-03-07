@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.uw.tacoma.tcss450.team4.filmfridge.LocalSettings;
+
 /**
  * Created by Samantha Ong on 3/6/2017.
  */
@@ -28,7 +30,7 @@ public class Movie implements Serializable {
      * @param movieJSON
      * @return reason or null if successful.
      */
-    public static String parseMovieJSON(String movieJSON, List<String> movieIdList) {
+    public static String parseMovieJSON(String movieJSON, LocalSettings theLocalSettings) {
         String reason = null;
         if (movieJSON != null) {
             try {
@@ -36,8 +38,10 @@ public class Movie implements Serializable {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    //if email = user.... add to the list. it's user's movie.
-                    movieIdList.add(obj.getString(Movie.MOVIE_ID));
+                    if(obj.getString(EMAIL).equals(theLocalSettings.getEmail())) {
+                        theLocalSettings.addToMyList(obj.getString(MOVIE_ID));
+                    }
+
                 }
             } catch (JSONException e) {
                 reason =  "Unable to parse data, Reason: " + e.getMessage();
