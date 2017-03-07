@@ -15,20 +15,24 @@ import java.util.Set;
 
 public class LocalSettings {
 
+    private final static String ID_MY_LIST = "edu.uw.tacoma.tcss422.filmfridge.MY_LIST_IDS";
+    private final static String ID_AT_HOME = "edu.uw.tacoma.tcss422.filmfridge.AT_HOME";
+    private final static String ID_IN_THEATERS = "edu.uw.tacoma.tcss422.filmfridge.ID_IN_THEATERS";
+
+    private final static int DEFAULT_AT_HOME_VALUE = 80;
+    private final static int DEFAULT_IN_THEATERS_VALUE = 60;
+
     private final Context mContext;
     private final SharedPreferences mSharedPreferences;
-    private Set<String> mMyList;
 
     public LocalSettings(Context context) {
         mContext = context;
         mSharedPreferences = mContext.getSharedPreferences(mContext.getString(R.string.LOGIN_PREFS),
                 Context.MODE_PRIVATE);
-        mMyList = new HashSet<>(mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
-                new HashSet<String>()));
     }
 
-    private void readMyList() {
-        mMyList = new HashSet<>(mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
+    public Set<String> getMyList() {
+        return new HashSet<>(mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
                 new HashSet<String>()));
     }
 
@@ -37,11 +41,11 @@ public class LocalSettings {
      * @param id the film id
      */
     public void addToMyList(String id) {
-        readMyList();
-        mMyList.add(id);
+        Set<String> list = getMyList();
+        list.add(id);
 
         mSharedPreferences.edit()
-                .putStringSet(mContext.getString(R.string.MY_LIST_IDS), mMyList)
+                .putStringSet(ID_MY_LIST, list)
                 .commit();
     }
 
@@ -50,20 +54,43 @@ public class LocalSettings {
      * @param id the film id
      */
     public void removeFromMyList(String id) {
-        readMyList();
-        mMyList.remove(id);
+        Set<String> list = getMyList();
+        list.remove(id);
 
         mSharedPreferences.edit()
-                .putStringSet(mContext.getString(R.string.MY_LIST_IDS), mMyList)
+                .putStringSet(ID_MY_LIST, list)
                 .commit();
     }
 
     /**
-     * Read and get all of the films in MyList
-     * @return
+     * Set at home movie threshold
      */
-    public Set<String> getMyList() {
-        readMyList();
-        return mMyList;
+    public void setAtHomeThreshold(int atHomeThreshold) {
+        mSharedPreferences.edit()
+                .putInt(ID_AT_HOME, atHomeThreshold)
+                .commit();
+    }
+
+    /**
+     * Set at in theaters movie threshold
+     */
+    public void setInTheatersThreshold(int inTheatersThreshold) {
+        mSharedPreferences.edit()
+                .putInt(ID_IN_THEATERS, inTheatersThreshold)
+                .commit();
+    }
+
+    /**
+     * Get the At Home Threshold or the deafult value if it doesn't exist
+     */
+    public int getAtHomeThreshold() {
+        return mSharedPreferences.getInt(ID_AT_HOME, DEFAULT_AT_HOME_VALUE);
+    }
+
+    /**
+     * Get the in theaters threshold, or the default value if it doesn't exist
+     */
+    public int getInTheatersThreshold() {
+        return mSharedPreferences.getInt(ID_IN_THEATERS, DEFAULT_IN_THEATERS_VALUE);
     }
 }
