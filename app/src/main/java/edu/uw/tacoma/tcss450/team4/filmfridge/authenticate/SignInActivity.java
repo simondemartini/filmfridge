@@ -2,7 +2,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge.authenticate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
+import edu.uw.tacoma.tcss450.team4.filmfridge.LocalSettings;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 
@@ -56,21 +56,20 @@ public class SignInActivity extends AppCompatActivity implements
     /**
      * Shared preferences to remember that the user successfully logged in.
      */
-    private SharedPreferences mSharedPreferences;
+    private LocalSettings mLocalSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS)
-                , Context.MODE_PRIVATE);
+        mLocalSettings = new LocalSettings(this);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_sign_in, new LoginFragment() )
                 .commit();
 
-        Log.i("LOGGEDIN STAT", "SingInActivity onCreate " + mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false));
-        if (mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
+        Log.i("LOGGEDIN STAT", "SingInActivity onCreate " + mLocalSettings.getLoggedIn());
+        if (mLocalSettings.getLoggedIn()) {
             Intent i = new Intent(SignInActivity.this, FilmActivity.class);
             startActivity(i);
             finish();
@@ -157,10 +156,8 @@ public class SignInActivity extends AppCompatActivity implements
                             , Toast.LENGTH_LONG)
                             .show();
 
-                    mSharedPreferences
-                            .edit()
-                            .putBoolean(getString(R.string.LOGGEDIN), true)
-                            .commit();
+                    mLocalSettings.setLoggedIn(true);
+                    mLocalSettings.setEmail(mEmail);
 
                     Log.i("LOGGEDIN STAT:", "ONPOSTEXECUTE TRUE");
 

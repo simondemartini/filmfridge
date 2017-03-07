@@ -2,7 +2,6 @@ package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -123,10 +122,8 @@ public class FilmActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            SharedPreferences sharedPreferences =
-                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-            sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false)
-                    .commit();
+            mLocalSettings.setLoggedIn(false);
+            mLocalSettings.setEmail(null);
 
             Intent i = new Intent(this, SignInActivity.class);
             startActivity(i);
