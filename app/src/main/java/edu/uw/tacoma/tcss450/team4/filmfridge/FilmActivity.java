@@ -84,7 +84,10 @@ public class FilmActivity extends AppCompatActivity implements
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_settings) {
-
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.film_fragment_container, new SettingsFragment())
+                    .addToBackStack(null)
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
