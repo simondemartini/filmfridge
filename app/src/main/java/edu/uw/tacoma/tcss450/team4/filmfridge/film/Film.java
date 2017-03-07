@@ -17,16 +17,10 @@ import java.util.List;
  */
 
 public class Film implements Serializable {
-    //TODO: Move to TMDBFetcher
-    public static final String ID = "id", TITLE ="title", OVERVIEW = "overview",
-            RELEASE_DATE = "release_date", POSTER_PATH = "poster_path",
-            BACKDROP_PATH = "backdrop_path";
 
     private String mFilmId, mTitle, mOverview, mPosterPath, mBackdropPath, mContentRating;
     private Recommendation mRecommendation;
     private int mRating;
-
-
     private List<String> mGenres, mCast;
     private Date mReleaseDate;
 
