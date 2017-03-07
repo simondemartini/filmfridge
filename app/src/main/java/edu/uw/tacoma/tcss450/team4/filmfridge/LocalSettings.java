@@ -18,6 +18,9 @@ public class LocalSettings {
     private final static String ID_MY_LIST = "edu.uw.tacoma.tcss422.filmfridge.MY_LIST_IDS";
     private final static String ID_AT_HOME = "edu.uw.tacoma.tcss422.filmfridge.AT_HOME";
     private final static String ID_IN_THEATERS = "edu.uw.tacoma.tcss422.filmfridge.ID_IN_THEATERS";
+    private final static String ID_LOGGED_IN = "edu.uw.tacoma.tcss422.filmfridge.ID_LOGGED_IN";
+    private final static String ID_EMAIL = "edu.uw.tacoma.tcss422.filmfridge.ID_EMAIL";
+
 
     private final static int DEFAULT_AT_HOME_VALUE = 80;
     private final static int DEFAULT_IN_THEATERS_VALUE = 60;
@@ -92,5 +95,37 @@ public class LocalSettings {
      */
     public int getInTheatersThreshold() {
         return mSharedPreferences.getInt(ID_IN_THEATERS, DEFAULT_IN_THEATERS_VALUE);
+    }
+
+    /**
+     * Set whether a user is logged in
+     */
+    public void setLoggedIn(boolean loggedIn) {
+        mSharedPreferences.edit()
+                .putBoolean(ID_LOGGED_IN, loggedIn)
+                .commit();
+    }
+
+    /**
+     * Get whether the user is logged in. False is default if it doesn't exist
+     */
+    public boolean getLoggedIn() {
+        return mSharedPreferences.getBoolean(ID_LOGGED_IN, false);
+    }
+
+    /**
+     * Set whether a user's logged in email
+     */
+    public void setEmail(String email) {
+        mSharedPreferences.edit()
+                .putString(ID_EMAIL, email)
+                .commit();
+    }
+
+    /**
+     * Get whether the user is logged in. Defaults to null if not logged in
+     */
+    public String getEmail() {
+        return mSharedPreferences.getString(ID_EMAIL, null);
     }
 }
