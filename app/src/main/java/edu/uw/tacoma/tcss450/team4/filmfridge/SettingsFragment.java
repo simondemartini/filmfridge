@@ -1,7 +1,6 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -107,6 +106,7 @@ public class SettingsFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
                 mLocalSettings.setAtHomeThreshold(mAtHomeSB.getProgress());
+                mListener.onSettingsChange();
             }
         });
         mInTheatersSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -128,6 +128,7 @@ public class SettingsFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
                 mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
+                mListener.onSettingsChange();
             }
         });
         mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
@@ -167,7 +168,6 @@ public class SettingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSettingsInteractionListener {
-        // TODO: Update argument type and name
-        void settings(Uri uri);
+        void onSettingsChange();
     }
 }

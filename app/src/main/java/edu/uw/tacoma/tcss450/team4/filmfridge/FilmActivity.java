@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
@@ -189,7 +191,10 @@ public class FilmActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void settings(Uri uri) {}
+    public void onSettingsChange() {
+        if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
+    }
 
 
     public void onHideForever(Film film) {
