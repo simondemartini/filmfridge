@@ -22,8 +22,8 @@ public class LocalSettings {
     private final static String ID_EMAIL = "edu.uw.tacoma.tcss422.filmfridge.ID_EMAIL";
 
 
-    private final static int DEFAULT_AT_HOME_VALUE = 80;
-    private final static int DEFAULT_IN_THEATERS_VALUE = 60;
+    private final static int DEFAULT_AT_HOME_VALUE = 60;
+    private final static int DEFAULT_IN_THEATERS_VALUE = 70;
 
     private final Context mContext;
     private final SharedPreferences mSharedPreferences;

@@ -156,7 +156,7 @@ public class Film implements Serializable {
             throw new IllegalArgumentException("Must set rating first");
         } else if (mRating >= inTheatersThreshold) {
             mRecommendation = Recommendation.RECOMMENDED;
-        } else if (mRating >= atHomeThreshold) {
+        } else if (mRating >= atHomeThreshold && mRating < inTheatersThreshold) {
             mRecommendation = Recommendation.SEE_AT_HOME;
         } else {
             mRecommendation = Recommendation.NOT_RECOMMENDED;
