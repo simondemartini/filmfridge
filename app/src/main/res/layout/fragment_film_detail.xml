@@ -73,29 +73,38 @@
             android:id="@+id/separator1"
             android:background="@color/colorLight" />
 
+        <TextView
+            android:id="@+id/recommendation"
+            android:layout_below="@id/separator1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/no_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            tools:text="Recommended!"
+            android:textSize="14sp"
+            android:padding="@dimen/recommendation_padding"
+            android:background="@drawable/recommendation_badge"/>
+
         <LinearLayout
             android:id="@+id/controls"
-            android:layout_below="@id/separator1"
-            android:orientation="vertical"
+            android:layout_below="@id/recommendation"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/recommendation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/no_margin"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                tools:text="Recommended!"
-                android:textSize="14sp"
-                android:padding="@dimen/recommendation_padding"
-                android:background="@drawable/recommendation_badge"/>
-
             <Button
                 android:id="@+id/add_to_my_list"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/add_to_my_list" />
+
+            <Button
+                android:id="@+id/hide_forever"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hide" />
 
         </LinearLayout>
 

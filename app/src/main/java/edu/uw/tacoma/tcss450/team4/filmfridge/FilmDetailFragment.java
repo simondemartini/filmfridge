@@ -38,7 +38,7 @@ public class FilmDetailFragment extends Fragment {
     private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV,
             mRecommendation, mCriticRating, mCriticRatingLabel;
     private ImageView mPoster;
-    private Button mMyListModifier;
+    private Button mMyListModifier, mHideForever;
     private LocalSettings mLocalSettings;
 
     private OnDetailFragmentInteractionListener mListener;
@@ -98,6 +98,14 @@ public class FilmDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mListener.onAddToMyList(mFilm);
+            }
+        });
+
+        mHideForever = (Button) view.findViewById(R.id.hide_forever);
+        mHideForever.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onHideForever(mFilm);
             }
         });
 
@@ -283,5 +291,6 @@ public class FilmDetailFragment extends Fragment {
     public interface OnDetailFragmentInteractionListener {
         void onAddToMyList(Film film);
         void onRemoveFromMyList(Film film);
+        void onHideForever(Film film);
     }
 }

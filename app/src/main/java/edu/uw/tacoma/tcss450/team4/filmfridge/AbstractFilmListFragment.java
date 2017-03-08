@@ -168,6 +168,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
         protected void onPostExecute(List<Film> result) {
             // Everything is good, show the list.
             if (result != null && !result.isEmpty()) {
+
                 mFilmRecyclerViewAdapter.swap(result);
             } else if (result != null && result.isEmpty()){
                 mFilmRecyclerViewAdapter.swap(result);
