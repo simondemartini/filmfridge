@@ -8,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SettingsFragment.OnFragmentInteractionListener} interface
+ * {@link SettingsFragment.OnSettingsInteractionListener} interface
  * to handle interaction events.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -28,8 +30,15 @@ public class SettingsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView mAtHomeTV;
+    private SeekBar atHomeSB;
 
-    private OnFragmentInteractionListener mListener;
+    private TextView mInTheatersTV;
+    private SeekBar mInTheatersSB;
+
+    private LocalSettings mLocalSettings;
+
+    private OnSettingsInteractionListener mListener;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -69,22 +78,60 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
+        atHomeSB = (SeekBar) v.findViewById(R.id.seekBar);
+        mAtHomeTV = (TextView) v.findViewById(R.id.ahtextview);
+        mLocalSettings = new LocalSettings(v.getContext());
+        mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
+        atHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
+                progress = theProgress;
+                mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
+                mLocalSettings.setAtHomeThreshold(progress);
+            }
+        });
+
+        mInTheatersSB = (SeekBar) v.findViewById(R.id.itSeekBar);
+        mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
+        mInTheatersTV.setText("In theaters threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
+        mInTheatersSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
+                progress = theProgress;
+                mInTheatersTV.setText("In theaters threshold: " + mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mInTheatersTV.setText("In theaters threshold: " + mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
+                mLocalSettings.setInTheatersThreshold(progress);
+            }
+        });
+        
         return v;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnSettingsInteractionListener) {
+            mListener = (OnSettingsInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -107,8 +154,8 @@ public class SettingsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnSettingsInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void settings(Uri uri);
     }
 }

@@ -2,6 +2,7 @@ package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +20,8 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 public class FilmActivity extends AppCompatActivity implements
         NowPlayingListFragment.OnListFragmentInteractionListener,
         FilmDetailFragment.OnDetailFragmentInteractionListener,
-        NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener,
+        SettingsFragment.OnSettingsInteractionListener {
 
     private NowPlayingListFragment mNowPlayingListFragment;
     private MyListFragment mMyListFragment;
@@ -149,5 +151,10 @@ public class FilmActivity extends AppCompatActivity implements
         mLocalSettings.removeFromMyList(film.getId());
         String success = film.getTitle() + " " + getString(R.string.remove_from_my_list_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void settings(Uri uri) {
+
     }
 }
