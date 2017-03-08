@@ -53,11 +53,14 @@ public class FilmActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        mLocalSettings = new LocalSettings(this);
+
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getMenu().getItem(0).setChecked(true);
 
-        mLocalSettings = new LocalSettings(this);
+        TextView navEmail = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.nav_email);
+        navEmail.setText(mLocalSettings.getEmail());
     }
 
     @Override
