@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +27,7 @@ public class FilmActivity extends AppCompatActivity implements
     private NowPlayingListFragment mNowPlayingListFragment;
     private MyListFragment mMyListFragment;
     private LocalSettings mLocalSettings;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,9 @@ public class FilmActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.getMenu().getItem(0).setChecked(true);
 
         mLocalSettings = new LocalSettings(this);
     }
@@ -60,6 +63,18 @@ public class FilmActivity extends AppCompatActivity implements
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            FragmentManager manager = getSupportFragmentManager();
+            //update selected nav menu item on back press
+            Fragment currentFragment = manager.findFragmentById(R.id.film_fragment_container);
+            if(currentFragment instanceof NowPlayingListFragment){
+                mNavigationView.getMenu().getItem(0).setChecked(true);
+            }
+            else if(currentFragment instanceof MyListFragment){
+                mNavigationView.getMenu().getItem(1).setChecked(true);
+            }
+            else if(currentFragment instanceof SettingsFragment){
+                mNavigationView.getMenu().getItem(2).setChecked(true);
+            }
         }
     }
 
