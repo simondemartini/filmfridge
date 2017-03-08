@@ -51,6 +51,8 @@
     <string name="remove_from_my_list_successful"> removed from My List</string>
     <string name="hide_forever_successful"> is now hidden</string>
     <string name="reveal">Reveal Critic Rating</string>
+    <string name="unhide">Show all hidden films</string>
+    <string name="unhide_successful">All films are shown</string>
     <string name="critic_rating">%d%%</string>
 
     <!--Settings Fragment-->

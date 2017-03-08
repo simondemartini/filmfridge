@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -129,8 +130,23 @@ public class FilmActivity extends AppCompatActivity implements
             startActivity(i);
             finish();
             return true;
+        } else if (id == R.id.action_unhide) {
+            mLocalSettings.resetHiddenList();
+            if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
+            if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
+
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.film_fragment_container);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(f)
+                    .attach(f)
+                    .commit();
+
         } else if (id == R.id.action_share) {
             //implemented in the fragment
+            return false;
+        } else if (id == R.id.hide_forever) {
+            //implemented in fragment
             return false;
         }
 

@@ -85,6 +85,17 @@ public class LocalSettings {
     }
 
     /**
+     * Reset the hidden films list to contain nothing
+     */
+    public void resetHiddenList() {
+        Set<String> list = new HashSet<>();
+
+        mSharedPreferences.edit()
+                .putStringSet(ID_HIDDEN_LIST, list)
+                .commit();
+    }
+
+    /**
      * Set at home movie threshold
      */
     public void setAtHomeThreshold(int atHomeThreshold) {

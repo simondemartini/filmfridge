@@ -20,10 +20,11 @@ public class FilmFilter {
     }
 
     /**
-     * Add a set of films that are never supposed to be shown.
+     * Set the set of films that are never supposed to be shown.
      * @param hiddenIds
      */
-    public void addHiddenIds(Set<String> hiddenIds ) {
+    public void setHiddenIds(Set<String> hiddenIds ) {
+        mHiddenIds.clear();
         mHiddenIds.addAll(hiddenIds);
     }
 
