@@ -17,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -75,11 +77,14 @@ public class FilmActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        mLocalSettings = new LocalSettings(this);
+
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getMenu().getItem(0).setChecked(true);
 
-        mLocalSettings = new LocalSettings(this);
+        TextView navEmail = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.nav_email);
+        navEmail.setText(mLocalSettings.getEmail());
     }
 
     @Override
@@ -314,12 +319,15 @@ public class FilmActivity extends AppCompatActivity implements
             sb.append("&intheaters=");
             sb.append(it);
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
                     .show();
         }
         return sb.toString();
+    }
+    public void onSettingsChange() {
+        if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
     }
 
 
