@@ -169,6 +169,26 @@
                 android:scrollHorizontally="false"
                 android:ellipsize="none" />
 
+            <TextView
+                android:id="@+id/label_critic_rating"
+                android:textAppearance="@style/AppTheme.Text.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/label_critic_review"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/critic_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/no_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:text="86%"
+                android:scrollHorizontally="false"
+                android:ellipsize="none"
+                android:visibility="gone"/>
+
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

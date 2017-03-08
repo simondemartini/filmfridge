@@ -12,6 +12,13 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/action_reveal"
+        android:visible="false"
+        android:orderInCategory="60"
+        android:title="@string/reveal"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:title="@string/action_logout"

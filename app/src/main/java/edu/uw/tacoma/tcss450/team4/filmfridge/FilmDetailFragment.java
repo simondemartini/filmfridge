@@ -36,7 +36,7 @@ public class FilmDetailFragment extends Fragment {
     private static final String TAG = "FilmDetailFragment";
     private Film mFilm;
     private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV,
-            mRecommendation;
+            mRecommendation, mCriticRating, mCriticRatingLabel;
     private ImageView mPoster;
     private Button mMyListModifier;
     private LocalSettings mLocalSettings;
@@ -89,6 +89,9 @@ public class FilmDetailFragment extends Fragment {
         mGenresTV = (TextView) view.findViewById(R.id.genres);
         mPoster = (ImageView) view.findViewById(R.id.poster);
         mRecommendation = (TextView) view.findViewById(R.id.recommendation);
+        mCriticRating = (TextView) view.findViewById(R.id.critic_rating);
+        mCriticRatingLabel = (TextView) view.findViewById(R.id.label_critic_rating);
+
 
         mMyListModifier = (Button) view.findViewById(R.id.add_to_my_list);
         mMyListModifier.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +118,7 @@ public class FilmDetailFragment extends Fragment {
             mContentRatingTV.setText(film.getContentRating());
             mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
             mGenresTV.setText(listToString(film.getGenres()));
+            mCriticRating.setText(String.format(getString(R.string.critic_rating), film.getRating()));
 
             //Change button to remove or add from my list
             setMyListButton(mLocalSettings.getMyList().contains(film.getId()));
@@ -223,7 +227,9 @@ public class FilmDetailFragment extends Fragment {
         // Inflate the menu; this adds items to the action bar if it is present.
         //inflater.inflate(R.menu.menu_film_list, menu);
         MenuItem share = menu.findItem(R.id.action_share);
+        MenuItem reveal = menu.findItem(R.id.action_reveal);
         share.setVisible(true);
+        reveal.setVisible(true);
 
         //Set up sharing button
         super.onCreateOptionsMenu(menu, inflater);
@@ -234,6 +240,9 @@ public class FilmDetailFragment extends Fragment {
         int id = item.getItemId();
         if(id == R.id.action_share) {
             shareFilm();
+            return true;
+        } else if (id == R.id.action_reveal) {
+            revealScore();
             return true;
         }
 
@@ -251,6 +260,14 @@ public class FilmDetailFragment extends Fragment {
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
 
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_chooser)));
+    }
+
+    /**
+     * This method reveals the actual critic rating of a film
+     */
+    private void revealScore() {
+        mCriticRating.setVisibility(View.VISIBLE);
+        mCriticRatingLabel.setVisibility(View.VISIBLE);
     }
 
     /**
