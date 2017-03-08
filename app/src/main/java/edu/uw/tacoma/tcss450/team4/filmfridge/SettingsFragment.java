@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class SettingsFragment extends Fragment {
     private TextView mUserEmail;
     private TextView mInTheatersTV;
     private SeekBar mInTheatersSB;
+    private ProgressBar mProgressSpinner;
 
     private LocalSettings mLocalSettings;
 
@@ -77,17 +79,19 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
         getActivity().setTitle(getString(R.string.settings));
-        mAtHomeSB = (SeekBar) v.findViewById(R.id.seekBar);
+
+        //hide spinner
+        mProgressSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_spinner);
+        mProgressSpinner.setVisibility(View.GONE);
+
+        mAtHomeSB = (SeekBar) v.findViewById(R.id.ahSeekBar);
         mAtHomeTV = (TextView) v.findViewById(R.id.ahtextview);
         mInTheatersSB = (SeekBar) v.findViewById(R.id.itSeekBar);
         mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
-        mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
-        mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
         mAtHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
-                //limit max progress to in theaters recomenndation
+                //limit max progress to in theaters recommendation
                 if(theProgress > mInTheatersSB.getProgress()) {
                     mAtHomeSB.setProgress(mInTheatersSB.getProgress());
                 }
@@ -102,14 +106,10 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
-                mLocalSettings.setAtHomeThreshold(progress);
+                mLocalSettings.setAtHomeThreshold(mAtHomeSB.getProgress());
             }
         });
-        mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
-
-        mInTheatersTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
         mInTheatersSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
                 //limit progress min to at home threshold
@@ -127,10 +127,13 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
+                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
             }
         });
         mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
+        mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
 
+        mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
         mUserEmail.setText(mLocalSettings.getEmail());
 
         return v;

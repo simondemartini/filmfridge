@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/AppTheme.SettingsItemWideWidget"
-        android:id="@+id/seekBar"
+        android:id="@+id/ahSeekBar"
         android:paddingStart="@dimen/seekbar_padding"
         android:paddingLeft="@dimen/seekbar_padding"
         android:paddingEnd="@dimen/seekbar_padding"
