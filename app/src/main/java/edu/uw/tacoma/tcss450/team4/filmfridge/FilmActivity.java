@@ -229,7 +229,7 @@ public class FilmActivity extends AppCompatActivity implements
     }
 
     /**
-     * AsyncTask for Users registration and login.
+     * AsyncTask for updating thresholds.
      */
     private class ThresholdTask extends AsyncTask<String, Void, String> {
 
