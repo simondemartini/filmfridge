@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +29,7 @@ public class FilmActivity extends AppCompatActivity implements
     private NowPlayingListFragment mNowPlayingListFragment;
     private MyListFragment mMyListFragment;
     private LocalSettings mLocalSettings;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +51,9 @@ public class FilmActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.getMenu().getItem(0).setChecked(true);
 
         mLocalSettings = new LocalSettings(this);
     }
@@ -60,6 +65,18 @@ public class FilmActivity extends AppCompatActivity implements
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            FragmentManager manager = getSupportFragmentManager();
+            //update selected nav menu item on back press
+            Fragment currentFragment = manager.findFragmentById(R.id.film_fragment_container);
+            if(currentFragment instanceof NowPlayingListFragment){
+                mNavigationView.getMenu().getItem(0).setChecked(true);
+            }
+            else if(currentFragment instanceof MyListFragment){
+                mNavigationView.getMenu().getItem(1).setChecked(true);
+            }
+            else if(currentFragment instanceof SettingsFragment){
+                mNavigationView.getMenu().getItem(2).setChecked(true);
+            }
         }
     }
 
@@ -105,6 +122,7 @@ public class FilmActivity extends AppCompatActivity implements
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.film_fragment_container, filmDetailFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(null)
                 .commit();
     }
@@ -131,8 +149,23 @@ public class FilmActivity extends AppCompatActivity implements
             startActivity(i);
             finish();
             return true;
+        } else if (id == R.id.action_unhide) {
+            mLocalSettings.resetHiddenList();
+            if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
+            if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
+
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.film_fragment_container);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(f)
+                    .attach(f)
+                    .commit();
+
         } else if (id == R.id.action_share) {
             //implemented in the fragment
+            return false;
+        } else if (id == R.id.hide_forever) {
+            //implemented in fragment
             return false;
         }
 
@@ -142,6 +175,7 @@ public class FilmActivity extends AppCompatActivity implements
     @Override
     public void onAddToMyList(Film film) {
         mLocalSettings.addToMyList(film.getId());
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
         String success = film.getTitle() + " " + getString(R.string.add_to_my_list_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
@@ -149,12 +183,21 @@ public class FilmActivity extends AppCompatActivity implements
     @Override
     public void onRemoveFromMyList(Film film) {
         mLocalSettings.removeFromMyList(film.getId());
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
         String success = film.getTitle() + " " + getString(R.string.remove_from_my_list_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void settings(Uri uri) {
+    public void settings(Uri uri) {}
+
+
+    public void onHideForever(Film film) {
+        mLocalSettings.addToHiddenList(film.getId());
+        if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
+        String success = film.getTitle() + " " + getString(R.string.hide_forever_successful);
+        Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
 
     }
 }

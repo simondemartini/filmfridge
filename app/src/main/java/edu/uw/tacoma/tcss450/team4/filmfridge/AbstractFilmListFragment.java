@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
+import edu.uw.tacoma.tcss450.team4.filmfridge.film.FilmFilter;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
 
 /**
@@ -28,6 +29,7 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
 public abstract class AbstractFilmListFragment extends Fragment {
 
     protected static final String ARG_COLUMN_COUNT = "column-count";
+    protected boolean isContentChanged = false;
 
     protected TMDBFetcher tmdb;
 
@@ -37,6 +39,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
     protected ProgressBar mProgressSpinner;
     protected FilmListRecyclerViewAdapter mFilmRecyclerViewAdapter;
     protected LocalSettings mLocalSettings;
+    protected FilmFilter mFilmFilter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -53,6 +56,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         tmdb = new TMDBFetcher(getActivity());
         mLocalSettings = new LocalSettings(getActivity());
+        mFilmFilter = new FilmFilter();
         mFilmRecyclerViewAdapter = new FilmListRecyclerViewAdapter(new ArrayList<Film>(), mListener);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -88,8 +92,10 @@ public abstract class AbstractFilmListFragment extends Fragment {
             }
             mRecyclerView.setAdapter(mFilmRecyclerViewAdapter);
 
-            if(mFilmRecyclerViewAdapter.getItemCount()==0 || isContentChanged()) {
+            if(mFilmRecyclerViewAdapter.getItemCount() == 0 || isContentChanged) {
                 //TODO: Find a better way to limit re-downloading of info -- maybe a refresh button and a local DB?
+                isContentChanged = false;
+                mFilmFilter.setHiddenIds(mLocalSettings.getHiddenList());
                 startDownloadTask();
             }
         }
@@ -99,7 +105,9 @@ public abstract class AbstractFilmListFragment extends Fragment {
     /**
      * Update the list if the data set has changed
      */
-    protected abstract boolean isContentChanged();
+    public void notifyContentChanged() {
+        isContentChanged = true;
+    }
 
     /**
      * Create and start a new AsyncTask for getting the films.
@@ -168,7 +176,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
         protected void onPostExecute(List<Film> result) {
             // Everything is good, show the list.
             if (result != null && !result.isEmpty()) {
-                mFilmRecyclerViewAdapter.swap(result);
+                mFilmRecyclerViewAdapter.swap(mFilmFilter.filterFilms(result));
             } else if (result != null && result.isEmpty()){
                 mFilmRecyclerViewAdapter.swap(result);
                 Toast.makeText(getActivity().getApplicationContext(), getString(R.string.empty_list), Toast.LENGTH_LONG)

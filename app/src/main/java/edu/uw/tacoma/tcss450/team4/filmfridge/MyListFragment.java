@@ -26,11 +26,6 @@ public class MyListFragment extends AbstractFilmListFragment {
     }
 
     @Override
-    protected boolean isContentChanged() {
-        return  mFilmRecyclerViewAdapter.getItemCount() != mLocalSettings.getMyList().size();
-    }
-
-    @Override
     protected void updateTitle() {
         getActivity().setTitle(getString(R.string.my_list));
     }

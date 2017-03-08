@@ -26,11 +26,6 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
     }
 
     @Override
-    protected boolean isContentChanged() {
-        return false;
-    }
-
-    @Override
     protected void updateTitle() {
         getActivity().setTitle(getString(R.string.now_playing_films));
     }

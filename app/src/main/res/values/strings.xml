@@ -39,15 +39,21 @@
     <string name="label_release_date">Release Date: </string>
     <string name="label_content_rating">Content Rating: </string>
     <string name="label_genres">Genre(s):</string>
+    <string name="label_critic_review">Critic Rating: </string>
     <string name="share">Share</string>
     <string name="poster_description">Movie Poster</string>
     <string name="share_chooser">Share the movie with a friend!</string>
     <string name="share_subject">FilmFridge Recommends</string>
     <string name="add_to_my_list">Add to My List</string>
+    <string name="hide">Hide Forever</string>
     <string name="remove_from_my_list">Remove from My List</string>
     <string name="add_to_my_list_successful"> added to My List</string>
     <string name="remove_from_my_list_successful"> removed from My List</string>
-
+    <string name="hide_forever_successful"> is now hidden</string>
+    <string name="reveal">Reveal Critic Rating</string>
+    <string name="unhide">Show all hidden films</string>
+    <string name="unhide_successful">All films are shown</string>
+    <string name="critic_rating">%d%%</string>
 
     <!--Settings Fragment-->
     <string name="userthreshold_string">My thresholds: </string>

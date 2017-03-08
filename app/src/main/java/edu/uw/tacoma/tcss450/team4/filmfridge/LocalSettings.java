@@ -16,14 +16,15 @@ import java.util.Set;
 public class LocalSettings {
 
     private final static String ID_MY_LIST = "edu.uw.tacoma.tcss422.filmfridge.MY_LIST_IDS";
+    private final static String ID_HIDDEN_LIST = "edu.uw.tacoma.tcss422.filmfridge.HIDDEN_LIST";
     private final static String ID_AT_HOME = "edu.uw.tacoma.tcss422.filmfridge.AT_HOME";
     private final static String ID_IN_THEATERS = "edu.uw.tacoma.tcss422.filmfridge.ID_IN_THEATERS";
     private final static String ID_LOGGED_IN = "edu.uw.tacoma.tcss422.filmfridge.ID_LOGGED_IN";
     private final static String ID_EMAIL = "edu.uw.tacoma.tcss422.filmfridge.ID_EMAIL";
 
 
-    private final static int DEFAULT_AT_HOME_VALUE = 80;
-    private final static int DEFAULT_IN_THEATERS_VALUE = 60;
+    private final static int DEFAULT_AT_HOME_VALUE = 60;
+    private final static int DEFAULT_IN_THEATERS_VALUE = 70;
 
     private final Context mContext;
     private final SharedPreferences mSharedPreferences;
@@ -35,7 +36,12 @@ public class LocalSettings {
     }
 
     public Set<String> getMyList() {
-        return new HashSet<>(mSharedPreferences.getStringSet(mContext.getString(R.string.MY_LIST_IDS),
+        return new HashSet<>(mSharedPreferences.getStringSet(ID_MY_LIST,
+                new HashSet<String>()));
+    }
+
+    public Set<String> getHiddenList() {
+        return new HashSet<>(mSharedPreferences.getStringSet(ID_HIDDEN_LIST,
                 new HashSet<String>()));
     }
 
@@ -62,6 +68,30 @@ public class LocalSettings {
 
         mSharedPreferences.edit()
                 .putStringSet(ID_MY_LIST, list)
+                .commit();
+    }
+
+    /**
+     * Add an film to my list by its id number
+     * @param id the film id
+     */
+    public void addToHiddenList(String id) {
+        Set<String> list = getHiddenList();
+        list.add(id);
+
+        mSharedPreferences.edit()
+                .putStringSet(ID_HIDDEN_LIST, list)
+                .commit();
+    }
+
+    /**
+     * Reset the hidden films list to contain nothing
+     */
+    public void resetHiddenList() {
+        Set<String> list = new HashSet<>();
+
+        mSharedPreferences.edit()
+                .putStringSet(ID_HIDDEN_LIST, list)
                 .commit();
     }
 

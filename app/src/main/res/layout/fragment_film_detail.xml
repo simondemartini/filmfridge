@@ -73,29 +73,38 @@
             android:id="@+id/separator1"
             android:background="@color/colorLight" />
 
+        <TextView
+            android:id="@+id/recommendation"
+            android:layout_below="@id/separator1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/no_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            tools:text="Recommended!"
+            android:textSize="14sp"
+            android:padding="@dimen/recommendation_padding"
+            android:background="@drawable/recommendation_badge"/>
+
         <LinearLayout
             android:id="@+id/controls"
-            android:layout_below="@id/separator1"
-            android:orientation="vertical"
+            android:layout_below="@id/recommendation"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/recommendation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/no_margin"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                tools:text="Recommended!"
-                android:textSize="14sp"
-                android:padding="@dimen/recommendation_padding"
-                android:background="@drawable/recommendation_badge"/>
-
             <Button
                 android:id="@+id/add_to_my_list"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/add_to_my_list" />
+
+            <Button
+                android:id="@+id/hide_forever"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hide" />
 
         </LinearLayout>
 
@@ -168,6 +177,26 @@
                 tools:text="Horror, Comedy, Action, Drama"
                 android:scrollHorizontally="false"
                 android:ellipsize="none" />
+
+            <TextView
+                android:id="@+id/label_critic_rating"
+                android:textAppearance="@style/AppTheme.Text.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/label_critic_review"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/critic_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/no_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:text="86%"
+                android:scrollHorizontally="false"
+                android:ellipsize="none"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </RelativeLayout>
