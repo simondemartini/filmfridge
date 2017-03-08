@@ -16,11 +16,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/nrtextview"
-        android:text="@string/notrecom_string" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/ahtextview"
         android:text="@string/athome_string" />
     <TextView
@@ -28,10 +23,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/ittextview"
         android:text="@string/intheaters_string" />
-    <TextView
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/userthreshold_string" />
+        android:id="@+id/athome_picker_button"
+        android:text="@string/change_threshold"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/intheaters_picker_button"
+        android:text="@string/change_threshold"/>
 
 
 </LinearLayout>
