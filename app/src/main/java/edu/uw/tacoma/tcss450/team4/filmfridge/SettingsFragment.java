@@ -135,25 +135,28 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
-                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
+//                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
                 mListener.onSettingsChange();
             }
         });
+
+        mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
+        mUserEmail.setText(mLocalSettings.getEmail());
 
         Button savePrefsButton = (Button) v.findViewById(R.id.saveprefs_button);
         savePrefsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLocalSettings.setInTheatersThreshold(mInTheatersProgress);
-                ((FilmActivity) getActivity()).setThreshold(mAtHomeProgress, mInTheatersProgress);
+                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
+                ((FilmActivity) getActivity()).setThreshold(mUserEmail.getText().toString(),
+                        mAtHomeSB.getProgress(), mInTheatersSB.getProgress());
             }
         });
 
         mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
         mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
 
-        mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
-        mUserEmail.setText(mLocalSettings.getEmail());
+
 
         return v;
     }
@@ -187,7 +190,7 @@ public class SettingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSettingsInteractionListener {
-        void setThreshold(int athome, int intheaters);
+        void setThreshold(String email, int athome, int intheaters);
         void onSettingsChange();
     }
 }

@@ -218,8 +218,8 @@ public class FilmActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void setThreshold(int theAtHome, int theInTheaters) {
-        mEmail = "sjfoh@uw.edu";
+    public void setThreshold(String theEmail, int theAtHome, int theInTheaters) {
+        mEmail = theEmail;
         mAtHome = theAtHome;
         mInTheaters = theInTheaters;
 
