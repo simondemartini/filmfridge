@@ -1,16 +1,15 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.NumberPicker;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 
 /**
@@ -27,14 +26,17 @@ public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private TextView mAtHomeTV;
     private SeekBar atHomeSB;
-
+    private int mAtHomeProgress;
     private TextView mInTheatersTV;
     private SeekBar mInTheatersSB;
+    private int mInTheatersProgress;
+    private Context mContext;
 
     private LocalSettings mLocalSettings;
 
@@ -83,10 +85,9 @@ public class SettingsFragment extends Fragment {
         mLocalSettings = new LocalSettings(v.getContext());
         mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
         atHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
-                progress = theProgress;
+                mAtHomeProgress = theProgress;
                 mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
             }
 
@@ -98,7 +99,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
-                mLocalSettings.setAtHomeThreshold(progress);
+                mLocalSettings.setAtHomeThreshold(mAtHomeProgress);
             }
         });
 
@@ -106,10 +107,10 @@ public class SettingsFragment extends Fragment {
         mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
         mInTheatersTV.setText("In theaters threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
         mInTheatersSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
-                progress = theProgress;
+                mInTheatersProgress = theProgress;
                 mInTheatersTV.setText("In theaters threshold: " + mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());            }
 
             @Override
@@ -120,10 +121,18 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mInTheatersTV.setText("In theaters threshold: " + mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
-                mLocalSettings.setInTheatersThreshold(progress);
+                //mLocalSettings.setInTheatersThreshold(mInTheatersProgress);
             }
         });
-        
+
+        Button savePrefsButton = (Button) v.findViewById(R.id.saveprefs_button);
+        savePrefsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLocalSettings.setInTheatersThreshold(mInTheatersProgress);
+                ((FilmActivity) getActivity()).setThreshold(mAtHomeProgress, mInTheatersProgress);
+            }
+        });
         return v;
     }
 
@@ -132,9 +141,10 @@ public class SettingsFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnSettingsInteractionListener) {
             mListener = (OnSettingsInteractionListener) context;
+            mContext = context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSettingsInteractionListener");
         }
     }
 
@@ -155,7 +165,6 @@ public class SettingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSettingsInteractionListener {
-        // TODO: Update argument type and name
-        void settings(Uri uri);
+        void setThreshold(int athome, int intheaters);
     }
 }
