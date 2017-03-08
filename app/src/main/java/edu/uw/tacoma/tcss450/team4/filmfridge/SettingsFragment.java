@@ -89,7 +89,7 @@ public class SettingsFragment extends Fragment {
         mAtHomeSB = (SeekBar) v.findViewById(R.id.ahSeekBar);
         mAtHomeTV = (TextView) v.findViewById(R.id.ahtextview);
         mLocalSettings = new LocalSettings(v.getContext());
-        mAtHomeTV.setText("At home threshold: " + mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
+        mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
         mInTheatersSB = (SeekBar) v.findViewById(R.id.itSeekBar);
         mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
         mAtHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
