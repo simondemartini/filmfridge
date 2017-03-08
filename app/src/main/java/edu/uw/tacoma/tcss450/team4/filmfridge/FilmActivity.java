@@ -140,6 +140,7 @@ public class FilmActivity extends AppCompatActivity implements
     @Override
     public void onAddToMyList(Film film) {
         mLocalSettings.addToMyList(film.getId());
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
         String success = film.getTitle() + " " + getString(R.string.add_to_my_list_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
@@ -147,6 +148,7 @@ public class FilmActivity extends AppCompatActivity implements
     @Override
     public void onRemoveFromMyList(Film film) {
         mLocalSettings.removeFromMyList(film.getId());
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
         String success = film.getTitle() + " " + getString(R.string.remove_from_my_list_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
@@ -154,6 +156,8 @@ public class FilmActivity extends AppCompatActivity implements
     @Override
     public void onHideForever(Film film) {
         mLocalSettings.addToHiddenList(film.getId());
+        if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
+        if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
         String success = film.getTitle() + " " + getString(R.string.hide_forever_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
