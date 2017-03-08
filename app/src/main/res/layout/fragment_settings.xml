@@ -5,30 +5,90 @@
     android:orientation="vertical"
     tools:context="edu.uw.tacoma.tcss450.team4.filmfridge.SettingsFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/useremail"/>
-    <TextView
+        android:orientation="horizontal"
+        style="@style/AppTheme.SettingsItem"
+        android:divider="@color/colorAccent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/useremail_title"
+            style="@style/AppTheme.SettingsItemTitle"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/useremail"
+            tools:text="email@email.com"
+            style="@style/AppTheme.SettingsItemContent" />
+    </LinearLayout>
+
+    <View style="@style/Divider"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/userthreshold_string" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ahtextview"/>
+        android:orientation="horizontal"
+        style="@style/AppTheme.SettingsItem"
+        android:divider="@color/colorAccent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ittextview_label"
+            android:text="@string/intheaters_string"
+            style="@style/AppTheme.SettingsItemTitle" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ittextview"
+            tools:text="84/100"
+            style="@style/AppTheme.SettingsItemContent" />
+
+    </LinearLayout>
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/seekBar" />
-    <TextView
+        style="@style/AppTheme.SettingsItemWideWidget"
+        android:id="@+id/itSeekBar"
+        android:paddingStart="@dimen/seekbar_padding"
+        android:paddingLeft="@dimen/seekbar_padding"
+        android:paddingEnd="@dimen/seekbar_padding"
+        android:paddingRight="@dimen/seekbar_padding"/>
+
+    <View style="@style/Divider"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ittextview"
-        android:text="@string/intheaters_string" />
+        android:orientation="horizontal"
+        style="@style/AppTheme.SettingsItem"
+        android:divider="@color/colorAccent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/athome_string"
+            style="@style/AppTheme.SettingsItemTitle"
+            android:id="@+id/ahtextview_label"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.SettingsItemContent"
+            tools:text="72/100"
+            android:id="@+id/ahtextview"/>
+
+    </LinearLayout>
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/itSeekBar" />
+        style="@style/AppTheme.SettingsItemWideWidget"
+        android:id="@+id/seekBar"
+        android:paddingStart="@dimen/seekbar_padding"
+        android:paddingLeft="@dimen/seekbar_padding"
+        android:paddingEnd="@dimen/seekbar_padding"
+        android:paddingRight="@dimen/seekbar_padding"/>
+
+    <View style="@style/Divider"/>
+
 
 </LinearLayout>

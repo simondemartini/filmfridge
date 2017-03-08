@@ -57,10 +57,9 @@
 
     <!--Settings Fragment-->
     <string name="userthreshold_string">My thresholds: </string>
-    <string name="notrecom_string">Not recommended, above</string>
-    <string name="athome_string">At home, above</string>
-    <string name="intheaters_string">In theaters, above</string>
-    <string name="useremail">My Email: </string>
+    <string name="athome_string">"See At Home" Recommendation min:</string>
+    <string name="intheaters_string">"In Theaters" Recommendation min:</string>
+    <string name="useremail_title">My Email: </string>
     <string name="change_threshold">Change threshold...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

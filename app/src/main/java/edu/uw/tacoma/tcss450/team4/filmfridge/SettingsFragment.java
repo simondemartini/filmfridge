@@ -7,10 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**
@@ -31,8 +29,8 @@ public class SettingsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private TextView mAtHomeTV;
-    private SeekBar atHomeSB;
-
+    private SeekBar mAtHomeSB;
+    private TextView mUserEmail;
     private TextView mInTheatersTV;
     private SeekBar mInTheatersSB;
 
@@ -69,7 +67,7 @@ public class SettingsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        mLocalSettings = new LocalSettings(getContext());
 
     }
 
@@ -78,16 +76,22 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
-        atHomeSB = (SeekBar) v.findViewById(R.id.seekBar);
+        getActivity().setTitle(getString(R.string.settings));
+        mAtHomeSB = (SeekBar) v.findViewById(R.id.seekBar);
         mAtHomeTV = (TextView) v.findViewById(R.id.ahtextview);
-        mLocalSettings = new LocalSettings(v.getContext());
-        mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
-        atHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mInTheatersSB = (SeekBar) v.findViewById(R.id.itSeekBar);
+        mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
+        mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
+        mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
+        mAtHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
-                progress = theProgress;
-                mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
+                //limit max progress to in theaters recomenndation
+                if(theProgress > mInTheatersSB.getProgress()) {
+                    mAtHomeSB.setProgress(mInTheatersSB.getProgress());
+                }
+                mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
             }
 
             @Override
@@ -97,20 +101,23 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mAtHomeTV.setText("At home threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
+                mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
                 mLocalSettings.setAtHomeThreshold(progress);
             }
         });
+        mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
 
-        mInTheatersSB = (SeekBar) v.findViewById(R.id.itSeekBar);
-        mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
-        mInTheatersTV.setText("In theaters threshold: " + atHomeSB.getProgress() + "/" + atHomeSB.getMax());
+        mInTheatersTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
         mInTheatersSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
-                progress = theProgress;
-                mInTheatersTV.setText("In theaters threshold: " + mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());            }
+                //limit progress min to at home threshold
+                if(theProgress < mAtHomeSB.getProgress()) {
+                    mInTheatersSB.setProgress(mAtHomeSB.getProgress());
+                }
+                mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
+            }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -119,11 +126,13 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mInTheatersTV.setText("In theaters threshold: " + mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
-                mLocalSettings.setInTheatersThreshold(progress);
+                mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
             }
         });
-        
+        mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
+
+        mUserEmail.setText(mLocalSettings.getEmail());
+
         return v;
     }
 
