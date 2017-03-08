@@ -10,6 +10,10 @@
     <string name="now_playing_films">Now Playing</string>
     <string name="my_list">My List</string>
     <string name="settings">Settings</string>
+    <string name="recommended">Recommended!</string>
+    <string name="see_at_home">See at home!</string>
+    <string name="not_recommended">Not recommended</string>
+
     <string name="MY_LIST_IDS">edu.uw.tacoma.tcss422.filmfridge.MY_LIST_IDS</string>
 
     <!--activity_login-->

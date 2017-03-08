@@ -6,4 +6,8 @@
     <color name="colorTextSecondary">#888888</color>
     <color name="colorLight">#dddddd</color>
     <color name="colorDrawer">#ffeeeeee</color>
+
+    <color name="badgeRec">#C8E6C9</color>
+    <color name="badgeNotRec">#FFCCBC</color>
+    <color name="badgeAtHome">#FFECB3</color>
 </resources>

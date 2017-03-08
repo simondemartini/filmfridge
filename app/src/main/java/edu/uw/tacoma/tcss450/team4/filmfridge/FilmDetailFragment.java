@@ -35,7 +35,8 @@ public class FilmDetailFragment extends Fragment {
 
     private static final String TAG = "FilmDetailFragment";
     private Film mFilm;
-    private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV;
+    private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV,
+            mRecommendation;
     private ImageView mPoster;
     private Button mMyListModifier;
     private LocalSettings mLocalSettings;
@@ -87,6 +88,7 @@ public class FilmDetailFragment extends Fragment {
         mContentRatingTV = (TextView) view.findViewById(R.id.content_rating);
         mGenresTV = (TextView) view.findViewById(R.id.genres);
         mPoster = (ImageView) view.findViewById(R.id.poster);
+        mRecommendation = (TextView) view.findViewById(R.id.recommendation);
 
         mMyListModifier = (Button) view.findViewById(R.id.add_to_my_list);
         mMyListModifier.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +119,25 @@ public class FilmDetailFragment extends Fragment {
             //Change button to remove or add from my list
             setMyListButton(mLocalSettings.getMyList().contains(film.getId()));
 
+            //setup Recommendation
+            setupRecommendation(film.getRecommendation(), getContext(), mRecommendation);
+
         }
+    }
+
+    private void setupRecommendation(Film.Recommendation rec, Context context, TextView recView) {
+        String text;
+        if(rec.equals(Film.Recommendation.RECOMMENDED)) {
+            text = context.getString(R.string.recommended);
+            recView.setBackgroundResource(R.drawable.recommendation_badge);
+        } else if (rec.equals(Film.Recommendation.SEE_AT_HOME)) {
+            text = context.getString(R.string.see_at_home);
+            recView.setBackgroundResource(R.drawable.see_at_home_badge);
+        } else {
+            text = context.getString(R.string.not_recommended);
+            recView.setBackgroundResource(R.drawable.not_recommended_badge);
+        }
+        recView.setText(text);
     }
 
     /**

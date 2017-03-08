@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uw.tacoma.tcss450.team4.filmfridge.LocalSettings;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 /**
@@ -44,7 +45,12 @@ public final class TMDBFetcher {
     private static final String URL_DETAIL_PARAMS
             = "?language=en-US&append_to_response=credits,releases&api_key=";
 
+    public static final String ID = "id", TITLE ="title", OVERVIEW = "overview",
+            RELEASE_DATE = "release_date", POSTER_PATH = "poster_path",
+            BACKDROP_PATH = "backdrop_path", VOTE_AVERAGE = "vote_average";
+
     private final Context mContext;
+    private final LocalSettings mLocalSettings;
 
     /**
      * Create a new TMDB Fetcher
@@ -52,6 +58,7 @@ public final class TMDBFetcher {
      */
     public TMDBFetcher(Context context) {
         mContext = context;
+        mLocalSettings = new LocalSettings(mContext);
         //TODO: Get API config?
     }
 
@@ -124,12 +131,12 @@ public final class TMDBFetcher {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    Film film = new Film(obj.getString(Film.ID),
-                            obj.getString(Film.TITLE),
-                            obj.getString(Film.OVERVIEW),
-                            obj.getString(Film.RELEASE_DATE),
-                            obj.getString(Film.POSTER_PATH),
-                            obj.getString(Film.BACKDROP_PATH));
+                    Film film = new Film(obj.getString(ID),
+                            obj.getString(TITLE),
+                            obj.getString(OVERVIEW),
+                            obj.getString(RELEASE_DATE),
+                            obj.getString(POSTER_PATH),
+                            obj.getString(BACKDROP_PATH));
                     filmList.add(film);
                 }
             } catch (JSONException e) {
@@ -145,17 +152,21 @@ public final class TMDBFetcher {
      * @param filmJSON, film
      * @return reason or null if successful.
      */
-    private static String parseFilmDetailsJSON (String filmJSON, Film film) {
+    private String parseFilmDetailsJSON (String filmJSON, Film film) {
         String reason = null;
+        int atHomeThreshold = mLocalSettings.getAtHomeThreshold();
+        int inTheatersThreshold = mLocalSettings.getInTheatersThreshold();
         if (filmJSON != null) {
             try {
                 JSONObject all = new JSONObject(filmJSON);
 
-                film.setTitle(all.getString(Film.TITLE));
-                film.setOverview(all.getString(Film.OVERVIEW));
-                film.setReleaseDate(all.getString(Film.RELEASE_DATE));
-                film.setPosterPath(all.getString(Film.POSTER_PATH));
-                film.setBackdropPath(all.getString(Film.BACKDROP_PATH));
+                film.setTitle(all.getString(TITLE));
+                film.setOverview(all.getString(OVERVIEW));
+                film.setReleaseDate(all.getString(RELEASE_DATE));
+                film.setPosterPath(all.getString(POSTER_PATH));
+                film.setBackdropPath(all.getString(BACKDROP_PATH));
+                film.setRating(Double.valueOf(all.getDouble(VOTE_AVERAGE) * 10).intValue());
+                film.recommend(atHomeThreshold, inTheatersThreshold);
 
                 //get content rating
                 JSONObject releases = all.getJSONObject("releases");

@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="recommendation_padding">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="no_margin">0dp</dimen>
     <dimen name="poster_width">80dp</dimen>
