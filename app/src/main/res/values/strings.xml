@@ -64,7 +64,7 @@
     <string name="intheaters_string">"In Theaters" Recommendation min:</string>
     <string name="useremail_title">My Email: </string>
     <string name="change_threshold">Change threshold…</string>
-    <string name="save_label">Save settings to server</string>
-    <string name="save">Save Now:</string>
+    <string name="save_label">Save settings to server:</string>
+    <string name="save">Save Now</string>
 
 </resources>
