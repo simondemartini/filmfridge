@@ -1,7 +1,6 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,20 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
@@ -218,6 +207,5 @@ public class FilmActivity extends AppCompatActivity implements
         if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
         String success = film.getTitle() + " " + getString(R.string.hide_forever_successful);
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
-
     }
 }

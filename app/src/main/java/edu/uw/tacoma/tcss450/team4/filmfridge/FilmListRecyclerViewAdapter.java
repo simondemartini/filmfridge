@@ -1,7 +1,6 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import edu.uw.tacoma.tcss450.team4.filmfridge.AbstractFilmListFragment.OnListFragmentInteractionListener;
-import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
-
 import java.io.File;
 import java.util.List;
+
+import edu.uw.tacoma.tcss450.team4.filmfridge.AbstractFilmListFragment.OnListFragmentInteractionListener;
+import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Film} and makes a call to the

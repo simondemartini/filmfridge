@@ -1,23 +1,15 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,7 +19,6 @@ import java.util.List;
 import java.util.Set;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
-import edu.uw.tacoma.tcss450.team4.filmfridge.film.FilmFilter;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
 
 /**

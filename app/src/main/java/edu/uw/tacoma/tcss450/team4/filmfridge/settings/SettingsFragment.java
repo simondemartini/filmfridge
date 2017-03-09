@@ -23,7 +23,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 
