@@ -136,9 +136,10 @@ public class LoginFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof LoginInteractionListener) {
             mListener = (LoginInteractionListener) context;
+
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement LoginInteractionListener");
         }
     }
 
@@ -159,7 +160,7 @@ public class LoginFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface LoginInteractionListener {
-        public void login(String userId, String pwd);
+        void login(String userId, String pwd);
     }
 
 }

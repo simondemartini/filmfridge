@@ -45,6 +45,12 @@ public class SignInActivity extends AppCompatActivity implements
             "http://cssgate.insttech.washington.edu/~_450bteam4/adduser.php?";
 
     /**
+     * set threshold url.
+     */
+    public static final String THRESHOLD_URL=
+            "http://cssgate.insttech.washington.edu/~_450bteam4/addThreshold.php?";
+
+    /**
      * text typed in email edittxt field.
      */
     private String mEmail;
@@ -93,6 +99,9 @@ public class SignInActivity extends AppCompatActivity implements
 
         SignInActivity.RegisterTask usertask = new SignInActivity.RegisterTask();
         usertask.execute(buildUserUrl(ADD_USER));
+
+        SignInActivity.CreateThresholdTask createThreshTask = new SignInActivity.CreateThresholdTask();
+        createThreshTask.execute(buildThreshURL(THRESHOLD_URL));
 
     }
 
@@ -255,6 +264,105 @@ public class SignInActivity extends AppCompatActivity implements
             }
 
         }
+    }
+
+    /**
+     * AsyncTask for creating thresholds.
+     */
+    private class CreateThresholdTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to create Threshold, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            Log.i("response: ", response);
+            return response;
+        }
+
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String status = (String) jsonObject.get("result");
+                if (status.equals("success")) {
+                    Toast.makeText(getApplicationContext(), "Created Thresholds Successfully."
+                            , Toast.LENGTH_LONG)
+                            .show();
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed to update Thresholds: "
+                                    + jsonObject.get("error")
+                            , Toast.LENGTH_LONG)
+                            .show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
+                        e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    private String buildThreshURL(String string) {
+
+        StringBuilder sb = new StringBuilder(string);
+
+        try {
+
+            String email = mEmail;
+            sb.append("email=");
+            sb.append(email);
+
+            int ah = 50;
+            sb.append("&athome=");
+            sb.append(ah);
+
+            int it = 80;
+            sb.append("&intheaters=");
+            sb.append(it);
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
     }
 
     private String buildUserUrl(String string) {

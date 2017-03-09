@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,15 +26,17 @@ public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private TextView mAtHomeTV;
     private SeekBar mAtHomeSB;
+    private int mAtHomeProgress;
     private TextView mUserEmail;
     private TextView mInTheatersTV;
     private SeekBar mInTheatersSB;
+    private int mInTheatersProgress;
     private ProgressBar mProgressSpinner;
+    private Context mContext;
 
     private LocalSettings mLocalSettings;
 
@@ -85,11 +88,14 @@ public class SettingsFragment extends Fragment {
 
         mAtHomeSB = (SeekBar) v.findViewById(R.id.ahSeekBar);
         mAtHomeTV = (TextView) v.findViewById(R.id.ahtextview);
+        mLocalSettings = new LocalSettings(v.getContext());
+        mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
         mInTheatersSB = (SeekBar) v.findViewById(R.id.itSeekBar);
         mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
         mAtHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
+                mAtHomeProgress = theProgress;
                 //limit max progress to in theaters recommendation
                 if(theProgress > mInTheatersSB.getProgress()) {
                     mAtHomeSB.setProgress(mInTheatersSB.getProgress());
@@ -110,10 +116,12 @@ public class SettingsFragment extends Fragment {
             }
         });
         mInTheatersSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
+                mInTheatersProgress = theProgress;
                 //limit progress min to at home threshold
-                if(theProgress < mAtHomeSB.getProgress()) {
+                if(mInTheatersProgress < mAtHomeSB.getProgress()) {
                     mInTheatersSB.setProgress(mAtHomeSB.getProgress());
                 }
                 mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
@@ -127,15 +135,28 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
-                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
+//                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
                 mListener.onSettingsChange();
             }
         });
-        mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
-        mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
 
         mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
         mUserEmail.setText(mLocalSettings.getEmail());
+
+        Button savePrefsButton = (Button) v.findViewById(R.id.saveprefs_button);
+        savePrefsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
+                ((FilmActivity) getActivity()).setThreshold(mUserEmail.getText().toString(),
+                        mAtHomeSB.getProgress(), mInTheatersSB.getProgress());
+            }
+        });
+
+        mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
+        mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
+
+
 
         return v;
     }
@@ -145,9 +166,10 @@ public class SettingsFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnSettingsInteractionListener) {
             mListener = (OnSettingsInteractionListener) context;
+            mContext = context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSettingsInteractionListener");
         }
     }
 
@@ -168,6 +190,7 @@ public class SettingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSettingsInteractionListener {
+        void setThreshold(String email, int athome, int intheaters);
         void onSettingsChange();
     }
 }

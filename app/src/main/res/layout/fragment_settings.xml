@@ -91,4 +91,11 @@
     <View style="@style/Divider"/>
 
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:id="@+id/saveprefs_button"
+        android:layout_gravity="right"/>
+
 </LinearLayout>
