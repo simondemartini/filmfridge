@@ -62,6 +62,8 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mGenres = getArguments().getStringArrayList(ARG_GENRES);
             mHiddenGenres = new HashSet<>(Arrays.asList(getArguments().getString(ARG_HIDDEN_GENRES)));
@@ -71,7 +73,6 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
         }
 
         setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
     }
 
     @Override
