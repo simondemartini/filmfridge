@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
+import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
 
 
 /**

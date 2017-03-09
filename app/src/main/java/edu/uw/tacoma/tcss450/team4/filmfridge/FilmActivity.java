@@ -29,7 +29,8 @@ import java.net.URL;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
-import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
+import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
+import edu.uw.tacoma.tcss450.team4.filmfridge.settings.SettingsFragment;
 
 public class FilmActivity extends AppCompatActivity implements
         NowPlayingListFragment.OnListFragmentInteractionListener,

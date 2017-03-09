@@ -19,6 +19,7 @@ import java.util.List;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.FilmFilter;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
+import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
 
 /**
  * A fragment representing a list of Films.

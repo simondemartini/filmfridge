@@ -1,4 +1,4 @@
-package edu.uw.tacoma.tcss450.team4.filmfridge;
+package edu.uw.tacoma.tcss450.team4.filmfridge.settings;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
+import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 
 /**

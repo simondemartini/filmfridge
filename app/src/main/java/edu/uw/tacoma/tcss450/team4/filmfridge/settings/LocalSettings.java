@@ -1,10 +1,12 @@
-package edu.uw.tacoma.tcss450.team4.filmfridge;
+package edu.uw.tacoma.tcss450.team4.filmfridge.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 /**
  * This class manages the writing and getting to a shared prefs file for movie filter settings.

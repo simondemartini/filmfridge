@@ -1,9 +1,7 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge.authenticate;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
-import edu.uw.tacoma.tcss450.team4.filmfridge.LocalSettings;
+import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 

@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uw.tacoma.tcss450.team4.filmfridge.LocalSettings;
+import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 /**
