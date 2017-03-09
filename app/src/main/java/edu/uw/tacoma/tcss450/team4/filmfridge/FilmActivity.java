@@ -196,11 +196,13 @@ public class FilmActivity extends AppCompatActivity implements
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void onSettingsChange() {
         if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
         if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
     }
 
+    @Override
     public void onHideForever(Film film) {
         mLocalSettings.addToHiddenList(film.getId());
         if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
