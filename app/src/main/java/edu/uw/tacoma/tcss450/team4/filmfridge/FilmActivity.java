@@ -1,26 +1,34 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
-import android.content.Context;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
+import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
 
 public class FilmActivity extends AppCompatActivity implements
         NowPlayingListFragment.OnListFragmentInteractionListener,
@@ -28,10 +36,15 @@ public class FilmActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         SettingsFragment.OnSettingsInteractionListener {
 
+    private static final String TAG = "FilmActivity";
+    private static final String GENRES_OPTION_TAG = "GenresDialog";
+
     private NowPlayingListFragment mNowPlayingListFragment;
     private MyListFragment mMyListFragment;
     private LocalSettings mLocalSettings;
     private NavigationView mNavigationView;
+    private TMDBFetcher tmdb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +67,7 @@ public class FilmActivity extends AppCompatActivity implements
         toggle.syncState();
 
         mLocalSettings = new LocalSettings(this);
+        tmdb = new TMDBFetcher(this);
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -166,6 +180,10 @@ public class FilmActivity extends AppCompatActivity implements
                     .attach(f)
                     .commit();
 
+            return true;
+        } else if (id == R.id.action_filter_genres) {
+            //implemented in fragment
+            return false;
         } else if (id == R.id.action_share) {
             //implemented in the fragment
             return false;
@@ -208,4 +226,7 @@ public class FilmActivity extends AppCompatActivity implements
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
 
     }
+
+
+
 }

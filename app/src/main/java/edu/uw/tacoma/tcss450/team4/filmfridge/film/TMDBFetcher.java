@@ -44,6 +44,8 @@ public final class TMDBFetcher {
             = "https://api.themoviedb.org/3/movie/";
     private static final String URL_DETAIL_PARAMS
             = "?language=en-US&append_to_response=credits,releases&api_key=";
+    private static final String URL_GENRE_LIST
+            = "https://api.themoviedb.org/3/genre/movie/list?language=en-US&api_key=";
 
     public static final String ID = "id", TITLE ="title", OVERVIEW = "overview",
             RELEASE_DATE = "release_date", POSTER_PATH = "poster_path",
@@ -114,6 +116,31 @@ public final class TMDBFetcher {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Parses the json string, returns an error message if unsuccessful.
+     * Returns course list if success.
+     * @param filmJSON, courseList
+     * @return reason or null if successful.
+     */
+    private static String parseGenreListJSON (String filmJSON, List<String> genreList) {
+        String reason = null;
+        if (filmJSON != null) {
+            try {
+                JSONObject all = new JSONObject(filmJSON);
+                JSONArray arr = all.getJSONArray("genres");
+
+                for (int i = 0; i < arr.length(); i++) {
+                    JSONObject obj = arr.getJSONObject(i);
+                    String genre = obj.getString("name");
+                    genreList.add(genre);
+                }
+            } catch (JSONException e) {
+                reason =  "Unable to parse data, Reason: " + e.toString();
+            }
+        }
+        return reason;
     }
 
     /**
@@ -294,6 +321,21 @@ public final class TMDBFetcher {
             list.add(f);
         }
         return list;
+    }
+
+    public ArrayList<String> getGenres() throws TMDBException {
+        String res = requestJSON(URL_GENRE_LIST + mContext.getString(R.string.tmdb_api_key));
+        if(res.startsWith("Unable to")) {
+            //something broke with network or URL
+            throw new TMDBException(res);
+        }
+        ArrayList<String> genresList = new ArrayList<>();
+        res = parseGenreListJSON(res, genresList);
+        if(res != null) {
+            //something went wrong with parsing
+            throw new TMDBException(res);
+        }
+        return genresList;
     }
 
     /**

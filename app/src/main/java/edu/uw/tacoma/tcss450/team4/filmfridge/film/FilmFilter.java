@@ -29,6 +29,15 @@ public class FilmFilter {
     }
 
     /**
+     * If a film contains one of these genres, it will never be shown
+     * @param hiddenGenres
+     */
+    public void setHiddenGenres(Set<String> hiddenGenres ) {
+        mHiddenGenres.clear();
+        mHiddenGenres.addAll(hiddenGenres);
+    }
+
+    /**
      * Remove everything in the the input list that matches the rules set up in this filter.
      * @param oldList a list to be filtered
      * @return a new filtered list
@@ -36,7 +45,18 @@ public class FilmFilter {
     public List<Film> filterFilms(List<Film> oldList) {
         List<Film> newList = new ArrayList<>();
         for(Film f: oldList) {
-            if(!mHiddenIds.contains(f.getId())){
+            boolean hasBannedGenre = false;
+            boolean hasBannedId = false;
+            if(mHiddenIds.contains(f.getId())){
+                hasBannedId = true;
+            } else {
+                for (String fGenre : f.getGenres()) {
+                    if (mHiddenGenres.contains(fGenre)) {
+                        hasBannedGenre = true;
+                    }
+                }
+            }
+            if(!hasBannedGenre && !hasBannedId) {
                 newList.add(f);
             }
         }

@@ -13,7 +13,10 @@
     <string name="recommended">Recommended!</string>
     <string name="see_at_home">See at home!</string>
     <string name="not_recommended">Not recommended</string>
-
+    <string name="filter_genres">Filter</string>
+    <string name="hide_genres_dialog">Select genres to hide</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="MY_LIST_IDS">edu.uw.tacoma.tcss422.filmfridge.MY_LIST_IDS</string>
 
     <!--activity_login-->
