@@ -84,10 +84,10 @@
             android:textSize="14sp"
             android:padding="@dimen/activity_horizontal_margin"
             android:background="@drawable/recommendation_badge"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="4dp"
             android:textAlignment="center" />
 
