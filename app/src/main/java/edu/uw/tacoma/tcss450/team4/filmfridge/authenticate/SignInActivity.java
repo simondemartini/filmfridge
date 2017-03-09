@@ -321,9 +321,6 @@ public class SignInActivity extends AppCompatActivity implements
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Created Thresholds Successfully."
-                            , Toast.LENGTH_LONG)
-                            .show();
 
 
                 } else {
