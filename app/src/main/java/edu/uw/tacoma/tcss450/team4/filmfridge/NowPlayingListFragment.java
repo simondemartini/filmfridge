@@ -201,13 +201,8 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
                 mSelectedGenres = new boolean[mGenres.size()];
                 mFilterButton.setEnabled(true);
                 mFilterButton.setVisible(true);
-                Toast.makeText(getActivity().getApplicationContext(), "GENRES DOWNLOADED", Toast.LENGTH_LONG)
-                        .show();
             } else if (result != null && result.isEmpty()){
                 Toast.makeText(getActivity().getApplicationContext(), getString(R.string.empty_list), Toast.LENGTH_LONG)
-                        .show();
-            } else {
-                Toast.makeText(getActivity().getApplicationContext(), "NULL GENRES", Toast.LENGTH_LONG)
                         .show();
             }
         }

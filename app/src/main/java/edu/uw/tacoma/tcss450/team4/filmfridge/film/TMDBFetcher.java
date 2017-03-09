@@ -192,6 +192,7 @@ public final class TMDBFetcher {
                 film.setReleaseDate(all.getString(RELEASE_DATE));
                 film.setPosterPath(all.getString(POSTER_PATH));
                 film.setBackdropPath(all.getString(BACKDROP_PATH));
+                //TODO: Fix bug where sometime no rating
                 film.setRating(Double.valueOf(all.getDouble(VOTE_AVERAGE) * 10).intValue());
                 film.recommend(atHomeThreshold, inTheatersThreshold);
 

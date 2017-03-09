@@ -49,7 +49,7 @@ public class FilmFilter {
             boolean hasBannedId = false;
             if(mHiddenIds.contains(f.getId())){
                 hasBannedId = true;
-            } else {
+            } else if (f.getGenres() != null){
                 for (String fGenre : f.getGenres()) {
                     if (mHiddenGenres.contains(fGenre)) {
                         hasBannedGenre = true;

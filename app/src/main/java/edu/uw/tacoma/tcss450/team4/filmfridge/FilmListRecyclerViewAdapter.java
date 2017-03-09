@@ -68,6 +68,9 @@ public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRe
 
     private void setupRecommendation(Film.Recommendation rec, Context context, TextView recView) {
         String text;
+        if(rec == null) {
+            text = "FUUUCKK";
+        }
         if(rec.equals(Film.Recommendation.RECOMMENDED)) {
             text = context.getString(R.string.recommended);
             recView.setBackgroundResource(R.drawable.recommendation_badge);
