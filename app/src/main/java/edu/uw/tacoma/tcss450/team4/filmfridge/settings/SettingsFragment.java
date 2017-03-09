@@ -1,8 +1,10 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge.settings;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import edu.uw.tacoma.tcss450.team4.filmfridge.FilmActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.R;
@@ -29,6 +41,9 @@ public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    public static final String SET_THRESHOLD=
+            "http://cssgate.insttech.washington.edu/~_450bteam4/setThreshold.php?";
+
     private String mParam1;
     private String mParam2;
     private TextView mAtHomeTV;
@@ -40,10 +55,13 @@ public class SettingsFragment extends Fragment {
     private int mInTheatersProgress;
     private ProgressBar mProgressSpinner;
     private Context mContext;
-
     private LocalSettings mLocalSettings;
-
     private OnSettingsInteractionListener mListener;
+
+    //for Adding thresholds
+    private String mEmail;
+    private int mAtHome;
+    private int mInTheaters;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -151,15 +169,14 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
-                ((FilmActivity) getActivity()).setThreshold(mUserEmail.getText().toString(),
-                        mAtHomeSB.getProgress(), mInTheatersSB.getProgress());
+                setThreshold(mUserEmail.getText().toString(),
+                        mAtHomeSB.getProgress(),
+                        mInTheatersSB.getProgress());
             }
         });
 
         mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
         mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
-
-
 
         return v;
     }
@@ -193,7 +210,111 @@ public class SettingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSettingsInteractionListener {
-        void setThreshold(String email, int athome, int intheaters);
         void onSettingsChange();
+    }
+
+    public void setThreshold(String theEmail, int theAtHome, int theInTheaters) {
+        mEmail = theEmail;
+        mAtHome = theAtHome;
+        mInTheaters = theInTheaters;
+
+        ThresholdTask setthreshtask = new ThresholdTask();
+        setthreshtask.execute(buildUserUrl(SET_THRESHOLD));
+    }
+
+    /**
+     * AsyncTask for updating thresholds.
+     */
+    private class ThresholdTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to set Threshold, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            Log.i("response: ", response);
+            return response;
+        }
+
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String status = (String) jsonObject.get("result");
+                if (status.equals("success")) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Updated Thresholds Successfully."
+                            , Toast.LENGTH_LONG)
+                            .show();
+
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Failed to update Thresholds: "
+                                    + jsonObject.get("error")
+                            , Toast.LENGTH_LONG)
+                            .show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getActivity().getApplicationContext(), "Something wrong with the data" +
+                        e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private String buildUserUrl(String string) {
+
+        StringBuilder sb = new StringBuilder(string);
+
+        try {
+
+            String email = mEmail;
+            sb.append("email=");
+            sb.append(email);
+
+            int ah = mAtHome;
+            sb.append("&athome=");
+            sb.append(ah);
+
+            int it = mInTheaters;
+            sb.append("&intheaters=");
+            sb.append(it);
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
     }
 }

@@ -38,18 +38,10 @@ public class FilmActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         SettingsFragment.OnSettingsInteractionListener {
 
-    public static final String SET_THRESHOLD=
-            "http://cssgate.insttech.washington.edu/~_450bteam4/setThreshold.php?";
-
     private NowPlayingListFragment mNowPlayingListFragment;
     private MyListFragment mMyListFragment;
     private LocalSettings mLocalSettings;
     private NavigationView mNavigationView;
-
-    //for Adding thresholds
-    private String mEmail;
-    private int mAtHome;
-    private int mInTheaters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,114 +207,6 @@ public class FilmActivity extends AppCompatActivity implements
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void setThreshold(String theEmail, int theAtHome, int theInTheaters) {
-        mEmail = theEmail;
-        mAtHome = theAtHome;
-        mInTheaters = theInTheaters;
-
-        FilmActivity.ThresholdTask setthreshtask = new FilmActivity.ThresholdTask();
-        setthreshtask.execute(buildUserUrl(SET_THRESHOLD));
-
-    }
-
-    /**
-     * AsyncTask for updating thresholds.
-     */
-    private class ThresholdTask extends AsyncTask<String, Void, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to set Threshold, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            Log.i("response: ", response);
-            return response;
-        }
-
-
-        /**
-         * It checks to see if there was a problem with the URL(Network) which is when an
-         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
-         * If not, it displays the exception.
-         *
-         * @param result
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                String status = (String) jsonObject.get("result");
-                if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Updated Thresholds Successfully."
-                            , Toast.LENGTH_LONG)
-                            .show();
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "Failed to update Thresholds: "
-                                    + jsonObject.get("error")
-                            , Toast.LENGTH_LONG)
-                            .show();
-                }
-            } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-        }
-    }
-
-    private String buildUserUrl(String string) {
-
-        StringBuilder sb = new StringBuilder(string);
-
-        try {
-
-            String email = mEmail;
-            sb.append("email=");
-            sb.append(email);
-
-            int ah = mAtHome;
-            sb.append("&athome=");
-            sb.append(ah);
-
-            int it = mInTheaters;
-            sb.append("&intheaters=");
-            sb.append(it);
-
-        } catch (Exception e) {
-            Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
-        }
-        return sb.toString();
-    }
     public void onSettingsChange() {
         if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
         if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
