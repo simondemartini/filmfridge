@@ -63,8 +63,8 @@
     <string name="athome_string">"See At Home" Recommendation min:</string>
     <string name="intheaters_string">"In Theaters" Recommendation min:</string>
     <string name="useremail_title">My Email: </string>
-    <string name="change_threshold">Change threshold...</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_threshold">Change threshold…</string>
+    <string name="save_label">Save settings to server</string>
+    <string name="save">Save Now:</string>
 
 </resources>
