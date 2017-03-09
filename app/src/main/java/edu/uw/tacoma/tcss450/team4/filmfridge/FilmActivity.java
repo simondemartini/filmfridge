@@ -1,8 +1,6 @@
 package edu.uw.tacoma.tcss450.team4.filmfridge;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +27,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.LoginFragment;
 import edu.uw.tacoma.tcss450.team4.filmfridge.authenticate.SignInActivity;
 import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
+import edu.uw.tacoma.tcss450.team4.filmfridge.film.TMDBFetcher;
 
 public class FilmActivity extends AppCompatActivity implements
         NowPlayingListFragment.OnListFragmentInteractionListener,
@@ -40,19 +37,15 @@ public class FilmActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         SettingsFragment.OnSettingsInteractionListener {
 
-    /**
-     * set threshold url.
-     */
     public static final String SET_THRESHOLD=
             "http://cssgate.insttech.washington.edu/~_450bteam4/setThreshold.php?";
-
 
     private NowPlayingListFragment mNowPlayingListFragment;
     private MyListFragment mMyListFragment;
     private LocalSettings mLocalSettings;
     private NavigationView mNavigationView;
 
-    //for Addingthresholds
+    //for Adding thresholds
     private String mEmail;
     private int mAtHome;
     private int mInTheaters;
@@ -190,6 +183,10 @@ public class FilmActivity extends AppCompatActivity implements
                     .attach(f)
                     .commit();
 
+            return true;
+        } else if (id == R.id.action_filter_genres) {
+            //implemented in fragment
+            return false;
         } else if (id == R.id.action_share) {
             //implemented in the fragment
             return false;
@@ -329,7 +326,6 @@ public class FilmActivity extends AppCompatActivity implements
         if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
         if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
     }
-
 
     public void onHideForever(Film film) {
         mLocalSettings.addToHiddenList(film.getId());

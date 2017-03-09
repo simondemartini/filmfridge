@@ -4,6 +4,14 @@
     tools:context="edu.tacoma.uw.sjfoh.webserviceslab.FilmActivity">
 
     <item
+        android:id="@+id/action_filter_genres"
+        android:visible="false"
+        android:orderInCategory="25"
+        android:title="@string/filter_genres"
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_share"
         android:visible="false"
         android:orderInCategory="50"
