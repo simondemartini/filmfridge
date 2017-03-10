@@ -21,6 +21,10 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.film.Film;
 import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
 import edu.uw.tacoma.tcss450.team4.filmfridge.settings.SettingsFragment;
 
+/**
+ * This is the main activity for the app that holds the lists, details, and settings fragments and
+ * their methods.
+ */
 public class FilmActivity extends AppCompatActivity implements
         NowPlayingListFragment.OnListFragmentInteractionListener,
         FilmDetailFragment.OnDetailFragmentInteractionListener,

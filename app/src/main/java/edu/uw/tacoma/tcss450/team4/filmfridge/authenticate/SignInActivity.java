@@ -22,7 +22,7 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.R;
 
 
 /**
- * The Signin Activity
+ * The Signin Activity for signing in to the app
  *
  * Created by Samantha Ong
  */
