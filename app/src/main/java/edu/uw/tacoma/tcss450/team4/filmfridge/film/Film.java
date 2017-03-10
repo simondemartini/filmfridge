@@ -24,6 +24,24 @@ public class Film implements Serializable {
     private List<String> mGenres, mCast;
     private Date mReleaseDate;
 
+    /**
+     * Simple constructor that just requires an id
+     * @param id a unique film id
+     */
+    public Film(String id) {
+        this.mFilmId = id;
+    }
+
+    /**
+     * An overloaded constructor that creates a film with lots of basic info found in a list
+     * @param id a film id
+     * @param title the title
+     * @param overview a short description of the film
+     * @param releaseDate the release date of the film
+     * @param posterPath the path to find the poster on the API
+     * @param backdropPath the path to find the backdrop on the API
+     *                     //TODO Delete backdrop
+     */
     public Film(String id,
                 String title,
                 String overview,
@@ -39,24 +57,18 @@ public class Film implements Serializable {
         this.mRating = -1; //Not set yet
     }
 
-    public Film(String id) {
-        this.mFilmId = id;
-    }
+    public Bitmap getPoster(File cacheDir) {
+        File file = new File(cacheDir, mPosterPath);
 
-    public String getId() {
-        return mFilmId;
-    }
-
-    public void setId(String id) {
-        this.mFilmId = id;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String title) {
-        this.mTitle = title;
+        Bitmap image = null;
+        if(file.exists()) {
+            try {
+                image = BitmapFactory.decodeFile(file.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return image;
     }
 
     /**
@@ -79,6 +91,45 @@ public class Film implements Serializable {
         } catch (ParseException e) {
             throw new IllegalArgumentException("Cannot parse the date");
         }
+    }
+
+    /**
+     * Set the recommendation based on the thresholds provided
+     * @param atHomeThreshold the minimum threshold to be considered for seeing at home
+     * @param inTheatersThreshold the minimum threshold to be considered for seeing in theaters
+     */
+    public void setRecommendation(int atHomeThreshold, int inTheatersThreshold) {
+        if (mRating == -1) {
+            throw new IllegalArgumentException("Must set rating first");
+        } else if (mRating >= inTheatersThreshold) {
+            mRecommendation = Recommendation.RECOMMENDED;
+        } else if (mRating >= atHomeThreshold && mRating < inTheatersThreshold) {
+            mRecommendation = Recommendation.SEE_AT_HOME;
+        } else {
+            mRecommendation = Recommendation.NOT_RECOMMENDED;
+        }
+    }
+
+    /** The following are all simple getters and setters. Should be self-explanatory */
+
+    public Recommendation getRecommendation() {
+        return mRecommendation;
+    }
+
+    public String getId() {
+        return mFilmId;
+    }
+
+    public void setId(String id) {
+        this.mFilmId = id;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String title) {
+        this.mTitle = title;
     }
 
     public String getPosterPath() {
@@ -121,20 +172,6 @@ public class Film implements Serializable {
         this.mContentRating = contentRating;
     }
 
-    public Bitmap getPoster(File cacheDir) {
-        File file = new File(cacheDir, mPosterPath);
-
-        Bitmap image = null;
-            if(file.exists()) {
-                try {
-                    image = BitmapFactory.decodeFile(file.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        return image;
-    }
-
     public List<String> getGenres() {
         return mGenres;
     }
@@ -151,22 +188,9 @@ public class Film implements Serializable {
         return mRating;
     }
 
-    public void recommend(int atHomeThreshold, int inTheatersThreshold) {
-        if (mRating == -1) {
-            throw new IllegalArgumentException("Must set rating first");
-        } else if (mRating >= inTheatersThreshold) {
-            mRecommendation = Recommendation.RECOMMENDED;
-        } else if (mRating >= atHomeThreshold && mRating < inTheatersThreshold) {
-            mRecommendation = Recommendation.SEE_AT_HOME;
-        } else {
-            mRecommendation = Recommendation.NOT_RECOMMENDED;
-        }
-    }
-
-    public Recommendation getRecommendation() {
-        return mRecommendation;
-    }
-
+    /**
+     * A simple enum to represent the types of recommendations
+     */
     public enum Recommendation {
         RECOMMENDED, SEE_AT_HOME, NOT_RECOMMENDED;
     }

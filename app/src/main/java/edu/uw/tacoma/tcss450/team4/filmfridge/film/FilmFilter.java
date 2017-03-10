@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by simon on 3/7/17.
+ * This class applies sets of data to exclude from a list of Films
+ * Created by Simon DeMartini on 3/7/17.
  */
 
 public class FilmFilter {
@@ -14,6 +15,9 @@ public class FilmFilter {
     private Set<String> mHiddenIds;
     private Set<String> mHiddenGenres;
 
+    /**
+     * Construct a FilmFilter
+     */
     public FilmFilter() {
         mHiddenIds = new HashSet<>();
         mHiddenGenres = new HashSet<>();

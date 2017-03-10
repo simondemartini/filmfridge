@@ -29,20 +29,26 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
  * create an instance of this fragment.
  */
 public class FilmDetailFragment extends Fragment {
-    /** Argument parameters*/
-    public final static String FILM_ITEM_SELECTED = "film_selected";
+
+    public static final String FILM_ITEM_SELECTED = "film_selected";
+
     private static final int MAX_CAST = 15;
-
-
     private static final String TAG = "FilmDetailFragment";
-    private Film mFilm;
-    private TextView mDescriptionTV, mReleaseDateTV, mCastTV, mContentRatingTV, mTitleTV, mGenresTV,
-            mRecommendation, mCriticRating, mCriticRatingLabel;
-    private ImageView mPoster;
-    private Button mMyListModifier, mHideForever;
-    private LocalSettings mLocalSettings;
 
+    private Film mFilm;
+    private ImageView mPoster;
+    private Button mMyListModifier;
+    private LocalSettings mLocalSettings;
     private OnDetailFragmentInteractionListener mListener;
+    private TextView mDescriptionTV,
+            mReleaseDateTV,
+            mCastTV,
+            mContentRatingTV,
+            mTitleTV,
+            mGenresTV,
+            mRecommendation,
+            mCriticRating,
+            mCriticRatingLabel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,6 +73,10 @@ public class FilmDetailFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Lifecycle method: Get data from saved state, and init the menu and local settings
+     * @param savedInstanceState the saved state
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +87,10 @@ public class FilmDetailFragment extends Fragment {
         mLocalSettings = new LocalSettings(getActivity());
     }
 
+    /**
+     * Lifecycle method: Inflate the view & add button listeners
+     * @return the inflated view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,8 +116,8 @@ public class FilmDetailFragment extends Fragment {
             }
         });
 
-        mHideForever = (Button) view.findViewById(R.id.hide_forever);
-        mHideForever.setOnClickListener(new View.OnClickListener() {
+        Button hideForever = (Button) view.findViewById(R.id.hide_forever);
+        hideForever.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onHideForever(mFilm);
@@ -113,21 +127,24 @@ public class FilmDetailFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Fill in the views with data about the film.
+     * @param film
+     */
     public void updateView(Film film) {
         if (film != null) {
             mTitleTV.setText(film.getTitle());
             mReleaseDateTV.setText(film.getReleaseDate());
             mDescriptionTV.setText(film.getOverview());
-
+            mContentRatingTV.setText(film.getContentRating());
+            mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
+            mGenresTV.setText(listToString(film.getGenres()));
+            mCriticRating.setText(String.format(getString(R.string.critic_rating), film.getRating()));
             int maxCast = MAX_CAST;
             if(film.getCast().size() < MAX_CAST) {
                 maxCast = film.getCast().size();
             }
             mCastTV.setText(listToString(film.getCast().subList(0, maxCast)));
-            mContentRatingTV.setText(film.getContentRating());
-            mPoster.setImageBitmap(film.getPoster(getContext().getCacheDir()));
-            mGenresTV.setText(listToString(film.getGenres()));
-            mCriticRating.setText(String.format(getString(R.string.critic_rating), film.getRating()));
 
             //Change button to remove or add from my list
             setMyListButton(mLocalSettings.getMyList().contains(film.getId()));
@@ -138,6 +155,12 @@ public class FilmDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Display a string of the film's recommendation and set the correctly colored background
+     * @param rec the film's Recommendation
+     * @param context any context
+     * @param recView the view to change background
+     */
     private void setupRecommendation(Film.Recommendation rec, Context context, TextView recView) {
         String text;
         if(rec.equals(Film.Recommendation.RECOMMENDED)) {
@@ -194,6 +217,9 @@ public class FilmDetailFragment extends Fragment {
 
     }
 
+    /**
+     * Lifecycle method: load up arguments
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -209,6 +235,10 @@ public class FilmDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Lifecycle method: When being added to the activity, attach the required listener
+     * @param context the context it's being attached to.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -220,6 +250,9 @@ public class FilmDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Lifecycle method: Remove listeners when being removed from parent activity
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -227,23 +260,25 @@ public class FilmDetailFragment extends Fragment {
     }
 
     /**
-     * Add the share button to the toolbar
+     * Add the share & reveal buttons to the toolbar
      * @param menu
      * @param inflater
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //inflater.inflate(R.menu.menu_film_list, menu);
         MenuItem share = menu.findItem(R.id.action_share);
         MenuItem reveal = menu.findItem(R.id.action_reveal);
         share.setVisible(true);
         reveal.setVisible(true);
 
-        //Set up sharing button
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * What to do when the menu items are selected
+     * @param item the item clicked
+     * @return whether this method handled the item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

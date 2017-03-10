@@ -24,24 +24,34 @@ public class LocalSettings {
     private final static String ID_LOGGED_IN = "edu.uw.tacoma.tcss422.filmfridge.ID_LOGGED_IN";
     private final static String ID_EMAIL = "edu.uw.tacoma.tcss422.filmfridge.ID_EMAIL";
 
-
     private final static int DEFAULT_AT_HOME_VALUE = 60;
     private final static int DEFAULT_IN_THEATERS_VALUE = 70;
 
-    private final Context mContext;
     private final SharedPreferences mSharedPreferences;
 
+    /**
+     * Create a LocalSettings object to wrap the shared prefs class and make sure everything works
+     * and it consistent
+     * @param context any context
+     */
     public LocalSettings(Context context) {
-        mContext = context;
-        mSharedPreferences = mContext.getSharedPreferences(mContext.getString(R.string.LOGIN_PREFS),
+        mSharedPreferences = context.getSharedPreferences(context.getString(R.string.LOGIN_PREFS),
                 Context.MODE_PRIVATE);
     }
 
+    /***
+     * Read the my set of saved movies from the shared prefs
+     * @return my list of films
+     */
     public Set<String> getMyList() {
         return new HashSet<>(mSharedPreferences.getStringSet(ID_MY_LIST,
                 new HashSet<String>()));
     }
 
+    /**
+     * Read the set of hidden movies from the shared prefs
+     * @return the hidden films
+     */
     public Set<String> getHiddenList() {
         return new HashSet<>(mSharedPreferences.getStringSet(ID_HIDDEN_LIST,
                 new HashSet<String>()));

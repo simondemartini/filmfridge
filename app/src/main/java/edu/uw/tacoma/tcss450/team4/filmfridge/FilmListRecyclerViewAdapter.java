@@ -23,17 +23,30 @@ public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRe
     private final List<Film> mValues;
     private final OnListFragmentInteractionListener mListener;
 
+    /**
+     * Construct this adapter with the films and the listener
+     * @param items the films
+     * @param listener the listener
+     */
     public FilmListRecyclerViewAdapter(List<Film> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
+    /**
+     * Swap out the data in the current list
+     * @param data the new data
+     */
     public void swap(List<Film> data) {
         mValues.clear();
         mValues.addAll(data);
         notifyDataSetChanged();
     }
 
+    /**
+     * Create each individual list item
+     * @return the inflated viewholder
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -41,6 +54,11 @@ public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRe
         return new ViewHolder(view);
     }
 
+    /**
+     * Fill in the data of each individual film list item
+     * @param holder the viewholder
+     * @param position which item this is
+     */
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
@@ -65,6 +83,12 @@ public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRe
         });
     }
 
+    /**
+     * Display a string of the film's recommendation and set the correctly colored background
+     * @param rec the film's Recommendation
+     * @param context any context
+     * @param recView the view to change background
+     */
     private void setupRecommendation(Film.Recommendation rec, Context context, TextView recView) {
         String text;
         if(rec == null) {
@@ -83,11 +107,18 @@ public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRe
         recView.setText(text);
     }
 
+    /**
+     * Return the current number of elements in this list
+     * @return the size
+     */
     @Override
     public int getItemCount() {
         return mValues.size();
     }
 
+    /**
+     * Our own custom view holder for the list items.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mReleaseDate;
@@ -96,6 +127,9 @@ public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRe
         public final ImageView mPoster;
         public Film mItem;
 
+        /**
+         * Construct a view holder.
+         */
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -105,6 +139,10 @@ public class FilmListRecyclerViewAdapter extends RecyclerView.Adapter<FilmListRe
             mRecommendation = (TextView) view.findViewById(R.id.recommendation);
         }
 
+        /**
+         * You, the normal toString() method
+         * @return the String, yo!
+         */
         @Override
         public String toString() {
             return super.toString() + " '" + mTitleView.getText() + "'";

@@ -32,6 +32,10 @@ public class FilmActivity extends AppCompatActivity implements
     private LocalSettings mLocalSettings;
     private NavigationView mNavigationView;
 
+    /**
+     * Lifecycle method: Create the activity get most things up and running.
+     * @param savedInstanceState the saved state bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,10 @@ public class FilmActivity extends AppCompatActivity implements
         navEmail.setText(mLocalSettings.getEmail());
     }
 
+    /**
+     * Close the navigation drawer if it is open, and set the selected item to be correct when
+     * navigating with the back button
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -84,6 +92,11 @@ public class FilmActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Handle the switching of fragments from the navigation drawer.
+     * @param item the selected item
+     * @return boolean whether we handled this request
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -117,20 +130,10 @@ public class FilmActivity extends AppCompatActivity implements
         return true;
     }
 
-    @Override
-    public void onListFragmentInteraction(Film item) {
-        FilmDetailFragment filmDetailFragment = new FilmDetailFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(FilmDetailFragment.FILM_ITEM_SELECTED, item);
-        filmDetailFragment.setArguments(args);
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.film_fragment_container, filmDetailFragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .addToBackStack(null)
-                .commit();
-    }
-
+    /**
+     * Inflate the options menu
+     * @param menu the menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -138,6 +141,11 @@ public class FilmActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * Handle when a menuitem is selected and run the corresponding action
+     * @param item the selected item
+     * @return whether this method could handle the item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -180,6 +188,29 @@ public class FilmActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * When selecting an item in the list, create and switch to the film detail fragment
+     * @param item the selected film item
+     */
+    @Override
+    public void onListFragmentInteraction(Film item) {
+        //TODO: Use new instance?
+        FilmDetailFragment filmDetailFragment = new FilmDetailFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(FilmDetailFragment.FILM_ITEM_SELECTED, item);
+        filmDetailFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.film_fragment_container, filmDetailFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    /**
+     * A listener method to add a film to My List and tell the list its content has changed
+     * @param film the film to add
+     */
     @Override
     public void onAddToMyList(Film film) {
         mLocalSettings.addToMyList(film.getId());
@@ -188,6 +219,10 @@ public class FilmActivity extends AppCompatActivity implements
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * A listener method to remove a film to My List and tell the list its content has changed
+     * @param film the film to remove
+     */
     @Override
     public void onRemoveFromMyList(Film film) {
         mLocalSettings.removeFromMyList(film.getId());
@@ -196,12 +231,19 @@ public class FilmActivity extends AppCompatActivity implements
         Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Listener method to notify the lists that the settings for viewing them have changed.
+     */
     @Override
     public void onSettingsChange() {
         if(mNowPlayingListFragment != null) mNowPlayingListFragment.notifyContentChanged();
         if(mMyListFragment != null) mMyListFragment.notifyContentChanged();
     }
 
+    /**
+     * A listener method to hide a film, and notify the lists that their contents have changed.
+     * @param film the film to hide
+     */
     @Override
     public void onHideForever(Film film) {
         mLocalSettings.addToHiddenList(film.getId());

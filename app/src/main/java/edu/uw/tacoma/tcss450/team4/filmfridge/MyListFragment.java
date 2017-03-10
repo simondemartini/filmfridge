@@ -25,11 +25,17 @@ public class MyListFragment extends AbstractFilmListFragment {
 
     }
 
+    /**
+     * Set the activity's title to match this fragment
+     */
     @Override
     protected void updateTitle() {
         getActivity().setTitle(getString(R.string.my_list));
     }
 
+    /**
+     * Download the list of films in MyList
+     */
     @Override
     protected void startDownloadTask() {
         String [] ids = mLocalSettings.getMyList()
@@ -42,6 +48,11 @@ public class MyListFragment extends AbstractFilmListFragment {
      */
     private class DownloadMyFilmsTask extends DownloadFilmsTask {
 
+        /**
+         * Download just the films by id
+         * @param ids the films to download
+         * @return a list of those films
+         */
         @Override
         protected List<Film> doInBackground(String... ids) {
             try {

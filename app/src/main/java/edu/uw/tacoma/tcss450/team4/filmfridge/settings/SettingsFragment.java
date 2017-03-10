@@ -35,32 +35,16 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.R;
  * create an instance of this fragment.
  */
 public class SettingsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    public static final String SET_THRESHOLD=
+    public static final String URL_SET_THRESHOLD =
             "http://cssgate.insttech.washington.edu/~_450bteam4/setThreshold.php?";
 
-    private String mParam1;
-    private String mParam2;
-    private TextView mAtHomeTV;
-    private SeekBar mAtHomeSB;
-    private int mAtHomeProgress;
-    private TextView mUserEmail;
-    private TextView mInTheatersTV;
-    private SeekBar mInTheatersSB;
-    private int mInTheatersProgress;
-    private ProgressBar mProgressSpinner;
     private Context mContext;
+    private TextView mAtHomeTV, mInTheatersTV, mUserEmail;
+    private SeekBar mAtHomeSB, mInTheatersSB;
+    private ProgressBar mProgressSpinner;
     private LocalSettings mLocalSettings;
     private OnSettingsInteractionListener mListener;
-
-    //for Adding thresholds
-    private String mEmail;
-    private int mAtHome;
-    private int mInTheaters;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -78,44 +62,38 @@ public class SettingsFragment extends Fragment {
     public static SettingsFragment newInstance(String param1, String param2) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        mLocalSettings = new LocalSettings(getContext());
-
-    }
-
+    /**
+     * Create the layout for the settings fragment
+     * @return the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
         getActivity().setTitle(getString(R.string.settings));
+        mLocalSettings = new LocalSettings(v.getContext());
 
         //hide spinner
         mProgressSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_spinner);
         mProgressSpinner.setVisibility(View.GONE);
 
+        //update user email
+        mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
+        mUserEmail.setText(mLocalSettings.getEmail());
+
+        //create seek bars for recommendation thresholds
         mAtHomeSB = (SeekBar) v.findViewById(R.id.ahSeekBar);
         mAtHomeTV = (TextView) v.findViewById(R.id.ahtextview);
-        mLocalSettings = new LocalSettings(v.getContext());
-        mAtHomeTV.setText(mAtHomeSB.getProgress() + "/" + mAtHomeSB.getMax());
         mInTheatersSB = (SeekBar) v.findViewById(R.id.itSeekBar);
         mInTheatersTV = (TextView) v.findViewById(R.id.ittextview);
         mAtHomeSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
-                mAtHomeProgress = theProgress;
                 //limit max progress to in theaters recommendation
                 if(theProgress > mInTheatersSB.getProgress()) {
                     mAtHomeSB.setProgress(mInTheatersSB.getProgress());
@@ -139,9 +117,8 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int theProgress, boolean fromUser) {
-                mInTheatersProgress = theProgress;
                 //limit progress min to at home threshold
-                if(mInTheatersProgress < mAtHomeSB.getProgress()) {
+                if(theProgress < mAtHomeSB.getProgress()) {
                     mInTheatersSB.setProgress(mAtHomeSB.getProgress());
                 }
                 mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
@@ -149,49 +126,56 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //do nothing out of the ordinary
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mInTheatersTV.setText(mInTheatersSB.getProgress() + "/" + mInTheatersSB.getMax());
-//                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
+                mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
                 mListener.onSettingsChange();
             }
         });
+        mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
+        mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
 
-        mUserEmail = (TextView) v.findViewById(R.id.useremail) ;
-        mUserEmail.setText(mLocalSettings.getEmail());
-
+        //create save prefs button to sync to server
         Button savePrefsButton = (Button) v.findViewById(R.id.saveprefs_button);
         savePrefsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLocalSettings.setInTheatersThreshold(mInTheatersSB.getProgress());
-                setThreshold(mUserEmail.getText().toString(),
+                new ThresholdTask().execute(buildUserUrl(URL_SET_THRESHOLD,
+                        mUserEmail.getText().toString(),
                         mAtHomeSB.getProgress(),
-                        mInTheatersSB.getProgress());
+                        mInTheatersSB.getProgress()));
             }
         });
-
-        mInTheatersSB.setProgress(mLocalSettings.getInTheatersThreshold());
-        mAtHomeSB.setProgress(mLocalSettings.getAtHomeThreshold());
 
         return v;
     }
 
+    /**
+     * Lifecycle method: Attach this fragment to an activity, and get the listener and create
+     * local settings
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnSettingsInteractionListener) {
             mListener = (OnSettingsInteractionListener) context;
             mContext = context;
+            mLocalSettings = new LocalSettings(getContext());
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnSettingsInteractionListener");
         }
     }
 
+    /**
+     * Lifecycle method: Remove the listener after detaching from activity
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -199,26 +183,31 @@ public class SettingsFragment extends Fragment {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Create a url to submit the at home thresholds and in theaters thresholds for a user.
+     * @param url the base url
+     * @param email the users email
+     * @param atHome threshold
+     * @param inTheaters threshold
+     * @return a String url
      */
-    public interface OnSettingsInteractionListener {
-        void onSettingsChange();
-    }
+    private String buildUserUrl(String url, String email, int atHome, int inTheaters) {
 
-    public void setThreshold(String theEmail, int theAtHome, int theInTheaters) {
-        mEmail = theEmail;
-        mAtHome = theAtHome;
-        mInTheaters = theInTheaters;
+        StringBuilder sb = new StringBuilder(url);
 
-        ThresholdTask setthreshtask = new ThresholdTask();
-        setthreshtask.execute(buildUserUrl(SET_THRESHOLD));
+        try {
+            sb.append("email=");
+            sb.append(email);
+
+            sb.append("&athome=");
+            sb.append(atHome);
+
+            sb.append("&intheaters=");
+            sb.append(inTheaters);
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
     }
 
     /**
@@ -226,11 +215,11 @@ public class SettingsFragment extends Fragment {
      */
     private class ThresholdTask extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
+        /**
+         * Connect and submit the updated thresholds
+         * @param urls
+         * @return
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -259,7 +248,6 @@ public class SettingsFragment extends Fragment {
             Log.i("response: ", response);
             return response;
         }
-
 
         /**
          * It checks to see if there was a problem with the URL(Network) which is when an
@@ -292,28 +280,17 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    private String buildUserUrl(String string) {
-
-        StringBuilder sb = new StringBuilder(string);
-
-        try {
-
-            String email = mEmail;
-            sb.append("email=");
-            sb.append(email);
-
-            int ah = mAtHome;
-            sb.append("&athome=");
-            sb.append(ah);
-
-            int it = mInTheaters;
-            sb.append("&intheaters=");
-            sb.append(it);
-
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
-        }
-        return sb.toString();
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnSettingsInteractionListener {
+        void onSettingsChange();
     }
 }

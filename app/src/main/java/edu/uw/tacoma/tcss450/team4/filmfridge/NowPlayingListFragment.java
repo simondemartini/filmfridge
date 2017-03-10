@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
@@ -35,7 +34,6 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
 
     private ArrayList<String> mGenres;
     private MenuItem mFilterButton;
-    private DialogFragment mChooseGenresDialog;
     private boolean[] mSelectedGenres;
     private Set<String> mHiddenGenres;
 
@@ -66,6 +64,11 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
         setHasOptionsMenu(true);
     }
 
+    /**
+     * Inflate the menu options. This fragment has a filter by genres button
+     * @param menu the menu to inflate
+     * @param inflater the inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //disable filter until list is retrieved
@@ -78,6 +81,11 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
         }
     }
 
+    /**
+     * Handle the selected item actions
+     * @param item the selected item
+     * @return whether this method was able to fin the item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -89,6 +97,10 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Create a list of genres to filter the now playing list, and reopen with the same items
+     * checked as last time
+     */
     private void createGenresListDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         CharSequence[] genres = mGenres.toArray(new CharSequence[mGenres.size()]);
@@ -132,18 +144,27 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
         dialog.show();
     }
 
-
+    /**
+     * Save the state of the fragment to limit API refreshes
+     * @param outState the state to save to
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList(ARG_GENRES, mGenres);
         outState.putStringArray(ARG_HIDDEN_GENRES, mHiddenGenres.toArray(new String[mHiddenGenres.size()]));
     }
 
+    /**
+     * Set the activity's title to match this fragment
+     */
     @Override
     protected void updateTitle() {
         getActivity().setTitle(getString(R.string.now_playing_films));
     }
 
+    /**
+     * Start this class's list download task. Download now playing movies
+     */
     @Override
     protected void startDownloadTask() {
         DownloadUpcomingFilmsTask task = new DownloadUpcomingFilmsTask();
@@ -155,10 +176,15 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
      */
     private class DownloadUpcomingFilmsTask extends DownloadFilmsTask {
 
+        /**
+         * Download the list of now playing films from TMDB
+         * @param v should be null
+         * @return the list of now playing films. Can be null or empty if things break
+         */
         @Override
         protected List<Film> doInBackground(String... v) {
             try {
-                return tmdb.getUpcoming();
+                return tmdb.getNowPlaying();
             } catch (TMDBFetcher.TMDBException e) {
                 Log.d(TAG, e.getMessage());
                 return null;
@@ -167,17 +193,17 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
     }
 
     /**
-     * Download a list of films and update the recycler view
+     * Download a list of genres
      */
     protected class DownloadGenresTask extends AsyncTask<String, Void, ArrayList<String>> {
 
+        /**
+         * Ask TMDB for a list of all possible genres
+         * @param v should be null
+         * @return A list of genres. Can be null if things broke
+         */
         @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected ArrayList<String> doInBackground(String... ids) {
+        protected ArrayList<String> doInBackground(String... v) {
             try {
                 return tmdb.getGenres();
             } catch (TMDBFetcher.TMDBException e) {
@@ -186,6 +212,10 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
             }
         }
 
+        /**
+         * Make sure the list is correct, update fields, then show and enable the filter button
+         * @param result
+         */
         @Override
         protected void onPostExecute(ArrayList<String> result) {
             if (result != null && !result.isEmpty()) {

@@ -30,23 +30,23 @@ import edu.uw.tacoma.tcss450.team4.filmfridge.settings.LocalSettings;
 public abstract class AbstractFilmListFragment extends Fragment {
 
     protected static final String ARG_COLUMN_COUNT = "column-count";
-    protected boolean isContentChanged = false;
-
-    protected TMDBFetcher tmdb;
 
     protected int mColumnCount = 1;
+    protected TMDBFetcher tmdb;
     protected OnListFragmentInteractionListener mListener;
     protected RecyclerView mRecyclerView;
     protected ProgressBar mProgressSpinner;
     protected FilmListRecyclerViewAdapter mFilmRecyclerViewAdapter;
     protected LocalSettings mLocalSettings;
     protected FilmFilter mFilmFilter;
+    protected boolean isContentChanged = false;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public AbstractFilmListFragment() {
+        //mandatory empty constructor
     }
 
     /**
@@ -67,20 +67,16 @@ public abstract class AbstractFilmListFragment extends Fragment {
 
     /**
      * Create all the views and components. Part of the fragment lifecycle.
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * @return the created view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_film_list, container, false);
 
+        updateTitle();
         mProgressSpinner = (ProgressBar) getActivity().findViewById(R.id.progress_spinner);
         mProgressSpinner.setVisibility(View.GONE);
-
-        updateTitle();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -100,6 +96,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
                 startDownloadTask();
             }
         }
+
         return view;
     }
 
@@ -164,15 +161,26 @@ public abstract class AbstractFilmListFragment extends Fragment {
      */
     protected abstract class DownloadFilmsTask extends AsyncTask<String, Void, List<Film>> {
 
+        /**
+         * Hide list and show progress spinner
+         */
         @Override
         protected void onPreExecute() {
             mRecyclerView.setVisibility(View.GONE);
             mProgressSpinner.setVisibility(View.VISIBLE);
         }
 
+        /**
+         * An abstract method that requires the sub classes to change what they can download
+         * @return the result
+         */
         @Override
         protected abstract List<Film> doInBackground(String... v);
 
+        /**
+         * Make sure everything went right then change out the data in the list
+         * @param result the result of doInBackground()
+         */
         @Override
         protected void onPostExecute(List<Film> result) {
             // Everything is good, show the list.

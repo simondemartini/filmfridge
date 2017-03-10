@@ -194,7 +194,7 @@ public final class TMDBFetcher {
                 film.setBackdropPath(all.getString(BACKDROP_PATH));
                 //TODO: Fix bug where sometime no rating
                 film.setRating(Double.valueOf(all.getDouble(VOTE_AVERAGE) * 10).intValue());
-                film.recommend(atHomeThreshold, inTheatersThreshold);
+                film.setRecommendation(atHomeThreshold, inTheatersThreshold);
 
                 //get content rating
                 JSONObject releases = all.getJSONObject("releases");
@@ -273,13 +273,12 @@ public final class TMDBFetcher {
     }
 
     /**
-     * Download the list specified by an API URL. API Key is added in here
-     * @param url a URL without an API key but ending with "...&apikey="
+     * Download the now playing ist specified by an API URL. API Key is added in here
      * @return A complete list of films with posters
      * @throws TMDBException when things break. The caller should handle it to let the user know.
      */
-    private List<Film> getList(String url) throws TMDBException {
-        url = url + mContext.getString(R.string.tmdb_api_key);
+    public List<Film> getNowPlaying() throws TMDBException {
+        String url = URL_NOWPLAYING + mContext.getString(R.string.tmdb_api_key);
         List<Film> list = new ArrayList<>();
 
         //download data
@@ -309,10 +308,12 @@ public final class TMDBFetcher {
         return list;
     }
 
-    public List<Film> getUpcoming() throws TMDBException {
-        return getList(URL_NOWPLAYING);
-    }
-
+    /**
+     * Fetch all the films by their associated ids
+     * @param ids to fetch
+     * @return a complete list
+     * @throws TMDBException
+     */
     public List<Film> getByIds(String... ids) throws TMDBException {
         List<Film> list = new ArrayList<>();
         for(String id : ids) {
@@ -324,6 +325,11 @@ public final class TMDBFetcher {
         return list;
     }
 
+    /**
+     * Fetch the list of all possible genres in the TMDB api
+     * @return a list of genres
+     * @throws TMDBException
+     */
     public ArrayList<String> getGenres() throws TMDBException {
         String res = requestJSON(URL_GENRE_LIST + mContext.getString(R.string.tmdb_api_key));
         if(res.startsWith("Unable to")) {

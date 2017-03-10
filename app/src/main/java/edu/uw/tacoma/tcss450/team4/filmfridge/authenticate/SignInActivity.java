@@ -80,6 +80,11 @@ public class SignInActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * A listener method to login a user
+     * @param userId the userid
+     * @param pwd the password
+     */
     @Override
     public void login(String userId, String pwd) {
         mEmail = userId;
@@ -90,6 +95,11 @@ public class SignInActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * A listener method to register a user
+     * @param userId the userid
+     * @param pwd the password
+     */
     @Override
     public void register(String userId, String pwd) {
         mEmail = userId;
@@ -185,6 +195,65 @@ public class SignInActivity extends AppCompatActivity implements
             }
 
         }
+    }
+
+
+    /**
+     * Build a url for fetching the threshold for a user.
+     * @param string the base url
+     * @return a complete url
+     */
+    private String buildThreshURL(String string) {
+
+        StringBuilder sb = new StringBuilder(string);
+
+        try {
+            String email = mEmail;
+            sb.append("email=");
+            sb.append(email);
+
+            int ah = 50;
+            sb.append("&athome=");
+            sb.append(ah);
+
+            int it = 80;
+            sb.append("&intheaters=");
+            sb.append(it);
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Build a url for logging in a user.
+     * @param string the base url
+     * @return a complete url
+     */
+    private String buildUserUrl(String string) {
+
+        StringBuilder sb = new StringBuilder(string);
+
+        try {
+
+            String email = mEmail;
+            sb.append("email=");
+            sb.append(email);
+
+
+            String password = mPassword;
+            sb.append("&password=");
+            sb.append(password);
+
+
+        }
+        catch(Exception e) {
+            Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
     }
 
     /**
@@ -333,54 +402,5 @@ public class SignInActivity extends AppCompatActivity implements
             }
 
         }
-    }
-
-    private String buildThreshURL(String string) {
-
-        StringBuilder sb = new StringBuilder(string);
-
-        try {
-
-            String email = mEmail;
-            sb.append("email=");
-            sb.append(email);
-
-            int ah = 50;
-            sb.append("&athome=");
-            sb.append(ah);
-
-            int it = 80;
-            sb.append("&intheaters=");
-            sb.append(it);
-
-        } catch (Exception e) {
-            Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
-        }
-        return sb.toString();
-    }
-
-    private String buildUserUrl(String string) {
-
-        StringBuilder sb = new StringBuilder(string);
-
-        try {
-
-            String email = mEmail;
-            sb.append("email=");
-            sb.append(email);
-
-
-            String password = mPassword;
-            sb.append("&password=");
-            sb.append(password);
-
-
-        }
-        catch(Exception e) {
-            Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
-        }
-        return sb.toString();
     }
 }
