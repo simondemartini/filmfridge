@@ -30,6 +30,7 @@ public class Film implements Serializable {
      */
     public Film(String id) {
         this.mFilmId = id;
+        this.mRating = -1;
     }
 
     /**
