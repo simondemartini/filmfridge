@@ -90,7 +90,6 @@ public abstract class AbstractFilmListFragment extends Fragment {
             mRecyclerView.setAdapter(mFilmRecyclerViewAdapter);
 
             if(mFilmRecyclerViewAdapter.getItemCount() == 0 || isContentChanged) {
-                //TODO: Find a better way to limit re-downloading of info -- maybe a refresh button and a local DB?
                 isContentChanged = false;
                 mFilmFilter.setHiddenIds(mLocalSettings.getHiddenList());
                 startDownloadTask();

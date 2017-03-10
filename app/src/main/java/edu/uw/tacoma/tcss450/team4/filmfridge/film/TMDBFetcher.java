@@ -61,7 +61,6 @@ public final class TMDBFetcher {
     public TMDBFetcher(Context context) {
         mContext = context;
         mLocalSettings = new LocalSettings(mContext);
-        //TODO: Get API config?
     }
 
     /**
@@ -265,7 +264,6 @@ public final class TMDBFetcher {
      * Add details to a film
      */
     private void fetchDetails(Film film) {
-        //TODO: Only fetch when looking at details to speed it up
         String url = URL_DETAIL_BASE + film.getId()
                 + URL_DETAIL_PARAMS + mContext.getString(R.string.tmdb_api_key);
         String result = requestJSON(url);

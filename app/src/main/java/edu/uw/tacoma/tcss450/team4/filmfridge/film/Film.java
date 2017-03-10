@@ -40,7 +40,6 @@ public class Film implements Serializable {
      * @param releaseDate the release date of the film
      * @param posterPath the path to find the poster on the API
      * @param backdropPath the path to find the backdrop on the API
-     *                     //TODO Delete backdrop
      */
     public Film(String id,
                 String title,
