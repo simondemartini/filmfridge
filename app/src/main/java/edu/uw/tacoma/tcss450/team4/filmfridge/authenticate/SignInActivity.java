@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,9 +44,15 @@ public class SignInActivity extends AppCompatActivity implements
             "http://cssgate.insttech.washington.edu/~_450bteam4/adduser.php?";
 
     /**
-     * set threshold url.
+     * get threshold url.
      */
-    public static final String THRESHOLD_URL=
+    public static final String THRESHOLD_GET_URL =
+            "http://cssgate.insttech.washington.edu/~_450bteam4/thresholds.php?cmd=thresholds&";
+
+    /**
+     * set initial thresholds when registering url.
+     */
+    public static final String THRESHOLD_ADD_URL =
             "http://cssgate.insttech.washington.edu/~_450bteam4/addThreshold.php?";
 
     /**
@@ -93,6 +100,9 @@ public class SignInActivity extends AppCompatActivity implements
         SignInActivity.UserTask usertask = new SignInActivity.UserTask();
         usertask.execute(buildUserUrl(LOGIN_URL));
 
+        GetThresholdTask createThreshTask = new GetThresholdTask();
+        createThreshTask.execute(buildThreshGetURL(THRESHOLD_GET_URL));
+
     }
 
     /**
@@ -108,9 +118,8 @@ public class SignInActivity extends AppCompatActivity implements
         SignInActivity.RegisterTask usertask = new SignInActivity.RegisterTask();
         usertask.execute(buildUserUrl(ADD_USER));
 
-        SignInActivity.CreateThresholdTask createThreshTask = new SignInActivity.CreateThresholdTask();
-        createThreshTask.execute(buildThreshURL(THRESHOLD_URL));
-
+        CreateThresholdTask createThreshTask = new CreateThresholdTask();
+        createThreshTask.execute(buildThreshAddURL(THRESHOLD_ADD_URL));
     }
 
 
@@ -203,7 +212,27 @@ public class SignInActivity extends AppCompatActivity implements
      * @param string the base url
      * @return a complete url
      */
-    private String buildThreshURL(String string) {
+    private String buildThreshGetURL(String string) {
+
+        StringBuilder sb = new StringBuilder(string);
+
+        try {
+            String email = mEmail;
+            sb.append("email=");
+            sb.append(email);
+        } catch (Exception e) {
+            Toast.makeText(this, "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Build a url for adding the initial thresholds for a user.
+     * @param string the base url
+     * @return a complete url
+     */
+    private String buildThreshAddURL(String string) {
 
         StringBuilder sb = new StringBuilder(string);
 
@@ -212,11 +241,11 @@ public class SignInActivity extends AppCompatActivity implements
             sb.append("email=");
             sb.append(email);
 
-            int ah = 50;
+            int ah = LocalSettings.DEFAULT_AT_HOME_VALUE;
             sb.append("&athome=");
             sb.append(ah);
 
-            int it = 80;
+            int it = LocalSettings.DEFAULT_IN_THEATERS_VALUE;
             sb.append("&intheaters=");
             sb.append(it);
 
@@ -325,6 +354,72 @@ public class SignInActivity extends AppCompatActivity implements
                             , Toast.LENGTH_LONG)
                             .show();
                 }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
+                        e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    /**
+     * AsyncTask for creating thresholds.
+     */
+    private class GetThresholdTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to create Threshold, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            Log.i("response: ", response);
+            return response;
+        }
+
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            try {
+                JSONArray jsonArray = new JSONArray(result);
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                int atHome = jsonObject.getInt("athome");
+                int intheaters = jsonObject.getInt("intheaters");
+                mLocalSettings.setAtHomeThreshold(atHome);
+                mLocalSettings.setInTheatersThreshold(intheaters);
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "Something wrong with the data" +
                         e.getMessage(), Toast.LENGTH_LONG).show();
