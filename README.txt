@@ -55,5 +55,5 @@ Phase II Requirements
         posters.
 
     8. Write at least 1 JUnit class and 1 Instrumentation test.
-        //TODO: Write tests
+        We added JUnit tests for out Film class, and an Instrumentation test for the RegisterFragment
 
