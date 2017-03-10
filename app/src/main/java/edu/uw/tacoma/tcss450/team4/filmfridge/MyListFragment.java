@@ -46,7 +46,7 @@ public class MyListFragment extends AbstractFilmListFragment {
     /**
      * Download a list of films and update the recycler view
      */
-    private class DownloadMyFilmsTask extends DownloadFilmsTask {
+    private class DownloadMyFilmsTask extends AbstractDownloadFilmsTask {
 
         /**
          * Download just the films by id

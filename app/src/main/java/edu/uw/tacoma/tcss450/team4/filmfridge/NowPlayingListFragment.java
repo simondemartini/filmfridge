@@ -174,7 +174,7 @@ public class NowPlayingListFragment extends AbstractFilmListFragment {
     /**
      * Download a list of films and update the recycler view
      */
-    private class DownloadUpcomingFilmsTask extends DownloadFilmsTask {
+    private class DownloadUpcomingFilmsTask extends AbstractDownloadFilmsTask {
 
         /**
          * Download the list of now playing films from TMDB

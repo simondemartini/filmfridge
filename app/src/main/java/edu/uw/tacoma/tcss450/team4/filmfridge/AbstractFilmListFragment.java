@@ -159,7 +159,7 @@ public abstract class AbstractFilmListFragment extends Fragment {
     /**
      * Download a list of films and update the recycler view
      */
-    protected abstract class DownloadFilmsTask extends AsyncTask<String, Void, List<Film>> {
+    protected abstract class AbstractDownloadFilmsTask extends AsyncTask<String, Void, List<Film>> {
 
         /**
          * Hide list and show progress spinner
