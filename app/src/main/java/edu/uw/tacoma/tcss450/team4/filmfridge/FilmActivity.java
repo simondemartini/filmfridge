@@ -198,7 +198,6 @@ public class FilmActivity extends AppCompatActivity implements
      */
     @Override
     public void onListFragmentInteraction(Film item) {
-        //TODO: Use new instance?
         FilmDetailFragment filmDetailFragment = new FilmDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(FilmDetailFragment.FILM_ITEM_SELECTED, item);
